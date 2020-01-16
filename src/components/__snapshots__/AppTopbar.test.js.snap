@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test <AppTopbar> renders component 1`] = `
+<AppTopbar
+  onToggleMenu={[Function]}
+>
+  <div
+    className="layout-topbar clearfix"
+  >
+    <button
+      className="p-link layout-menu-button"
+      onClick={[Function]}
+    >
+      <span
+        className="pi pi-bars"
+      />
+    </button>
+    <div
+      className="layout-topbar-icons"
+    />
+  </div>
+</AppTopbar>
+`;

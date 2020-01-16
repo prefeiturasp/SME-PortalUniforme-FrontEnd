@@ -1,0 +1,9 @@
+@import "styles/variaveis.scss";
+
+div.help-text {
+  font-size: 12px;
+  color: $grayPlaceholder;
+  &.red {
+    color: $red;
+  }
+}

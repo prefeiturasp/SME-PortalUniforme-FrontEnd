@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test <FileUpload> renders component 1`] = `
+<FileUpload
+  className="teste"
+  input={
+    Object {
+      "onChange": [MockFunction],
+      "value": "",
+    }
+  }
+  label="mylabel"
+  meta={
+    Object {
+      "error": "This field is required",
+      "touched": true,
+    }
+  }
+  name="myCombo"
+  required={true}
+  validate={[Function]}
+  value=""
+>
+  <div
+    className="input"
+  >
+    <span
+      className="required-asterisk"
+      key="1"
+    >
+      *
+    </span>
+    <label
+      className="col-form-label undefined"
+      htmlFor="myCombo"
+      key="2"
+    >
+      mylabel
+    </label>
+    <CustomFileUploadPR
+      accept={null}
+      auto={true}
+      cancelLabel="Cancelar"
+      chooseLabel="Selecione os arquivos"
+      className="teste 
+             invalid-field"
+      disabled={false}
+      id={null}
+      invalidFileSizeMessageDetail="maximum upload size is {0}."
+      invalidFileSizeMessageSummary="{0}: Invalid file size, "
+      maxFileSize={2097152}
+      mode="advanced"
+      multiple={true}
+      name="myCombo"
+      onBeforeSend={null}
+      onBeforeUpload={null}
+      onChange={[MockFunction]}
+      onClear={null}
+      onError={null}
+      onProgress={null}
+      onSelect={null}
+      onUpload={null}
+      onUploadChange={[Function]}
+      onValidationFail={null}
+      previewWidth={50}
+      required={true}
+      style={null}
+      uploadLabel="Upload"
+      url={null}
+      widthCredentials={false}
+    >
+      <div
+        className="p-fileupload p-component teste 
+             invalid-field"
+        id={null}
+        style={null}
+      >
+        <div
+          className="p-fileupload-buttonbar"
+        >
+          <span
+            className="p-button p-fileupload-choose p-component p-button-text-icon-left"
+            icon="pi pi-plus"
+          >
+            <input
+              accept={null}
+              disabled={false}
+              multiple={true}
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              type="file"
+            />
+            <span
+              className="p-button-icon p-button-icon-left p-clickable pi pi-fw pi-plus"
+            />
+            <span
+              className="p-button-text p-clickable"
+            >
+              Selecione os arquivos
+            </span>
+          </span>
+        </div>
+        <div
+          className="p-fileupload-content"
+          onDragEnter={[Function]}
+          onDragLeave={[Function]}
+          onDragOver={[Function]}
+          onDrop={[Function]}
+        >
+          <Messages
+            className={null}
+            id={null}
+            onClick={null}
+            onRemove={null}
+            style={null}
+          >
+            <div
+              className={null}
+              id={null}
+              style={null}
+            >
+              <TransitionGroup
+                childFactory={[Function]}
+                component="div"
+              >
+                <div />
+              </TransitionGroup>
+            </div>
+          </Messages>
+        </div>
+      </div>
+    </CustomFileUploadPR>
+    <HelpText>
+      <div
+        className="help-text"
+      />
+    </HelpText>
+    <InputErroMensagem
+      meta={
+        Object {
+          "error": "This field is required",
+          "touched": true,
+        }
+      }
+    >
+      <div
+        className="error-or-warning-message"
+      >
+        <div
+          className="error-message"
+        >
+          This field is required
+        </div>
+      </div>
+    </InputErroMensagem>
+  </div>
+</FileUpload>
+`;
