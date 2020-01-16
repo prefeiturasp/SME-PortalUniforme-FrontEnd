@@ -1,0 +1,367 @@
+@import "variaveis.scss";
+
+.fonte-maior {
+  font-size: 20px !important;
+  div,
+  ul,
+  table {
+    font-size: 20px !important;
+  }
+}
+
+.alto-contraste {
+  background-color: #fefefe;
+  filter: invert(100%);
+  * {
+    background-color: inherit;
+  }
+
+  img:not([src*=".svg"]),
+  video {
+    filter: invert(100%);
+  }
+}
+
+body {
+  @include roboto-sans;
+}
+
+// Fontes
+
+.fonte-12 {
+  font-size: 12px;
+}
+
+.fonte-14 {
+  font-size: 14px;
+}
+
+.fonte-16 {
+  font-size: 16px;
+}
+
+// Menu
+
+.pref-menu {
+  background-color: #9d9d9c;
+  font-size: 12px;
+  line-height: 12px;
+  li {
+    a {
+      color: white;
+    }
+  }
+}
+
+.links-menu {
+  border-bottom: 1px solid #dee2e6;
+
+  @media (max-width: 576px) {
+    border-bottom: 0 none !important;
+  }
+
+  .nav-link {
+    border: 0 none !important;
+
+    &:hover {
+      border: 0 none;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+// Home
+
+.oferta-imoveis {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 33.83%, rgba(255, 255, 255, 0.648) 64.77%, rgba(255, 255, 255, 0.324) 92.11%), url('../img/01.jpg'), #C4C4C4;
+  color: $corPretoPortal;
+  height: 490px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .conteudo {
+    margin: 0 auto;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 20px;
+      line-height: 26px;
+      font-style: normal;
+      font-weight: bold;
+    }
+  }
+}
+
+.btn {
+  &.btn-primary {
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #1A6EB8;
+    border-color: #1A6EB8;
+    &:hover {
+      background-color: #004a99;
+      border-color: #004a99;
+    }
+    &.hero {
+      font-size: 18px;
+    }
+  }
+}
+
+.o-que-e-necessario {
+  display: flex;
+  align-items: center;
+}
+
+.sociedade-governo {
+  background: $corAzulPortal;
+  .container {
+    padding: 4em 0;
+  }
+  h3 {
+    font-weight: bold;
+  }
+  .btn {
+    margin-top: 0;
+    border: 1px solid #fff;
+    font-size: 18px;
+    &:hover{
+      background-color: #ffffff;
+      color: #196cbd;
+    }  
+  }
+}
+
+.cidade-precisa {
+  .container {
+    .row {
+      align-items: center;
+      .duvidas {
+        padding-top: 50px;
+      }
+    }
+  }
+}
+
+.numeros {
+  background: $corAzulFiltro;
+
+  .rounded-circle {
+    color: $corAzulPortal;
+    height: 200px;
+    text-align: center;
+    vertical-align: middle;
+    width: 200px;
+
+    .valor {
+      display: block;
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .texto {
+      font-size: 16px;
+    }
+  }
+}
+
+h2 {
+  font-size: 35px;
+  font-weight: bold !important;
+  line-height: 40px;
+
+  &.cor-azul {
+    color: $corAzulPortal;
+  }
+}
+
+// Filtro
+
+.menu-auxiliar {
+  background: $corAzulPortal;
+
+  h3 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+}
+
+.resultados-autocomplete {
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 5;
+
+  .cursor-padrao {
+    cursor: default;
+  }
+}
+
+// Escolas
+
+.escolas {
+  @media (min-width: 992px) {
+    min-height: 860px;
+  }
+
+  .filtro {
+    @media (max-width: 576px) {
+      left: 0;
+    }
+
+    @media (min-width: 992px) {
+      position: absolute;
+    }
+
+    background: $corAzulFiltro;
+
+    h4 {
+      @extend .fonte-14;
+      font-weight: bold;
+    }
+
+    .limpar {
+      @extend .fonte-14;
+      font-weight: bold;
+      line-height: 16px;
+    }
+  }
+
+  .overflow-auto {
+    .tabela-escolas {
+      font-size: 0.8rem;
+
+      tr {
+        &.collapsing,
+        &.collapse {
+          background: $corCinzaEscuro;
+        }
+      }
+
+      .fa-chevron-down[aria-expanded="true"] {
+        transform: rotate(180deg);
+      }
+
+      tr[aria-expanded="true"] {
+        background: $corCinzaEscuro;
+      }
+    }
+  }
+}
+
+// Mapa
+
+.mapa-completo {
+  @media (min-width: 992px) {
+    padding-right: 0 !important;
+    position: absolute !important;
+    right: 0;
+    width: 100% !important;
+  }
+  @media (max-width: 991px) {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .mapa {
+    background: $corBranco;
+    border: 0 none;
+    box-sizing: border-box;
+    .leaflet-container {
+      height: 860px;
+    }
+    @media (max-width: 991px) {
+      margin-left: 10%;
+      width: 80%;
+      height: 10%;
+      .leaflet-container {
+        height: 500px;
+      }
+    }
+  }
+}
+
+// Consulta
+
+.react-datepicker-wrapper {
+  display: block !important;
+
+  .react-datepicker__input-container {
+    display: block !important;
+  }
+}
+
+// Rodapé
+
+.area-rodape {
+  background: $corCinzaRodape;
+  color: $corBranco;
+  font-size: 0.8rem;
+}
+
+.endereco {
+  font-size: 0.8rem;
+}
+
+// Estatísticas
+
+.estatisticas {
+  .nav {
+    border-bottom-color: $corAzulPortal;
+    font-size: 12px;
+
+    .nav-link {
+      color: $corPretoPortal;
+
+      &.active {
+        border: 0 none;
+        border-bottom: 8px solid $corAzulPortal !important;
+        font-weight: bold;
+      }
+
+      &:hover {
+        border: 0 none;
+      }
+    }
+  }
+
+  .cor-azul {
+    color: $corAzulPortal;
+  }
+
+  .cor-cinza {
+    color: $corCinzaHome;
+  }
+}
+
+.estatisticas-cabecalho {
+  h1 {
+    font-size: 30px;
+  }
+
+  .referencia {
+    font-size: 12px;
+  }
+}
+
+.p-dropdown {
+  width: 100%;
+}
+
+.desenvolvimento-escolar {
+  .botoes {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+    margin-top: 1.5em;
+    button {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+}

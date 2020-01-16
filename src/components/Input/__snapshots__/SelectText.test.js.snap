@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test <SelectText> renders component 1`] = `
+<SelectText
+  className=""
+  disabled={false}
+  esconderAsterisco={false}
+  helpText=""
+  input={Object {}}
+  label=""
+  labelClassName=""
+  meta={Object {}}
+  name=""
+  options={Array []}
+  placeholder=""
+  required={false}
+  type="text"
+>
+  <div
+    className="input"
+  >
+    <Dropdown
+      appendTo={null}
+      ariaLabel={null}
+      ariaLabelledBy={null}
+      autoFocus={false}
+      autoWidth={false}
+      className=" undefined"
+      dataKey={null}
+      disabled={false}
+      editable={false}
+      filter={false}
+      filterPlaceholder={null}
+      id={null}
+      inputId={null}
+      itemTemplate={null}
+      maxLength={null}
+      onChange={null}
+      onContextMenu={null}
+      onMouseDown={null}
+      optionLabel={null}
+      options={Array []}
+      panelClassName={null}
+      panelStyle={null}
+      placeholder=""
+      required={false}
+      scrollHeight="200px"
+      showClear={false}
+      style={null}
+      tabIndex={null}
+      tooltip={null}
+      tooltipOptions={null}
+      value={null}
+    >
+      <div
+        className="p-dropdown p-component  undefined"
+        id={null}
+        onClick={[Function]}
+        onContextMenu={null}
+        onMouseDown={null}
+        style={null}
+      >
+        <div
+          className="p-hidden-accessible"
+        >
+          <input
+            aria-label={null}
+            aria-labelledby={null}
+            disabled={false}
+            id={null}
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            readOnly={true}
+            role="listbox"
+            tabIndex={null}
+            type="text"
+          />
+        </div>
+        <div
+          className="p-hidden-accessible p-dropdown-hidden-select"
+        >
+          <select
+            aria-hidden="true"
+            required={false}
+            tabIndex="-1"
+          >
+            <option
+              value=""
+            />
+          </select>
+        </div>
+        <label
+          className="p-dropdown-label p-inputtext p-dropdown-label-empty"
+        >
+          empty
+        </label>
+        <div
+          className="p-dropdown-trigger"
+        >
+          <span
+            className="p-dropdown-trigger-icon pi pi-chevron-down p-clickable"
+          />
+        </div>
+        <DropdownPanel
+          appendTo={null}
+          filter={null}
+          onClick={[Function]}
+          panelClassName={null}
+          panelStyle={null}
+          scrollHeight="200px"
+        >
+          <div
+            className="p-dropdown-panel p-hidden p-input-overlay"
+            onClick={[Function]}
+            style={null}
+          >
+            <div
+              className="p-dropdown-items-wrapper"
+              style={
+                Object {
+                  "maxHeight": "200px",
+                }
+              }
+            >
+              <ul
+                className="p-dropdown-items p-dropdown-list p-component"
+              />
+            </div>
+          </div>
+        </DropdownPanel>
+      </div>
+    </Dropdown>
+    <HelpText
+      helpText=""
+    >
+      <div
+        className="help-text"
+      />
+    </HelpText>
+    <InputErroMensagem
+      meta={Object {}}
+    >
+      <div
+        className="error-or-warning-message"
+      />
+    </InputErroMensagem>
+  </div>
+</SelectText>
+`;
