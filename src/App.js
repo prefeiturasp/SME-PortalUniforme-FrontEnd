@@ -9,6 +9,7 @@ import "./styles/styles.scss";
 import "./App.scss";
 
 import ReactGA from "react-ga";
+import CadastroEmpresa from "components/CadastroEmpresa";
 ReactGA.initialize("UA-153279384-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
@@ -83,6 +84,12 @@ export default class App extends Component {
                 alterarFonte={this.alterarFonte}
                 alterarContraste={this.alterarContraste}
               />
+            )}
+          />
+          <Route
+            path="/cadastro-empresa"
+            render={props => (
+              <CadastroEmpresa />
             )}
           />
         </Switch>

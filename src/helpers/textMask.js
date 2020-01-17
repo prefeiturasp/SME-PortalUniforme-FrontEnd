@@ -12,6 +12,12 @@ export const fieldCPF_CNPJ = value => {
   }
 };
 
+export const fieldCNPJ = value => {
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5");
+};
+
 export const fieldCep = createTextMask({
   pattern: "99999-999",
   allowEmpty: false,
