@@ -1,64 +1,55 @@
-import React, { Fragment, useState, useMemo } from "react";
+import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { Field } from "redux-form";
-import { InputText } from "components/Input/InputText";
-import { required } from "helpers/fieldValidators";
-import { fieldTel } from "helpers/textMask";
+import { AutoComplete } from "components/Input/AutoComplete";
+import InputMask from "react-input-mask";
 
 const LojaFisica = props => {
-  const [loja, setLoja] = useState([1]);
+  const [loja, setLoja] = useState([{endereco: "", telefone: ""}]);
 
-  const addLoja = key => {
-    loja.push(key);
+  const addLoja = () => {
+    loja.push({endereco: "", telefone: ""});
     setLoja([...loja]);
   };
 
   const delLoja = key => {
-    console.log(loja);
-    delete loja[key]
-    console.log(loja);
-
-    
+    loja.splice(key, 1);
+    setLoja([...loja]);
   };
 
-  const quantidadeLoja = useMemo(() => loja.length, [loja]);
+  useEffect(() => {
+    console.log(loja);
+  });
 
   return (
     <Fragment>
-      {loja.length
-        ? loja.map((value, key) => {
+      {loja
+        ? loja.map((valor, chave) => {
             return (
               <>
-                <Field
-                  component={InputText}
-                  label="Endereço"
-                  name={`loja.endereco_${key}`}
-                  key={key}
-                  required
-                  validate={required}
-                  placeholder="Digite o endereço da loja física em São Paulo"
+                <AutoComplete
+                  name="endereco"
+                  value={""}
+                  key={chave}
+                  onAddressSelected={e => console.log(e.properties.label)}
                 />
-                <Field
-                  {...fieldTel}
-                  component={InputText}
-                  label="Telefone"
-                  name={`loja.telefone_${key}`}
-                  required
-                  key={key}
-                  validate={required}
-                  placeholder="Digite o telefone da loja física em São Paulo"
+                <InputMask
+                  mask="(99) 9999-9999"
+                  onChange={e => {valor = e.target.value}}
+                  // value={valor}
+                  key={chave}
+                  className="form-control mb-2"
+                  placeholder="(11) 5555-6666"
                 />
-                {key > 0 ? (
+                
                   <Button
                     variant="outline-danger"
                     size="sm"
-                    onClick={() => delLoja(key)}
+                    onClick={() => delLoja(chave)}
                     block
                     type="button"
                   >
                     <i className="fas fa-trash" />
                   </Button>
-                ) : null}
                 <hr />
               </>
             );
@@ -66,7 +57,7 @@ const LojaFisica = props => {
         : null}
       <Button
         type="button"
-        onClick={() => addLoja(quantidadeLoja + 1)}
+        onClick={() => addLoja()}
         variant="outline-primary"
         block
       >

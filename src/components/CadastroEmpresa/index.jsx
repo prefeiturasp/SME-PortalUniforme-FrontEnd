@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import BasePage from "components/Base/BasePage";
-import { Form, reduxForm } from "redux-form";
+import { Form, reduxForm, FieldArray } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TipoFornecimento from "./TipoFornecimento";
-import DadosResponsavel from "./LojaFisica";
 import BandeiraAnexo from "./BandeiraAnexo";
+import LojaFisica from "./LojaFisica";
 
 export const CadastroEmpresa = props => {
     const onSubmit = values => {
@@ -46,7 +46,8 @@ export const CadastroEmpresa = props => {
                   <Card>
                     <Card.Body>
                       <Card.Title>Loja(s) Física(s)</Card.Title>
-                      <DadosResponsavel />
+                      <LojaFisica />
+                      {/* <FieldArray name="lojas" component={LojaFisica} /> */}
                     </Card.Body>
                   </Card>
                 </Col>
