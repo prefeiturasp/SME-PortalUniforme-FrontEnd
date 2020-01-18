@@ -1,16 +1,42 @@
-import React, { Fragment } from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import React, { Fragment, useState, useMemo, useEffect } from "react";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import BasePage from "components/Base/BasePage";
-import { Form, reduxForm, FieldArray } from "redux-form";
+import { Form, reduxForm } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TipoFornecimento from "./TipoFornecimento";
 import BandeiraAnexo from "./BandeiraAnexo";
 import LojaFisica from "./LojaFisica";
 
 export const CadastroEmpresa = props => {
-    const onSubmit = values => {
+  const [loja, setLoja] = useState([{ endereco: "", telefone: "" }]);
 
-    }
+  useEffect(()=>{
+
+  },[loja])
+
+  const addLoja = index => {
+    loja.push({ endereco: "", telefone: "" });
+    setLoja([...loja]);
+  };
+
+  const delLoja = index => {
+    let lista = []
+    loja.forEach((value, key) => {
+      if(key !== index){
+        lista.push(value) 
+      }
+    })
+    setLoja(lista);
+  };
+
+  const onUpdateLoja = (valor, chave) => {
+    loja[chave] = valor;
+    setLoja([...loja]);
+  };
+
+  const contadorLoja = useMemo(() => loja.length, [loja]);
+
+  const onSubmit = values => {};
 
   return (
     <Fragment>
@@ -46,8 +72,28 @@ export const CadastroEmpresa = props => {
                   <Card>
                     <Card.Body>
                       <Card.Title>Loja(s) Física(s)</Card.Title>
-                      <LojaFisica />
-                      {/* <FieldArray name="lojas" component={LojaFisica} /> */}
+                      {loja.map((value, key) => (
+                        <>
+                          <LojaFisica
+                            chave={key}
+                            endereco={value.endereco}
+                            telefone={value.telefone}
+                            onUpdate={onUpdateLoja}
+                          />
+                          <Button
+                            disabled={contadorLoja <= 1 ? true : false}
+                            variant="outline-danger"
+                            block
+                            onClick={() => delLoja(key)}
+                            className="mb-1"
+                          >
+                            <i className="fas fa-trash" />
+                          </Button>
+                        </>
+                      ))}
+                      <Button block onClick={() => addLoja(contadorLoja + 1)}>
+                        <i className="fas fa-plus-circle" /> Novo Endereço
+                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
