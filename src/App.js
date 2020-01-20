@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-
-import Home from "./components/Home/Home";
-import CadastroImovel from "./components/CadastroImovel";
+import Routes from './components/Routes'
+import Rodape from "./components/Rodape/Rodape";
+import MenuAcessibilidade from "./components/MenuSuperior/MenuAcessibilidade";
+import MenuPrincipal from "./components/MenuSuperior/MenuPrincipal";
 
 // Style
 import "./styles/styles.scss";
@@ -56,37 +56,13 @@ export default class App extends Component {
   render() {
     const { alterarFonte, alterarContraste, focusBuscaAtributo } = this.state;
     return (
-      <div
-        className={`${alterarFonte && "fonte-maior"}
-          ${alterarContraste && "alto-contraste"}`}
-      >
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={props => (
-              <Home
-                {...props}
-                alterarFonte={this.alterarFonte}
-                alterarContraste={this.alterarContraste}
-                focusBusca={this.focusBusca}
-                focusBuscaAtributo={focusBuscaAtributo}
-                esconderLinkBuscaEscola
-              />
-            )}
-          />
-          <Route
-            path="/form"
-            render={props => (
-              <CadastroImovel
-                {...props}
-                alterarFonte={this.alterarFonte}
-                alterarContraste={this.alterarContraste}
-              />
-            )}
-          />
-        </Switch>
-      </div>
-    );
+        <section role="main" className={`${alterarFonte && "fonte-maior"} ${alterarContraste && "alto-contraste"}`}>
+          <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>
+          <MenuPrincipal/>
+          <Routes/>
+          <Rodape/>
+        </section>
+
+        );
   }
 }
