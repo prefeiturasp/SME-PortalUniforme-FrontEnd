@@ -12,7 +12,7 @@ export default class Home extends Component {
   }
 
   irParaFormulario() {
-    let path = `/form`;
+    let path = `/cadastro`;
     this.props.history.push(path);
   }
 

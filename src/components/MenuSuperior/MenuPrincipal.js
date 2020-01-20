@@ -11,14 +11,8 @@ class MenuPrincipal extends React.Component {
         this.state = {mostraLinkHome: false}
     }
 
-    UNSAFE_componentWillMount() {
-
-    }
-
     render() {
-
         return (
-
             <div className="container">
                 <div className="row mt-4 mb-4">
                     <div

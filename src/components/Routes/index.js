@@ -6,7 +6,7 @@ import {CadastroImovel} from "../CadastroImovel";
 export default props => (
     <div id="main">
         <Switch>
-            <Route path="/" exact component ={Home}/>
+            <Route path="/" exact component = {Home}/>
             <Route path="/cadastro" component ={CadastroImovel}/>
         </Switch>
 
