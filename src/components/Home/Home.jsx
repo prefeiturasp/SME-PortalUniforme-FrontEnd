@@ -24,13 +24,10 @@ export default class Home extends Component {
             <div className="conteudo">
               <div className="col-lg-8 col-sm-12 col-xl-6">
                 <h1>
-                  Venha contribuir com a ampliação de vagas de creche em São
-                  Paulo!
+                  Contribua com a educação de nosso município e torne-se um fornecedor de uniformes escolares.
                 </h1>
                 <p>
-                  Seu imóvel pode ser adaptado para atendimento de creche
-                  mantida por uma Organização da Sociedade Civil. Veja abaixo os
-                  requisitos mínimos e como se cadastrar.
+                  Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para o credenciamento e faça a diferença na educação de nossos estudantes.
                 </p>
                 <button
                   className="btn btn-primary pl-4 pr-4"
