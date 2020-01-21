@@ -4,8 +4,19 @@ import { required } from "helpers/fieldValidators";
 import { Field } from "redux-form";
 import { fieldCNPJ, fieldCep, fieldTel } from "helpers/textMask";
 import { Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 const DadosEmpresa = props => {
+  
+  const buscaCep = async cep => {
+    console.log(cep)
+    const url = `http://viacep.com.br/ws/${cep}/json/`;
+    const resultado = await axios.get(url);
+    if(resultado.statusText === "OK"){
+      console.log(resultado);
+    }
+  };
+
   return (
     <Fragment>
       <Field
@@ -36,6 +47,7 @@ const DadosEmpresa = props => {
             name="empresa.cep"
             required
             validate={required}
+            onBlur={val => buscaCep(val.target.value)}
           />
         </Col>
         <Col lg={6} xl={6}>
@@ -67,7 +79,7 @@ const DadosEmpresa = props => {
         validate={required}
         placeholder="Digite a cidade da empresa"
       />
-       <Field
+      <Field
         component={InputText}
         label="Nome Responsável"
         name="responsavel.nome"
