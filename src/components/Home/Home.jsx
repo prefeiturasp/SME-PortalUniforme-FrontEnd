@@ -1,144 +1,145 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import BlocoTexto from "components/BlocoTexto";
+ import imgSalaAula from "img/sala-de-aula.png";
+import imgMAlunosComUniforme from "img/duas-criancas-de-uniforme.png";
 
-import listaDeSubdistritos from "files/lista_de_subdistritos.pdf";
-import imgSalaAula from "img/02.jpg";
-import imgMapaSaoPaulo from "img/03.jpg";
+import './home.scss'
 
 export default class Home extends Component {
-  constructor() {
-    super();
-    this.irParaFormulario = this.irParaFormulario.bind(this);
-  }
+    constructor() {
+        super();
+        this.irParaFormulario = this.irParaFormulario.bind(this);
+    }
 
-  irParaFormulario() {
-    let path = `/cadastro`;
-    this.props.history.push(path);
-  }
+    irParaFormulario() {
+        let path = `/cadastro`;
+        this.props.history.push(path);
+    }
 
-  render() {
-    return (
-        <Fragment>
-        <div className="w-100 oferta-imoveis position-relative">
-          <div className="container">
-            <div className="conteudo">
-              <div className="col-lg-8 col-sm-12 col-xl-6">
-                <h1>
-                  Contribua com a educação de nosso município e torne-se um fornecedor de uniformes escolares.
-                </h1>
-                <p>
-                  Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para o credenciamento e faça a diferença na educação de nossos estudantes.
-                </p>
-                <button
-                  className="btn btn-primary pl-4 pr-4"
-                  onClick={this.irParaFormulario}
-                >
-                  Cadastrar imóvel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="conteudo" className="w-100 home">
-          <div className="container">
-            <div className="row mt-5">
-              <div className="col-lg-6 mb-lg-0">
-                <img
-                  src={imgSalaAula}
-                  alt="Acompanhamento no desenvolvimento escolar"
-                  className="img-fluid rounded"
-                />
-              </div>
-              <div className="col-lg-6 o-que-e-necessario">
-                <BlocoTexto title="O que é necessário?">
-                  <div className="justify-content-lg-end justify-content-center">
-                    <b>Condições básicas do imóvel:</b> prédio de alvenaria, bem
-                    ventilado, que receba iluminação natural, banheiros com
-                    possibilidade de adaptação para fraldário/vasos sanitários infantis,
-                    cozinha ampla, com espaço para refeitório e despensa, espaço
-                    externo para instalação de playground e solário.
-                    <a
-                      href="http://portal.sme.prefeitura.sp.gov.br/Portals/1/Files/35746.pdf"
-                      download
-                    >
-                      {" "}
-                      Clique aqui
-                    </a>{" "}
-                    e veja todas as condições necessárias (link da Orientação
-                    Normativa Nº 01/2015).
-                  </div>
-                </BlocoTexto>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-100 cidade-precisa">
-          <div className="container">
-            <div className="row mt-5">
-              <div className="col-lg-6 col-sm-12 mb-lg-0">
-                <BlocoTexto title="Onde a cidade precisa de novas creches?">
-                  Todas as regiões da cidade podem ter imóveis cadastrados, a
-                  Secretaria Municipal de Educação analisará todas as
-                  solicitações. As regiões com maior necessidade estão
-                  destacadas.
-                  <br />
-                  <a
-                    href={listaDeSubdistritos}
-                    className="btn btn-primary"
-                    download
-                  >
-                    Mapa da Demanda
-                  </a>
-                </BlocoTexto>
-                <div className="mt-5">
-                  <BlocoTexto title="O que acontece depois do cadastro?">
-                    Você receberá um número de protocolo para identificação da
-                    solicitação. No prazo de 30 dias, um novo e-mail será enviado
-                    com o resultado da análise da área técnica quanto à
-                    possibilidade de vistoria no imóvel.
-                    <br />
-                    <div className="duvidas">
-                      Dúvidas? Entre em contato conosco através do e-mail:
-                      <strong> imoveis@sme.prefeitura.sp.gov.br</strong>
+    render() {
+        return (
+            <Fragment>
+                <div className="w-100 oferta-imoveis position-relative">
+                    <div className="container">
+                        <div className="conteudo">
+                            <div className="col-lg-8 col-sm-12 col-xl-6">
+                                <h1>
+                                    Contribua com a educação de nosso município e torne-se um fornecedor de uniformes escolares.
+                                </h1>
+                                <p>
+                                    Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para o credenciamento e faça a diferença na educação de nossos estudantes.
+                                </p>
+                                <button
+                                    className="btn btn-primary pl-5 pr-5"
+                                    onClick={this.irParaFormulario}
+                                >
+                                    Saiba mais
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                  </BlocoTexto>
                 </div>
-              </div>
-              <div className="col-lg-6 col-sm-12 d-flex justify-content-lg-end justify-content-center">
-                <img
-                  src={imgMapaSaoPaulo}
-                  alt="Mapa de São Paulo"
-                  className="img-fluid"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="w-100 sociedade-governo text-white text-center mt-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12 mb-4 mb-lg-0">
-                <h3 className="mb-4">
-                  Clique no botão abaixo e cadastre um imóvel
-                </h3>
-                <p className="mb-0">
-                  <button
-                    className="btn btn-primary pl-4 pr-4"
-                    onClick={this.irParaFormulario}
-                  >
-                    Cadastrar imóvel
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div id="conteudo" className="w-100 home">
+                    <div className="container">
+                        <div className="row mt-5">
+                            <div className="col-lg-6 mb-lg-0">
+                                <img
+                                    src={imgSalaAula}
+                                    alt="Acompanhamento no desenvolvimento escolar"
+                                    className="img-fluid rounded"
+                                />
+                            </div>
+                            <div className="col-lg-6">
+                                <BlocoTexto title="O que é necessário para ser fornecedor?">
+                                    <div className="justify-content-lg-end justify-content-center">
+                                        <p className='mb-1'>Conforme a Instrução Normativa nº xxx. o fornecedor deve:</p>
+                                        <ul className="lista-home ml-0 pl-0 mb-2">
+                                            <li>Ser pessoa Jurídica;</li>
+                                            <li>Possuir toda a documentação necessária conforme Art. 40 do Decreto
+                                                Municipal 44.279/2003;
+                                            </li>
+                                            <li>Comercializar os uniformes (peças têxteis, calçado ou ambos) na
+                                                padronização conforme Edital;
+                                            </li>
+                                            <li>Possuir stand de vendas ou loja física na cidade de São Paulo.</li>
+                                        </ul>
+                                        <p className="mb-2">Veja todas as condições necessárias abaixo:</p>
+                                        <p><a className="links-intrucoes" href=""> <strong>[Link da Instrução Normativa
+                                            Nº xxxx]</strong></a></p>
+                                        <p><a className="links-intrucoes" href=""><strong>[Link Dec. Municipal
+                                            44.279/2003]</strong></a></p>
+                                        <p><a className="links-intrucoes" href=""><strong>[Link Edital]</strong></a></p>
+                                    </div>
+                                </BlocoTexto>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        </Fragment>
+                <div className="w-100 cidade-precisa">
+                    <div className="container">
+                        <div className="row mt-5">
+                            <div className="col-lg-6 col-sm-12 mb-lg-0">
+                                <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
+                                    <p>São obrigatórios para os estudantes da rede municipal de ensino os seguintes
+                                        itens:</p>
+                                    <ul className="lista-home ml-0 pl-0">
+                                        <li>Camisa</li>
+                                        <li>Bermuda</li>
+                                        <li>Calça</li>
+                                        <li>Jaqueta</li>
+                                        <li>Blusa de moleton</li>
+                                        <li>Meia</li>
+                                        <li>Tênis</li>
+                                    </ul>
+                                </BlocoTexto>
 
-    );
-  }
+                            </div>
+                            <div className="col-lg-6 col-sm-12 d-flex justify-content-lg-end justify-content-center">
+                                <img
+                                    src={imgMAlunosComUniforme}
+                                    alt="Duas crianças com uniforme da rede municipal de ensino"
+                                    className="img-fluid"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="w-100 mb-5 mt-5">
+                    <div className="container">
+                        <BlocoTexto title="O que acontece depois de se cadastrar?">
+                            <p>Você receberá um número de protocolo para identificação da solicitação. Caso esteja
+                                dentro dos critérios, será notificado com o resultado da análise da área técnica quanto
+                                à possibilidade de fornecimento dos uniformes escolares.</p>
+                        </BlocoTexto>
+                    </div>
+                </div>
+
+                <div className="w-100 sociedade-governo text-white text-center mt-5">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 mb-4 mb-lg-0">
+                                <h3 className="mb-4">
+                                    Possui as condições necessárias? Então cadastre-se e se torne um fornecedor.
+                                </h3>
+                                <p className="mb-0">
+                                    <button
+                                        className="btn btn-primary pl-4 pr-4"
+                                        onClick={this.irParaFormulario}
+                                    >
+                                        Cadastrar fornecedor
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </Fragment>
+
+        )
+
+    }
 }

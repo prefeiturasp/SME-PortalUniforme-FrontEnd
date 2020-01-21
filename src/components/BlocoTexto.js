@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 export default class BlocoTexto extends Component {
   render() {
     return (
-      <div>
+      <Fragment>
         <h2 className="cor-azul mb-4">{this.props.title}</h2>
-        <p className="mb-0">{this.props.children}</p>
-      </div>
+        {this.props.children}
+      </Fragment>
     );
   }
 }

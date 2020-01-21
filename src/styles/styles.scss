@@ -73,7 +73,14 @@ body {
 // Home
 
 .oferta-imoveis {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 33.83%, rgba(255, 255, 255, 0.648) 64.77%, rgba(255, 255, 255, 0.324) 92.11%), url('../img/duas-criancas-de-uniforme-principal.png'), #C4C4C4;
+  background:
+          linear-gradient(90deg,
+                  rgba(255, 255, 255, 0.9) 0%,
+                  rgba(255, 255, 255, 0.9) 33.83%,
+                  rgba(255, 255, 255, 0.2) 64.77%,
+                  rgba(255, 255, 255, 0.324) 92.11%),
+          url('../img/duas-criancas-de-uniforme-principal.png'),
+          #C4C4C4;
   color: $corPretoPortal;
   height: 490px;
   background-repeat: no-repeat;

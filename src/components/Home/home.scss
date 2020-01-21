@@ -1,0 +1,17 @@
+.lista-home{
+  list-style-position: inside;
+}
+.lista-home li{
+  list-style-type: none;
+}
+.lista-home li::before {
+  content: "•";
+  color: #2F80ED;
+  font-size: 35px;
+  margin-right: 10px;
+  vertical-align: middle;
+  line-height: 1.18em;
+}
+.links-intrucoes{
+  color: #42474A;
+}
