@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import BasePage from "components/Base/BasePage";
+import React, { Component, Fragment } from "react";
 import BlocoTexto from "components/BlocoTexto";
 
 import listaDeSubdistritos from "files/lista_de_subdistritos.pdf";
@@ -13,13 +12,13 @@ export default class Home extends Component {
   }
 
   irParaFormulario() {
-    let path = `/form`;
+    let path = `/cadastro`;
     this.props.history.push(path);
   }
 
   render() {
     return (
-      <BasePage>
+        <Fragment>
         <div className="w-100 oferta-imoveis position-relative">
           <div className="container">
             <div className="conteudo">
@@ -140,7 +139,9 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-      </BasePage>
+
+        </Fragment>
+
     );
   }
 }
