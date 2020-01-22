@@ -55,24 +55,17 @@ export default class Home extends Component {
                             <div className="col-lg-6">
                                 <BlocoTexto title="O que é necessário para ser fornecedor?">
                                     <div className="justify-content-lg-end justify-content-center">
-                                        <p className='mb-1'>Conforme a Instrução Normativa nº xxx. o fornecedor
-                                            deve:</p>
+                                        <p className='mb-1'>Conforme a Instrução Normativa nº xxx. o fornecedor deve:</p>
                                         <ul className="lista-home ml-0 pl-0 mb-2">
                                             <li>Ser pessoa Jurídica;</li>
-                                            <li>Possuir toda a documentação necessária conforme Art. 40 do Decreto
-                                                Municipal 44.279/2003;
-                                            </li>
-                                            <li>Comercializar os uniformes (peças têxteis, calçado ou ambos) na
-                                                padronização conforme Edital;
-                                            </li>
+                                            <li>Possuir toda a documentação necessária conforme Art. 40 do Decreto Municipal 44.279/2003;</li>
+                                            <li>Comercializar os uniformes (peças têxteis, calçado ou ambos) na padronização conforme Edital;</li>
                                             <li>Possuir stand de vendas ou loja física na cidade de São Paulo.</li>
                                         </ul>
                                         <p className="mb-2">Veja todas as condições necessárias abaixo:</p>
-                                        <p><a className="links-intrucoes" href=""> <strong>[Link da Instrução Normativa
-                                            Nº xxxx]</strong></a></p>
-                                        <p><a className="links-intrucoes" href=""><strong>[Link Dec. Municipal
-                                            44.279/2003]</strong></a></p>
-                                        <p><a className="links-intrucoes" href=""><strong>[Link Edital]</strong></a></p>
+                                        <p><a className="links-intrucoes" href="javascript:;"> <strong>[Link da Instrução Normativa Nº xxxx] (Em Breve)</strong></a></p>
+                                        <p><a className="links-intrucoes" href="http://legislacao.prefeitura.sp.gov.br/leis/decreto-44279-de-24-de-dezembro-de-2003"><strong>[Link Dec. Municipal 44.279/2003]</strong></a></p>
+                                        <p><a className="links-intrucoes" href="javascript:;"><strong>[Link Edital] (Em Breve)</strong></a></p>
                                     </div>
                                 </BlocoTexto>
                             </div>
@@ -122,7 +115,7 @@ export default class Home extends Component {
 
                 <div className="w-100 sociedade-governo text-white text-center mt-5">
                     <div className="container">
-                        
+
                         <div className="col-lg-12 mb-4 mb-lg-0">
                             <h3 className="mb-4">
                                 Possui as condições necessárias? Então cadastre-se e se torne um fornecedor.
