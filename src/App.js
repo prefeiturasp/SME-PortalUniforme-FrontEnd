@@ -12,7 +12,7 @@ import ReactGA from "react-ga";
 ReactGA.initialize("UA-153279384-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-export default class App extends Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

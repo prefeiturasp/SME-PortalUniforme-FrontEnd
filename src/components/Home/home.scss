@@ -1,0 +1,26 @@
+@import "../../styles/variaveis";
+$azul_escuro: #2F80ED;
+$cinza_escuro: #42474A;
+
+
+.lista-home{
+  list-style-position: inside;
+
+  li{
+    list-style-type: none;
+  }
+
+  li:before{
+    content: "•";
+    color: $corAzulPortal;
+    font-size: 35px;
+    margin-right: 10px;
+    vertical-align: middle;
+    line-height: 1.18em;
+  }
+
+}
+
+.links-intrucoes{
+  color: $corCinzaRodape;
+}

@@ -6,8 +6,23 @@ import { CadastroEmpresa } from "components/CadastroEmpresa";
 export default props => (
     <div id="main">
         <Switch>
-            <Route path="/" exact component = {Home}/>
-            <Route path="/cadastro" component ={CadastroEmpresa}/>
+            <Route
+                path="/"
+                exact
+                render={props => (
+                    <Home
+                        {...props}
+                    />
+                )}
+            />
+            <Route
+                path="/cadastro"
+                render={props => (
+                    <CadastroImovel
+                        {...props}
+                    />
+                )}
+            />
         </Switch>
 
     </div>
