@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import BlocoTexto from "components/BlocoTexto";
- import imgSalaAula from "img/sala-de-aula.png";
+import imgSalaAula from "img/sala-de-aula.png";
 import imgMAlunosComUniforme from "img/duas-criancas-de-uniforme.png";
 
 import './home.scss'
@@ -24,10 +24,12 @@ export default class Home extends Component {
                         <div className="conteudo">
                             <div className="col-lg-8 col-sm-12 col-xl-6">
                                 <h1>
-                                    Contribua com a educação de nosso município e torne-se um fornecedor de uniformes escolares.
+                                    Contribua com a educação de nosso município e torne-se um fornecedor de uniformes
+                                    escolares.
                                 </h1>
                                 <p>
-                                    Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para o credenciamento e faça a diferença na educação de nossos estudantes.
+                                    Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para
+                                    o credenciamento e faça a diferença na educação de nossos estudantes.
                                 </p>
                                 <button
                                     className="btn btn-primary pl-5 pr-5"
@@ -53,7 +55,8 @@ export default class Home extends Component {
                             <div className="col-lg-6">
                                 <BlocoTexto title="O que é necessário para ser fornecedor?">
                                     <div className="justify-content-lg-end justify-content-center">
-                                        <p className='mb-1'>Conforme a Instrução Normativa nº xxx. o fornecedor deve:</p>
+                                        <p className='mb-1'>Conforme a Instrução Normativa nº xxx. o fornecedor
+                                            deve:</p>
                                         <ul className="lista-home ml-0 pl-0 mb-2">
                                             <li>Ser pessoa Jurídica;</li>
                                             <li>Possuir toda a documentação necessária conforme Art. 40 do Decreto
@@ -85,7 +88,7 @@ export default class Home extends Component {
                                     <p>São obrigatórios para os estudantes da rede municipal de ensino os seguintes
                                         itens:</p>
                                     <ul className="lista-home ml-0 pl-0">
-                                        <li>Camisa</li>
+                                        <li>Camiseta</li>
                                         <li>Bermuda</li>
                                         <li>Calça</li>
                                         <li>Jaqueta</li>
@@ -119,21 +122,21 @@ export default class Home extends Component {
 
                 <div className="w-100 sociedade-governo text-white text-center mt-5">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12 mb-4 mb-lg-0">
-                                <h3 className="mb-4">
-                                    Possui as condições necessárias? Então cadastre-se e se torne um fornecedor.
-                                </h3>
-                                <p className="mb-0">
-                                    <button
-                                        className="btn btn-primary pl-4 pr-4"
-                                        onClick={this.irParaFormulario}
-                                    >
-                                        Cadastrar fornecedor
-                                    </button>
-                                </p>
-                            </div>
+                        
+                        <div className="col-lg-12 mb-4 mb-lg-0">
+                            <h3 className="mb-4">
+                                Possui as condições necessárias? Então cadastre-se e se torne um fornecedor.
+                            </h3>
+                            <p className="mb-0">
+                                <button
+                                    className="btn btn-primary pl-4 pr-4"
+                                    onClick={this.irParaFormulario}
+                                >
+                                    Cadastrar fornecedor
+                                </button>
+                            </p>
                         </div>
+
                     </div>
                 </div>
 

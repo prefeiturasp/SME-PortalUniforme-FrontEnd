@@ -1,17 +1,26 @@
+@import "../../styles/variaveis";
+$azul_escuro: #2F80ED;
+$cinza_escuro: #42474A;
+
+
 .lista-home{
   list-style-position: inside;
+
+  li{
+    list-style-type: none;
+  }
+
+  li:before{
+    content: "•";
+    color: $corAzulPortal;
+    font-size: 35px;
+    margin-right: 10px;
+    vertical-align: middle;
+    line-height: 1.18em;
+  }
+
 }
-.lista-home li{
-  list-style-type: none;
-}
-.lista-home li::before {
-  content: "•";
-  color: #2F80ED;
-  font-size: 35px;
-  margin-right: 10px;
-  vertical-align: middle;
-  line-height: 1.18em;
-}
+
 .links-intrucoes{
-  color: #42474A;
+  color: $corCinzaRodape;
 }
