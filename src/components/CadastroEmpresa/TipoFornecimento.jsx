@@ -6,42 +6,12 @@ import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import { fieldMoney } from "helpers/textMask";
 
 const TipoFornecimento = props => {
-  const produtos = [
-    {
-      id: 1,
-      nome: "Calça"
-    },
-    {
-      id: 2,
-      nome: "Camisa"
-    },
-    {
-      id: 3,
-      nome: "Calçado"
-    },
-    {
-      id: 4,
-      nome: "Bermuda"
-    },
-    {
-      id: 5,
-      nome: "Moletom"
-    }
-  ];
-
   return (
     <Fragment>
-      {produtos.map((value, key) => {
-        return (
-          <ProdutoValor
-            key={key}
-            chave={value.id}
-            label={value.nome}
-            nameProduto={value.id}
-            nameValor={value.id}
-          />
-        );
-      })}
+      <ProdutoValor chave={1} label="Bermuda" />
+      <ProdutoValor chave={2} label="Calça" />
+      <ProdutoValor chave={3} label="Camisa" />
+      <ProdutoValor chave={4} label="Moletom" />
     </Fragment>
   );
 };
@@ -51,23 +21,23 @@ export default TipoFornecimento;
 export const ProdutoValor = props => {
   return (
     <Fragment>
-      <Row className="py-2">
-        <Col lg={6} xl={6}>
+      <Row>
+        <Col lg={5} xl={5}>
           <Field
+            {...props}
             component={CheckInputLabel}
+            type="checkbox"
             label={props.label}
-            name={props.nameProduto}
-            index={props.chave}
+            name={`produtos_${props.chave}`}
           />
         </Col>
-        <Col lg={6} xl={6}>
+        <Col lg={7} xl={7}>
           <Field
             {...fieldMoney}
             component={InputLabelInLine}
-            index={props.chave}
             placeholder="R$ 10,00"
             label="Valor"
-            name={props.nameValor}
+            name={`valor_${props.chave}`}
             style={{ marginTop: "-10px" }}
           />
         </Col>

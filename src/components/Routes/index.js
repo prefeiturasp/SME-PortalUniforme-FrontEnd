@@ -18,7 +18,7 @@ export default props => (
             <Route
                 path="/cadastro"
                 render={props => (
-                    <CadastroImovel
+                    <CadastroEmpresa
                         {...props}
                     />
                 )}

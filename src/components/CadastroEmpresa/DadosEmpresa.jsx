@@ -9,7 +9,6 @@ import axios from "axios";
 const DadosEmpresa = props => {
   
   const buscaCep = async cep => {
-    console.log(cep)
     const url = `http://viacep.com.br/ws/${cep}/json/`;
     const resultado = await axios.get(url);
     if(resultado.statusText === "OK"){
@@ -23,7 +22,7 @@ const DadosEmpresa = props => {
         customChange={fieldCNPJ}
         component={InputText}
         label="CNPJ"
-        name="empresa.cnpj"
+        name="cnpj"
         required
         validate={required}
         autoFocus
@@ -33,7 +32,7 @@ const DadosEmpresa = props => {
       <Field
         component={InputText}
         label="Razão Social"
-        name="empresa.razao_social"
+        name="razao_social"
         required
         validate={required}
         placeholder="Digite a Razão Social"
@@ -44,7 +43,7 @@ const DadosEmpresa = props => {
             {...fieldCep}
             component={InputText}
             label="CEP"
-            name="empresa.cep"
+            name="end_cep"
             required
             validate={required}
             onBlur={val => buscaCep(val.target.value)}
@@ -54,7 +53,7 @@ const DadosEmpresa = props => {
           <Field
             component={InputText}
             label="UF"
-            name="empresa.uf"
+            name="end_uf"
             required
             validate={required}
             maxLength={3}
@@ -65,7 +64,7 @@ const DadosEmpresa = props => {
       <Field
         component={InputText}
         label="Endereço"
-        name="empresa.endereco"
+        name="end_logradouro"
         required
         validate={required}
         placeholder="Linha única para logradouro, número e complemento"
@@ -74,7 +73,7 @@ const DadosEmpresa = props => {
       <Field
         component={InputText}
         label="Cidade"
-        name="empresa.cidade"
+        name="end_cidade"
         required
         validate={required}
         placeholder="Digite a cidade da empresa"
@@ -82,7 +81,7 @@ const DadosEmpresa = props => {
       <Field
         component={InputText}
         label="Nome Responsável"
-        name="responsavel.nome"
+        name="responsavel"
         required
         validate={required}
         placeholder="Digite o nome do resposável da empresa"
@@ -91,7 +90,7 @@ const DadosEmpresa = props => {
         {...fieldTel}
         component={InputText}
         label="Telefone"
-        name="responsavel.telefone"
+        name="telefone"
         required
         validate={required}
         placeholder="Digite o nome do resposável da empresa"
@@ -99,7 +98,7 @@ const DadosEmpresa = props => {
       <Field
         component={InputText}
         label="E-mail"
-        name="responsavel.email"
+        name="email"
         required
         validate={required}
         placeholder="Digite o e-mail do responsável"

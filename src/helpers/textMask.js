@@ -33,7 +33,7 @@ export const fieldCep = createTextMask({
 });
 
 export const fieldTel = createTextMask({
-  pattern: "(99) 99999-9999",
+  pattern: "(99) 9999-9999",
   allowEmpty: false,
   guide: true,
   stripMask: false

@@ -1,29 +1,37 @@
 import React, { Fragment, useState, useMemo, useEffect } from "react";
-import { Row, Col, Card, Button } from "react-bootstrap";
-// import BasePage from "components/Base/BasePage";
+import { Row, Col, Card, Button, Alert } from "react-bootstrap";
 import { Form, reduxForm } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TipoFornecimento from "./TipoFornecimento";
 import BandeiraAnexo from "./BandeiraAnexo";
 import LojaFisica from "./LojaFisica";
-import { validaPayload } from "./helper";
-import { Imovel } from "../../services/Imovel.service";
+import { validaOfertaUniforme, parsePayload } from "./helper";
+import { cadastrarEmpresa } from "services/uniformes.service";
 
 export let CadastroEmpresa = props => {
   const initialValue = {
     endereco: "",
+    numero: "",
+    complemento: "",
     telefone: "",
     cidade: "",
     uf: "",
     bairro: "",
     cep: ""
   };
-  const [loja, setLoja] = useState([initialValue]);
 
+  const [loja, setLoja] = useState([initialValue]);
+  const [alerta, setAlerta] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [mensagem, setMensagem] = useState("");
+
+  const limparListaLojas = () => {
+    setLoja([initialValue]);
+  };
   useEffect(() => {}, [loja]);
 
-  const addLoja = index => {
-    loja.push({ endereco: "", telefone: "" });
+  const addLoja = () => {
+    loja.push(initialValue);
     setLoja([...loja]);
   };
 
@@ -38,17 +46,64 @@ export let CadastroEmpresa = props => {
   };
 
   const onUpdateLoja = (valor, chave) => {
-    // validaPayload(valor)
     loja[chave] = valor;
     setLoja([...loja]);
   };
 
   const contadorLoja = useMemo(() => loja.length, [loja]);
 
+  const showMessage = mensagem => {
+    setMensagem(mensagem);
+    setAlerta(true);
+    setTimeout(() => {
+      setAlerta(false);
+      setMensagem("");
+    }, 10000);
+  };
+
   const onSubmit = async values => {
-    console.log(loja);
-    console.log(values);
-    // const result = await Imovel(values);
+    let payload = parsePayload(values);
+    payload["lojas"] = loja;
+
+    validaMeiosRecebimentos(payload);
+    validaUniformes(payload);
+    const response = await cadastrarEmpresa(payload);
+    if (response.status === 201) {
+      props.reset();
+      limparListaLojas();
+      showSucess();
+    }
+  };
+
+  const showSucess = () => {
+    setSucesso(true);
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.location.reload()
+    }, 15000);
+  };
+
+  const validaUniformes = payload => {
+    if (payload.ofertas_de_uniformes.length > 0) {
+      if (validaOfertaUniforme(payload.ofertas_de_uniformes)) {
+        window.scrollTo(0, 0);
+        showMessage(
+          "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
+        );
+      }
+    } else {
+      window.scrollTo(0, 0);
+      showMessage(
+        "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
+      );
+    }
+  };
+
+  const validaMeiosRecebimentos = payload => {
+    if (payload.meios_de_recebimento.length === 0) {
+      window.scrollTo(0, 0);
+      showMessage("Por favor, selecione um Meio de Recebimento");
+    }
   };
 
   const { handleSubmit, pristine, submitting, reset } = props;
@@ -57,6 +112,22 @@ export let CadastroEmpresa = props => {
     <Fragment>
       <div id="conteudo" className="w-100 desenvolvimento-escolar">
         <div className="container pt-5 pb-5">
+          {alerta ? (
+            <Alert key={1} variant={"danger"}>
+              <div className="text-weight-bold text-center">
+                <strong>{mensagem}</strong>
+              </div>
+            </Alert>
+          ) : null}
+
+          {sucesso ? (
+            <Alert key={1} variant={"success"}>
+              <div className="text-weight-bold text-center">
+                <strong>Cadastro realizado com sucesso.</strong>
+              </div>
+            </Alert>
+          ) : null}
+
           <Row>
             <Col>
               <h1>Cadastro de Empresa</h1>
@@ -66,66 +137,75 @@ export let CadastroEmpresa = props => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row className="mb-2">
               <Col lg={6} xl={6}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>Dados da Empresa</Card.Title>
-                    <DadosEmpresa />
-                  </Card.Body>
-                </Card>
+                <Row>
+                  <Card className="w-100 mr-2">
+                    <Card.Body>
+                      <Card.Title>Dados da Empresa</Card.Title>
+                      <DadosEmpresa />
+                    </Card.Body>
+                  </Card>
+                </Row>
+                <Row>
+                  <Card className="w-100 mr-2 mt-2">
+                    <Card.Body>
+                      <Card.Title>Loja(s) Física(s)</Card.Title>
+                      {loja.map((value, key) => (
+                        <>
+                          <LojaFisica
+                            chave={key}
+                            endereco={value.endereco}
+                            telefone={value.telefone}
+                            onUpdate={onUpdateLoja}
+                          />
+                          <Button
+                            disabled={contadorLoja <= 1 ? true : false}
+                            variant="outline-danger"
+                            block
+                            onClick={() => delLoja(key)}
+                            className="mb-1"
+                          >
+                            <i className="fas fa-trash" />
+                          </Button>
+                        </>
+                      ))}
+                      <Button block onClick={() => addLoja(contadorLoja)}>
+                        <i className="fas fa-plus-circle" /> Novo Endereço
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Row>
               </Col>
               <Col lg={6} xl={6}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>Tipo de Fornecimento</Card.Title>
-                    <TipoFornecimento />
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <Row className="mb-2">
-              <Col lg={6} xl={6}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>Loja(s) Física(s)</Card.Title>
-                    {loja.map((value, key) => (
-                      <>
-                        <LojaFisica
-                          chave={key}
-                          endereco={value.endereco}
-                          telefone={value.telefone}
-                          onUpdate={onUpdateLoja}
-                        />
-                        <Button
-                          disabled={contadorLoja <= 1 ? true : false}
-                          variant="outline-danger"
-                          block
-                          onClick={() => delLoja(key)}
-                          className="mb-1"
-                        >
-                          <i className="fas fa-trash" />
-                        </Button>
-                      </>
-                    ))}
-                    <Button block onClick={() => addLoja(contadorLoja)}>
-                      <i className="fas fa-plus-circle" /> Novo Endereço
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col lg={6} xl={6}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>
-                      Meios de Recebimentos / Documentos Anexos
-                    </Card.Title>
-                    <BandeiraAnexo />
-                  </Card.Body>
-                </Card>
+                <Row>
+                  <Card className="w-100 ml-2">
+                    <Card.Body>
+                      <Card.Title>Tipo de Fornecimento</Card.Title>
+                      <TipoFornecimento />
+                    </Card.Body>
+                  </Card>
+                </Row>
+                <Row>
+                  <Card className="w-100 mt-2 ml-2">
+                    <Card.Body>
+                      <Card.Title>
+                        Meios de Recebimentos / Documentos Anexos
+                      </Card.Title>
+                      <BandeiraAnexo />
+                    </Card.Body>
+                  </Card>
+                </Row>
               </Col>
             </Row>
             <Row>
               <Col lg={6} xl={6} className="d-flex justify-content-start mt-4">
-                <Button onClick={reset} type="reset" variant="outline-danger">
+                <Button
+                  onClick={() => {
+                    reset();
+                    limparListaLojas();
+                  }}
+                  type="reset"
+                  variant="outline-danger"
+                >
                   Limpar
                 </Button>
               </Col>

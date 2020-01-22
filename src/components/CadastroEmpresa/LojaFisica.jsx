@@ -1,7 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { AutoComplete } from "components/Input/AutoComplete";
-import InputMask from "react-input-mask";
-import { Form, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   InputLabelRequired,
   InputLabel
@@ -23,15 +21,21 @@ const LojaFisica = props => {
   useEffect(() => {
     setTelefone(props.telefone);
     setEndereco(props.endereco);
+    setCep(props.cep);
+    setBairro(props.bairro);
+    setCidade(props.cidade);
+    setUf(props.uf);
+    setNumero(props.numero);
+    setComplemento(props.complemento);
   }, [props]);
 
   const buscaCep = async value => {
     if (value) {
-      setCep(value);
       let cep = value.replace("-", "").replace("_", "");
       if (cep.length === 8) {
         const data = await cepServico(cep);
         if (data !== null) {
+          data["cep"] = value;
           const payload = populaPayload(data);
           setPayload({ ...payload });
           props.onUpdate(payload, props.chave);
@@ -44,7 +48,7 @@ const LojaFisica = props => {
     const response = await axios.get(
       `http://republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`
     );
-    if (response.statusText == "OK") {
+    if (response.statusText === "OK") {
       const data = response.data;
       if (data.resultado === "1") {
         return data;
@@ -54,16 +58,19 @@ const LojaFisica = props => {
   };
 
   const populaPayload = data => {
+    
     setEndereco(`${data.tipo_logradouro} ${data.logradouro}`);
     setBairro(data.bairro);
     setCidade(data.cidade);
     setUf(data.uf);
+    setCep(data.cep);
+
     return {
       endereco: `${data.tipo_logradouro} ${data.logradouro}`,
       cidade: data.cidade,
       uf: data.uf,
       bairro: data.bairro,
-      cep: cep
+      cep: data.cep
     };
   };
 

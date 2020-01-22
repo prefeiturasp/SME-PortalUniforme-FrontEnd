@@ -1,39 +1,29 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import { Field } from "redux-form";
 import { FileUpload } from "components/Input/FileUpload";
 import { required } from "helpers/fieldValidators";
+import { getMeiosRecebimento } from "services/bandeiras.service";
 
 const BandeiraAnexo = props => {
-  const badeiras = [
-    {
-      id: 1,
-      nome: "Visa"
-    },
-    {
-      id: 2,
-      nome: "Mastercard"
-    },
-    {
-      id: 3,
-      nome: "American Express"
-    }
-  ];
+  const [bandeiras, setbandeiras] = useState([]);
+
+  useEffect(() => {
+    const carregaBandeiras = async () => {
+      const bandeiras = await getMeiosRecebimento();
+      setbandeiras(bandeiras);
+    };
+    carregaBandeiras();
+  }, []);
+
   return (
     <Fragment>
       <Row className="py-2">
         <Col lg={6} xl={6}>
-          {badeiras.map((value, key) => {
-            return (
-              <Field
-                component={CheckInputLabel}
-                label={value.nome}
-                name={value.id}
-                index={key}
-              />
-            );
-          })}
+              <CheckMeioPagamento label="American Express" chave={1} />
+              <CheckMeioPagamento label="Mastercard" chave={2} />
+              <CheckMeioPagamento label="Visa" chave={3} />
         </Col>
       </Row>
       <hr />
@@ -41,7 +31,7 @@ const BandeiraAnexo = props => {
         <Col>
           <Field
             component={FileUpload}
-            name="anexos_loja"
+            name="arquivos_anexos"
             id="anexos_loja"
             accept="file/pdf"
             className="form-control-file"
@@ -56,3 +46,16 @@ const BandeiraAnexo = props => {
 };
 
 export default BandeiraAnexo;
+
+const CheckMeioPagamento = props => {
+  return (
+    <Fragment>
+      <Field
+        component={CheckInputLabel}
+        label={props.label}
+        name={`bandeira_${props.chave}`}
+        type="checkbox"
+      />
+    </Fragment>
+  );
+};
