@@ -8,14 +8,6 @@ import axios from "axios";
 
 const DadosEmpresa = props => {
   
-  const buscaCep = async cep => {
-    const url = `http://viacep.com.br/ws/${cep}/json/`;
-    const resultado = await axios.get(url);
-    if(resultado.statusText === "OK"){
-      console.log(resultado);
-    }
-  };
-
   return (
     <Fragment>
       <Field
@@ -46,7 +38,6 @@ const DadosEmpresa = props => {
             name="end_cep"
             required
             validate={required}
-            onBlur={val => buscaCep(val.target.value)}
           />
         </Col>
         <Col lg={6} xl={6}>
