@@ -9,12 +9,6 @@ import {Proprietario} from "./Proprietario";
 import {Imovel} from "./Imovel";
 
 // Style PrimeReact
-import "primereact/resources/themes/nova-light/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
-import "../../styles/styles.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
 import {ModalConfirmacaoCadastro} from "./components/ModalConfirmacaoCadastro";
 import {toastError} from "components/Toast/dialogs";
 import {getError} from "helpers/utils";
