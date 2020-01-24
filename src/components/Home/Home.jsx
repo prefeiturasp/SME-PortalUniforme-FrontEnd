@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import BlocoTexto from "components/BlocoTexto";
-import imgSalaAula from "img/fotos-mobiliarios-novos-encaminhados-pela-sme.jpg";
+import imgSalaAula from "img/fotos-mobiliarios-novos-encaminhados-pela-sme-web.jpg";
 import imgMAlunosComUniforme from "img/duas-criancas-de-uniforme.png";
 
 import './home.scss'
@@ -31,12 +31,13 @@ export default class Home extends Component {
                                     Leia o regulamento, veja se sua loja está de acordo com os critérios nessários para
                                     o credenciamento e faça a diferença na educação de nossos estudantes.
                                 </p>
-                                <button
+                                {/*<button
                                     className="btn btn-primary pl-5 pr-5"
                                     onClick={this.irParaFormulario}
                                 >
                                     Saiba mais
-                                </button>
+                                </button>*/}
+                                <a className="btn btn-primary pl-5 pr-5" href="#conteudo">Saiba Mais</a>
                             </div>
                         </div>
                     </div>
