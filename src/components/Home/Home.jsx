@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import BlocoTexto from "components/BlocoTexto";
-import imgSalaAula from "img/fotos-mobiliarios-novos-encaminhados-pela-sme.jpg";
+import imgSalaAula from "img/fotos-mobiliarios-novos-encaminhados-pela-sme-tratada.jpg";
 import imgMAlunosComUniforme from "img/duas-criancas-de-uniforme.png";
 
 import './home.scss'
