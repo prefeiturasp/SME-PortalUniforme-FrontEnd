@@ -11,7 +11,7 @@ export async function readerFile(file) {
       const re = /(?:\.([^.]+))?$/;
       const base64 = reader.result.split("base64,")[1];
       return resolve({
-        planta: `data:${file.type}/${re.exec(file.name)[1]};base64,${base64}`
+        arquivo: `data:${file.type}/${re.exec(file.name)[1]};base64,${base64}`
       });
     };
     reader.readAsDataURL(file);
