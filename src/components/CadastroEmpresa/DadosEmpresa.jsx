@@ -1,13 +1,11 @@
-import React, { Fragment } from "react";
-import { InputText } from "components/Input/InputText";
-import { required } from "helpers/fieldValidators";
-import { Field } from "redux-form";
-import { fieldCNPJ, fieldCep, fieldTel } from "helpers/textMask";
-import { Row, Col } from "react-bootstrap";
-import axios from "axios";
+import React, { Fragment } from 'react'
+import { InputText } from 'components/Input/InputText'
+import { required } from 'helpers/fieldValidators'
+import { Field } from 'redux-form'
+import { fieldCNPJ, fieldCep, fieldTel } from 'helpers/textMask'
+import { Row, Col } from 'react-bootstrap'
 
 const DadosEmpresa = props => {
-  
   return (
     <Fragment>
       <Field
@@ -16,7 +14,7 @@ const DadosEmpresa = props => {
         label="CNPJ"
         name="cnpj"
         required
-        validate={required}
+        validate={[required]}
         autoFocus
         maxLength="18"
         placeholder="Digite seu CNPJ"
@@ -95,7 +93,7 @@ const DadosEmpresa = props => {
         placeholder="Digite o e-mail do responsável"
       />
     </Fragment>
-  );
-};
+  )
+}
 
-export default DadosEmpresa;
+export default DadosEmpresa
