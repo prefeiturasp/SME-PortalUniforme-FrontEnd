@@ -179,6 +179,7 @@ const LojaFisica = props => {
             placeholder="SP"
             className="form-control mb-2"
             required
+            maxLength={2}
             onChange={e => {
               const valor = e.target.value;
               setUf(valor);

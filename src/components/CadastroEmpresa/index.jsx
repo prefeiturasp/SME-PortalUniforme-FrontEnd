@@ -137,7 +137,7 @@ export let CadastroEmpresa = props => {
 
               window.scrollTo(0, 0)
               showMessage(
-                'Houve um erro ao efetuar a sua iscrição. Tente novamente mais tarde.'
+                'Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde.'
               )
             }
           } catch (error) {
@@ -145,7 +145,7 @@ export let CadastroEmpresa = props => {
 
             window.scrollTo(0, 0)
             showMessage(
-              'Houve um erro ao efetuar a sua iscrição. Tente novamente mais tarde.'
+              'Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde.'
             )
           }
         }

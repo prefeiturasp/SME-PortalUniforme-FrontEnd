@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { InputText } from 'components/Input/InputText'
-import { required } from 'helpers/fieldValidators'
+import { required, validaUF } from 'helpers/fieldValidators'
 import { Field } from 'redux-form'
 import { fieldCNPJ, fieldCep, fieldTel } from 'helpers/textMask'
 import { Row, Col } from 'react-bootstrap'
@@ -44,8 +44,8 @@ const DadosEmpresa = props => {
             label="UF"
             name="end_uf"
             required
-            validate={required}
-            maxLength={3}
+            validate={[required, validaUF]}
+            maxLength={2}
             placeholder="UF"
           />
         </Col>
