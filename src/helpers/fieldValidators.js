@@ -24,34 +24,34 @@ export const phoneNumber = value =>
     ? "Invalid phone number, must be 10 digits"
     : undefined;
 
-var UF = [
-  "AC",
-  "AL",
-  "AP",
-  "BA",
-  "CE",
-  "DF",
-  "ES",
-  "GO",
-  "MA",
-  "MG",
-  "MS",
-  "MT",
-  "PA",
-  "PB",
-  "PE",
-  "PI",
-  "PR",
-  "RJ",
-  "RN",
-  "RO",
-  "RR",
-  "RS",
-  "SC",
-  "SE",
-  "SP",
-  "TO"
-];
 export const validaUF = value => {
-  return value === 'SP' ? undefined : "UF Invalido";
+  const UF = [
+    "AC",
+    "AL",
+    "AP",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MG",
+    "MS",
+    "MT",
+    "PA",
+    "PB",
+    "PE",
+    "PI",
+    "PR",
+    "RJ",
+    "RN",
+    "RO",
+    "RR",
+    "RS",
+    "SC",
+    "SE",
+    "SP",
+    "TO"
+  ];
+  return value in UF ? undefined : "UF Invalido";
 };
