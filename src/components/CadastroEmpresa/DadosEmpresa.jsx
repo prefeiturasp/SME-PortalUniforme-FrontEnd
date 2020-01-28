@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { InputText } from 'components/Input/InputText'
-import { required, validaUF } from 'helpers/fieldValidators'
+import { required, validaUF, validaCNPJ } from 'helpers/fieldValidators'
 import { Field } from 'redux-form'
 import { fieldCNPJ, fieldCep, fieldTel } from 'helpers/textMask'
 import { Row, Col } from 'react-bootstrap'
@@ -14,7 +14,7 @@ const DadosEmpresa = props => {
         label="CNPJ"
         name="cnpj"
         required
-        validate={[required]}
+        validate={[required, validaCNPJ]}
         autoFocus
         maxLength="18"
         placeholder="Digite seu CNPJ"

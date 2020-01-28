@@ -163,8 +163,9 @@ const LojaFisica = props => {
             placeholder="São Paulo"
             className="form-control mb-2"
             required
+            disabled
             onChange={e => {
-              const valor = e.target.value;
+              const valor = "São Paulo";
               setCidade(valor);
               setPayload({ ...payload, cidade: valor });
               props.onUpdate({ ...payload, cidade: valor }, props.chave);
@@ -180,8 +181,9 @@ const LojaFisica = props => {
             className="form-control mb-2"
             required
             maxLength={2}
+            disabled
             onChange={e => {
-              const valor = e.target.value;
+              const valor = "SP";
               setUf(valor);
               setPayload({ ...payload, uf: valor });
               props.onUpdate({ ...payload, uf: valor }, props.chave);
@@ -196,7 +198,7 @@ const LojaFisica = props => {
             mask="(99) 9999-9999"
             label="Telefone"
             value={telefone}
-            placeholder="(11) 5555-6666"
+            placeholder="(xx) xxxxx-xxxx"
             className="form-control mb-2"
             required
             key={props.chave}
