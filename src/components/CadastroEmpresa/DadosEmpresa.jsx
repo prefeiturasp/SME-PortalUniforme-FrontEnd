@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { InputText } from 'components/Input/InputText'
 import { required, validaUF, validaCNPJ } from 'helpers/fieldValidators'
 import { Field } from 'redux-form'
-import { fieldCNPJ, fieldCep, fieldTel } from 'helpers/textMask'
+import { fieldCNPJ, fieldCep, fieldCel } from 'helpers/textMask'
 import { Row, Col } from 'react-bootstrap'
 
 const DadosEmpresa = props => {
@@ -76,7 +76,7 @@ const DadosEmpresa = props => {
         placeholder="Digite o nome do resposável da empresa"
       />
       <Field
-        {...fieldTel}
+        {...fieldCel}
         component={InputText}
         label="Telefone"
         name="telefone"
