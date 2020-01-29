@@ -17,6 +17,7 @@ const LojaFisica = props => {
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
   const [payload, setPayload] = useState({});
+  const [erro, setErro] = useState(false);
 
   useEffect(() => {
     setTelefone(props.telefone);
@@ -36,9 +37,13 @@ const LojaFisica = props => {
         const data = await cepServico(cep);
         if (data !== null) {
           data["cep"] = value;
-          const payload = populaPayload(data);
-          setPayload({ ...payload });
-          props.onUpdate(payload, props.chave);
+          if (data.cidade !== "São Paulo" && data.uf !== "SP") {
+            setErro(true);
+          } else {
+            const payload = populaPayload(data);
+            setPayload({ ...payload });
+            props.onUpdate(payload, props.chave);
+          }
         }
       }
     }
@@ -58,7 +63,6 @@ const LojaFisica = props => {
   };
 
   const populaPayload = data => {
-    
     setEndereco(`${data.tipo_logradouro} ${data.logradouro}`);
     setBairro(data.bairro);
     setCidade(data.cidade);
@@ -82,8 +86,10 @@ const LojaFisica = props => {
             autocomplete="off"
             mask="99999-999"
             label="CEP"
-            placeholder="00100-000"
-            className="form-control mb-2"
+            placeholder="xxxxx-xxx"
+            className={
+              erro ? "form-control mb-2 is-invalid" : "form-control mb-2"
+            }
             value={cep}
             key={props.chave}
             onBlur={e => buscaCep(e.target.value)}
@@ -93,13 +99,15 @@ const LojaFisica = props => {
               setPayload({ ...payload, cep: valor });
               props.onUpdate(payload, props.chave);
             }}
+            erro={erro}
+            mensagem="O CEP deve ser de São Paulo"
             required
           />
+          <div class="valid-feedback">Deve ser São Paulo</div>
         </Col>
         <Col lg={6} xl={6}>
           <InputLabelRequired
             value={bairro}
-            placeholder="Centro"
             label="Bairro"
             onChange={e => {
               const valor = e.target.value;
@@ -130,7 +138,6 @@ const LojaFisica = props => {
         <Col lg={6} xl={6}>
           <InputLabelRequired
             value={numero}
-            placeholder="1000"
             label="Número"
             onChange={e => {
               const valor = e.target.value;
@@ -143,7 +150,6 @@ const LojaFisica = props => {
         <Col lg={6} xl={6}>
           <InputLabel
             value={complemento}
-            placeholder="5° Andar Bloco B"
             label="Complemento"
             onChange={e => {
               const valor = e.target.value;
