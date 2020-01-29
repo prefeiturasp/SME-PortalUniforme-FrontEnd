@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { InputText } from 'components/Input/InputText'
-import { required, validaUF, validaCNPJ } from 'helpers/fieldValidators'
+import { required, validaUF, validaCNPJ, validaTelefone, validaCEP } from 'helpers/fieldValidators'
 import { Field } from 'redux-form'
 import { fieldCNPJ, fieldCep, fieldCel } from 'helpers/textMask'
 import { Row, Col } from 'react-bootstrap'
@@ -35,7 +35,7 @@ const DadosEmpresa = props => {
             label="CEP"
             name="end_cep"
             required
-            validate={required}
+            validate={[required, validaCEP]}
           />
         </Col>
         <Col lg={6} xl={6}>
@@ -81,7 +81,7 @@ const DadosEmpresa = props => {
         label="Telefone"
         name="telefone"
         required
-        validate={required}
+        validate={[required, validaTelefone]}
         placeholder="Digite o nome do resposável da empresa"
       />
       <Field

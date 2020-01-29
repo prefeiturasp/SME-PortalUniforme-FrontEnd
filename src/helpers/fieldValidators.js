@@ -1,4 +1,4 @@
-import { validate } from 'cnpj';
+import { validate } from "cnpj";
 
 export const required = value =>
   value !== undefined ? undefined : "Campo obrigatório";
@@ -55,8 +55,27 @@ export const validaUF = value => {
     "SP",
     "TO"
   ];
-  return UF.find(UF => UF === value) ? undefined : "UF Invalido. Necessário Letra Maiuscula.";
+  return UF.find(UF => UF === value)
+    ? undefined
+    : "UF Invalido. Necessário Letra Maiuscula.";
 };
 
 export const validaCNPJ = value =>
   validate(value) ? undefined : "Necessário um CNPJ Valido!";
+
+export const validaTelefone = value => {
+  let numero = value
+    .replace("-", "")
+    .replace("(", "")
+    .replace(")", "")
+    .replace(" ", "")
+    .replace(/_/g, "");
+  return numero.length >= 10 ? undefined : "Necessário um telefone valido!";
+};
+
+export const validaCEP = value => {
+  let numero = value
+    .replace("-", "")
+    .replace(/_/g, "");
+  return numero.length === 8 ? undefined : "Necessário CEP Valido!";
+};
