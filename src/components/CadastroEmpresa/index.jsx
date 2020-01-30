@@ -1,214 +1,213 @@
-import React, { Fragment, useState, useMemo, useEffect } from 'react'
-import { Row, Col, Card, Button, Alert } from 'react-bootstrap'
-import { Form, reduxForm, Field } from 'redux-form'
-import DadosEmpresa from './DadosEmpresa'
-import TipoFornecimento from './TipoFornecimento'
-import BandeiraAnexo from './BandeiraAnexo'
-import LojaFisica from './LojaFisica'
-import { validaOfertaUniforme, parsePayload } from './helper'
+import React, { Fragment, useState, useMemo, useEffect } from "react";
+import { Row, Col, Card, Button, Alert } from "react-bootstrap";
+import { Form, reduxForm, Field } from "redux-form";
+import DadosEmpresa from "./DadosEmpresa";
+import TipoFornecimento from "./TipoFornecimento";
+import BandeiraAnexo from "./BandeiraAnexo";
+import LojaFisica from "./LojaFisica";
+import { validaOfertaUniforme, parsePayload } from "./helper";
 import {
   cadastrarEmpresa,
   getUniformes,
   verificaCnpj
-} from 'services/uniformes.service'
-import { getMeiosRecebimento } from 'services/bandeiras.service'
-import { FileUpload } from 'components/Input/FileUpload'
-import { required } from 'helpers/fieldValidators'
+} from "services/uniformes.service";
+import { getMeiosRecebimento } from "services/bandeiras.service";
+import { FileUpload } from "components/Input/FileUpload";
+import { required } from "helpers/fieldValidators";
 export let CadastroEmpresa = props => {
   const initialValue = {
-    endereco: '',
-    numero: '',
-    complemento: '',
-    telefone: '',
-    cidade: '',
-    uf: '',
-    bairro: '',
-    cep: ''
-  }
+    endereco: "",
+    numero: "",
+    complemento: "",
+    telefone: "",
+    cidade: "",
+    uf: "",
+    bairro: "",
+    cep: ""
+  };
 
-  const [loja, setLoja] = useState([initialValue])
-  const [produtos, setProdutos] = useState([])
-  const [fornecimento, setFornecimento] = useState([])
-  const [bandeiras, setBandeiras] = useState([])
-  const [pagamento, setPagamento] = useState([])
-  const [alerta, setAlerta] = useState(false)
-  const [sucesso, setSucesso] = useState(false)
-  const [mensagem, setMensagem] = useState('')
+  const [loja, setLoja] = useState([initialValue]);
+  const [produtos, setProdutos] = useState([]);
+  const [fornecimento, setFornecimento] = useState([]);
+  const [bandeiras, setBandeiras] = useState([]);
+  const [pagamento, setPagamento] = useState([]);
+  const [alerta, setAlerta] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [mensagem, setMensagem] = useState("");
+  const [limparFornecimento, setLimparFornecimento] = useState(false);
 
   const limparListaLojas = () => {
-    setLoja([initialValue])
-  }
+    setLoja([initialValue]);
+  };
   useEffect(() => {
     const carregaUniformes = async () => {
-      const uniformes = await getUniformes()
-      setProdutos(uniformes)
-    }
+      const uniformes = await getUniformes();
+      setProdutos(uniformes);
+    };
     const carregaFormaPagamento = async () => {
-      const formaPagamento = await getMeiosRecebimento()
-      setPagamento(formaPagamento)
-    }
-    carregaUniformes()
-    carregaFormaPagamento()
-  }, [])
+      const formaPagamento = await getMeiosRecebimento();
+      setPagamento(formaPagamento);
+    };
+    carregaUniformes();
+    carregaFormaPagamento();
+  }, [limparFornecimento]);
 
   const addLoja = () => {
-    loja.push(initialValue)
-    setLoja([...loja])
-  }
+    loja.push(initialValue);
+    setLoja([...loja]);
+  };
 
   const delLoja = index => {
-    let lista = []
+    let lista = [];
     loja.forEach((value, key) => {
       if (key !== index) {
-        lista.push(value)
+        lista.push(value);
       }
-    })
-    setLoja(lista)
-  }
+    });
+    setLoja(lista);
+  };
 
   const onUpdateLoja = (valor, chave) => {
-    loja[chave] = valor
-    setLoja([...loja])
-  }
+    loja[chave] = valor;
+    setLoja([...loja]);
+  };
 
   const onUpdateUniforme = (valor, chave) => {
-    fornecimento[chave] = valor
-    setFornecimento([...fornecimento])
-  }
+    fornecimento[chave] = valor;
+    setFornecimento([...fornecimento]);
+  };
 
   const addBandeira = value => {
-    bandeiras.push(value)
-    setBandeiras([...bandeiras])
-  }
+    bandeiras.push(value);
+    setBandeiras([...bandeiras]);
+  };
 
   const delBandeira = value => {
-    const key = bandeiras.indexOf(value)
+    const key = bandeiras.indexOf(value);
     if (key) {
-      bandeiras.splice(key, 1)
-      setBandeiras(bandeiras)
+      bandeiras.splice(key, 1);
+      setBandeiras(bandeiras);
     }
-  }
+  };
 
-  const contadorLoja = useMemo(() => loja.length, [loja])
+  const contadorLoja = useMemo(() => loja.length, [loja]);
 
   const showMessage = mensagem => {
-    setMensagem(mensagem)
-    setAlerta(true)
+    setMensagem(mensagem);
+    setAlerta(true);
     setTimeout(() => {
-      setAlerta(false)
-      setMensagem('')
-    }, 10000)
-  }
+      setAlerta(false);
+      setMensagem("");
+    }, 10000);
+  };
 
   const onSubmit = async payload => {
-    verificaCnpj(payload.cnpj).then(async cnpjStatus => {
-      if (cnpjStatus && cnpjStatus.cnpj_cadastrado === 'Sim') {
-        window.scrollTo(0, 0)
-        showMessage(
-          'Esse CNPJ já está inscrito no programa de fornecimento de uniformes.'
-        )
-        return
-      }
+    let cnpjStatus = await verificaCnpj(payload.cnpj);
 
-      if (cnpjStatus && cnpjStatus.cnpj_valido === 'Não') {
-        window.scrollTo(0, 0)
-        showMessage('O CNPJ informado não é um CNPJ válido.')
-        return
-      }
+    if (cnpjStatus && cnpjStatus.cnpj_cadastrado === "Sim") {
+      window.scrollTo(0, 0);
+      showMessage(
+        "Esse CNPJ já está inscrito no programa de fornecimento de uniformes."
+      );
+      return;
+    }
 
-      const novoFornecimento = filtrarFornecimento(fornecimento)
-      if (validaMeiosRecebimentos(bandeiras)) {
-        if (validaUniformes(novoFornecimento)) {
-          payload['lojas'] = loja
-          payload['meios_de_recebimento'] = bandeiras
-          payload['ofertas_de_uniformes'] = novoFornecimento
-          console.log('Antes')
+    if (cnpjStatus && cnpjStatus.cnpj_valido === "Não") {
+      window.scrollTo(0, 0);
+      showMessage("O CNPJ informado não é um CNPJ válido.");
+      return;
+    }
 
-          try {
-            const response = await cadastrarEmpresa(payload)
-            console.log('aqui', response)
+    const novoFornecimento = filtrarFornecimento(fornecimento);
 
-            if (response.status === 201) {
-              props.reset()
-              limparListaLojas()
-              showSucess()
-            } else {
-              console.log('Erro ao enviar inscrição.', response)
+    if (validaMeiosRecebimentos(bandeiras)) {
+      if (validaUniformes(novoFornecimento)) {
+        payload["lojas"] = loja;
+        payload["meios_de_recebimento"] = bandeiras;
+        payload["ofertas_de_uniformes"] = novoFornecimento;
 
-              window.scrollTo(0, 0)
-              showMessage(
-                'Houve um erro ao efetuar a sua iscrição. Tente novamente mais tarde.'
-              )
-            }
-          } catch (error) {
-            console.log('Erro ao enviar inscrição.', error)
+        try {
+          const response = await cadastrarEmpresa(payload);
 
-            window.scrollTo(0, 0)
+          if (response.status === 201) {
+            props.reset();
+            limparListaLojas();
+            showSucess();
+          } else {
+            window.scrollTo(0, 0);
             showMessage(
-              'Houve um erro ao efetuar a sua iscrição. Tente novamente mais tarde.'
-            )
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
+        } catch (error) {
+          if (error.response.data.email) {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+            );
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
           }
         }
       }
-    })
-  }
+    }
+  };
 
   const filtrarFornecimento = payload => {
     const novoPayload = payload.filter((value, key) => {
       if (value !== undefined) {
         if (Object.keys(value).length > 0) {
-          return value
+          return value;
         }
       }
-    })
-    return novoPayload
-  }
+    });
+    return novoPayload;
+  };
 
   const showSucess = () => {
-    setSucesso(true)
-    window.scrollTo(0, 0)
-    setTimeout(() => {
-      window.location.reload()
-    }, 15000)
-  }
+    window.location.href = "/confirmacao-cadastro";
+  };
 
   const validaUniformes = payload => {
     if (payload.length > 0) {
       if (validaOfertaUniforme(payload)) {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
         showMessage(
-          'Por favor, selecione um Tipo de Fornecimento com o valor correspondente'
-        )
-        return false
+          "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
+        );
+        return false;
       }
     } else {
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
       showMessage(
-        'Por favor, selecione um Tipo de Fornecimento com o valor correspondente'
-      )
+        "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
+      );
 
-      return false
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const validaMeiosRecebimentos = payload => {
     if (payload.length === 0) {
-      window.scrollTo(0, 0)
-      showMessage('Por favor, selecione um Meio de Recebimento')
-      return false
+      window.scrollTo(0, 0);
+      showMessage("Por favor, selecione um Meio de Recebimento");
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
-  const { handleSubmit, pristine, submitting, reset } = props
+  const { handleSubmit, pristine, submitting, reset } = props;
 
   return (
     <Fragment>
       <div id="conteudo" className="w-100 desenvolvimento-escolar">
         <div className="container pt-5 pb-5">
           {alerta ? (
-            <Alert key={1} variant={'danger'}>
+            <Alert key={1} variant={"danger"}>
               <div className="text-weight-bold text-center">
                 <strong>{mensagem}</strong>
               </div>
@@ -216,7 +215,7 @@ export let CadastroEmpresa = props => {
           ) : null}
 
           {sucesso ? (
-            <Alert key={1} variant={'success'}>
+            <Alert key={1} variant={"success"}>
               <div className="text-weight-bold text-center">
                 <strong>Cadastro realizado com sucesso.</strong>
               </div>
@@ -288,8 +287,10 @@ export let CadastroEmpresa = props => {
                                 index={value.id}
                                 chave={key}
                                 onUpdate={onUpdateUniforme}
+                                limpar={limparFornecimento}
+                                setLimpar={setLimparFornecimento}
                               />
-                            )
+                            );
                           })
                         : null}
                     </Card.Body>
@@ -310,7 +311,7 @@ export let CadastroEmpresa = props => {
                                 onUpdate={addBandeira}
                                 onRemove={delBandeira}
                               />
-                            )
+                            );
                           })
                         : null}
                     </Card.Body>
@@ -340,7 +341,7 @@ export let CadastroEmpresa = props => {
               <div className="form-group">
                 <div class="form-check">
                   <Field
-                    component={'input'}
+                    component={"input"}
                     name="declaracao"
                     className="form-check-input"
                     required
@@ -357,7 +358,7 @@ export let CadastroEmpresa = props => {
               <div className="form-group">
                 <div class="form-check">
                   <Field
-                    component={'input'}
+                    component={"input"}
                     name="condicoes"
                     className="form-check-input"
                     required
@@ -376,8 +377,10 @@ export let CadastroEmpresa = props => {
               <Col lg={6} xl={6} className="d-flex justify-content-start mt-4">
                 <Button
                   onClick={() => {
-                    reset()
-                    limparListaLojas()
+                    reset();
+                    limparListaLojas();
+                    setLimparFornecimento(true);
+                    window.scrollTo(0, 0);
                   }}
                   type="reset"
                   variant="outline-danger"
@@ -400,12 +403,12 @@ export let CadastroEmpresa = props => {
         </div>
       </div>
     </Fragment>
-  )
-}
+  );
+};
 
 CadastroEmpresa = reduxForm({
   // a unique name for the form
-  form: 'CadastroLojaForm'
-})(CadastroEmpresa)
+  form: "CadastroLojaForm"
+})(CadastroEmpresa);
 
-export default CadastroEmpresa
+export default CadastroEmpresa;

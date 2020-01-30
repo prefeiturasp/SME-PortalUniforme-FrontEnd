@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { InputText } from 'components/Input/InputText'
-import { required } from 'helpers/fieldValidators'
+import { required, validaUF, validaCNPJ, validaTelefone, validaCEP } from 'helpers/fieldValidators'
 import { Field } from 'redux-form'
-import { fieldCNPJ, fieldCep, fieldTel } from 'helpers/textMask'
+import { fieldCNPJ, fieldCep, fieldCel } from 'helpers/textMask'
 import { Row, Col } from 'react-bootstrap'
 
 const DadosEmpresa = props => {
@@ -14,7 +14,7 @@ const DadosEmpresa = props => {
         label="CNPJ"
         name="cnpj"
         required
-        validate={[required]}
+        validate={[required, validaCNPJ]}
         autoFocus
         maxLength="18"
         placeholder="Digite seu CNPJ"
@@ -35,7 +35,7 @@ const DadosEmpresa = props => {
             label="CEP"
             name="end_cep"
             required
-            validate={required}
+            validate={[required, validaCEP]}
           />
         </Col>
         <Col lg={6} xl={6}>
@@ -44,8 +44,8 @@ const DadosEmpresa = props => {
             label="UF"
             name="end_uf"
             required
-            validate={required}
-            maxLength={3}
+            validate={[required, validaUF]}
+            maxLength={2}
             placeholder="UF"
           />
         </Col>
@@ -76,12 +76,12 @@ const DadosEmpresa = props => {
         placeholder="Digite o nome do resposável da empresa"
       />
       <Field
-        {...fieldTel}
+        {...fieldCel}
         component={InputText}
         label="Telefone"
         name="telefone"
         required
-        validate={required}
+        validate={[required, validaTelefone]}
         placeholder="Digite o nome do resposável da empresa"
       />
       <Field

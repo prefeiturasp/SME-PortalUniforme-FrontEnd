@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { InputLabelInLine } from "components/Input/InputLabelInLine";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
-import { fieldMoney } from "helpers/textMask";
 
 const TipoFornecimento = props => {
   const initialValue = { preco: "", uniforme: "" };
@@ -12,10 +11,24 @@ const TipoFornecimento = props => {
   const [desabilitado, setDesabilitado] = useState(true);
   const [payload, setPayload] = useState(initialValue);
   const [obrigar, setObrigar] = useState(false);
+  const [checado, SetChecado] = useState(false)
 
   useEffect(() => {
     setPoduto(props.produto);
+    limpafornecimento();
   }, [payload, props]);
+
+  const limpafornecimento = () => {
+    if (props.limpar) {
+      setValor("");
+      setDesabilitado(true);
+      setRequerido(false);
+      delUniforme();
+      SetChecado(false)
+      props.setLimpar(false)
+    }
+  };
+
 
   const addValor = valor => {
     setValor(valor);
@@ -25,10 +38,13 @@ const TipoFornecimento = props => {
 
   const checkProduto = event => {
     if (event) {
+      
       setDesabilitado(false);
       setRequerido(true);
       addUniforme();
+      SetChecado(true)
     } else {
+      SetChecado(false)
       setDesabilitado(true);
       setRequerido(false);
       delUniforme();
@@ -63,20 +79,23 @@ const TipoFornecimento = props => {
             label={produto}
             type="checkbox"
             onChange={e => checkProduto(e.target.checked)}
+            checked={checado}
           />
         </Col>
         <Col lg={8}>
           <InputLabelInLine
+            autocomplete="off"
             className={obrigar ? "is-invalid" : null}
             onFocus={obrigar ? true : false}
             label="Valor R$"
             style={{ marginTop: "-10px" }}
-            placeholder="10,00"
+            type="number"
             value={valor}
             disabled={desabilitado}
             required={requerido}
             onChange={e => addValor(e.target.value)}
             onBlur={e => valorDevido(e.target.value)}
+            
           />
         </Col>
       </Row>
@@ -86,41 +105,3 @@ const TipoFornecimento = props => {
 
 export default TipoFornecimento;
 
-export const ProdutoValor = props => {
-  return (
-    <Fragment>
-      <Row>
-        <Col lg={5} xl={5}>
-          {/* <Field
-            {...props}
-            component={CheckInputLabel}
-            type="checkbox"
-            label={props.label}
-            name={`produtos_${props.chave}`}
-          /> */}
-          <CheckInputLabel
-            label={props.label}
-            type="checkbox"
-            value={props.value}
-          />
-        </Col>
-        <Col lg={7} xl={7}>
-          {/* <Field
-            {...fieldMoney}
-            component={InputLabelInLine}
-            placeholder="R$ 10,00"
-            label="Valor"
-            name={`valor_${props.chave}`}
-            style={{ marginTop: "-10px" }}
-          /> */}
-          <InputLabelInLine
-            label="Valor"
-            style={{ marginTop: "-10px" }}
-            placeholder="R$ 10,00"
-            value={props.valor}
-          />
-        </Col>
-      </Row>
-    </Fragment>
-  );
-};
