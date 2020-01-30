@@ -107,6 +107,7 @@ const LojaFisica = props => {
         </Col>
         <Col lg={6} xl={6}>
           <InputLabelRequired
+            autocomplete="off"
             value={bairro}
             label="Bairro"
             onChange={e => {
@@ -121,6 +122,7 @@ const LojaFisica = props => {
       <Row>
         <Col>
           <InputLabelRequired
+            autocomplete="off"
             label="Endereço"
             placeholder="Linha única para logradouro, número e complemento"
             name={`loja.endereco_${props.chave}`}
@@ -137,6 +139,7 @@ const LojaFisica = props => {
       <Row>
         <Col lg={6} xl={6}>
           <InputLabelRequired
+            autocomplete="off"
             value={numero}
             label="Número"
             onChange={e => {

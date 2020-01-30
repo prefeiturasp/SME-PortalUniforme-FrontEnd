@@ -84,6 +84,7 @@ const TipoFornecimento = props => {
         </Col>
         <Col lg={8}>
           <InputLabelInLine
+            autocomplete="off"
             className={obrigar ? "is-invalid" : null}
             onFocus={obrigar ? true : false}
             label="Valor R$"

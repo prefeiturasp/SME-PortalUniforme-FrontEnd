@@ -102,44 +102,50 @@ export let CadastroEmpresa = props => {
   };
 
   const onSubmit = async payload => {
-    verificaCnpj(payload.cnpj).then(async cnpjStatus => {
-      if (cnpjStatus && cnpjStatus.cnpj_cadastrado === "Sim") {
-        window.scrollTo(0, 0);
-        showMessage(
-          "Esse CNPJ já está inscrito no programa de fornecimento de uniformes."
-        );
-        return;
-      }
+    let cnpjStatus = await verificaCnpj(payload.cnpj);
 
-      if (cnpjStatus && cnpjStatus.cnpj_valido === "Não") {
-        window.scrollTo(0, 0);
-        showMessage("O CNPJ informado não é um CNPJ válido.");
-        return;
-      }
+    if (cnpjStatus && cnpjStatus.cnpj_cadastrado === "Sim") {
+      window.scrollTo(0, 0);
+      showMessage(
+        "Esse CNPJ já está inscrito no programa de fornecimento de uniformes."
+      );
+      return;
+    }
 
-      const novoFornecimento = filtrarFornecimento(fornecimento);
-      if (validaMeiosRecebimentos(bandeiras)) {
-        if (validaUniformes(novoFornecimento)) {
-          payload["lojas"] = loja;
-          payload["meios_de_recebimento"] = bandeiras;
-          payload["ofertas_de_uniformes"] = novoFornecimento;
+    if (cnpjStatus && cnpjStatus.cnpj_valido === "Não") {
+      window.scrollTo(0, 0);
+      showMessage("O CNPJ informado não é um CNPJ válido.");
+      return;
+    }
 
-          try {
-            const response = await cadastrarEmpresa(payload);
+    const novoFornecimento = filtrarFornecimento(fornecimento);
 
-            if (response.status === 201) {
-              props.reset();
-              limparListaLojas();
-              showSucess();
-            } else {
+    if (validaMeiosRecebimentos(bandeiras)) {
+      if (validaUniformes(novoFornecimento)) {
+        payload["lojas"] = loja;
+        payload["meios_de_recebimento"] = bandeiras;
+        payload["ofertas_de_uniformes"] = novoFornecimento;
 
-              window.scrollTo(0, 0);
-              showMessage(
-                "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-              );
-            }
-          } catch (error) {
+        try {
+          const response = await cadastrarEmpresa(payload);
 
+          if (response.status === 201) {
+            props.reset();
+            limparListaLojas();
+            showSucess();
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
+        } catch (error) {
+          if (error.response.data.email) {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+            );
+          } else {
             window.scrollTo(0, 0);
             showMessage(
               "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
@@ -147,7 +153,7 @@ export let CadastroEmpresa = props => {
           }
         }
       }
-    });
+    }
   };
 
   const filtrarFornecimento = payload => {
@@ -163,10 +169,13 @@ export let CadastroEmpresa = props => {
 
   const showSucess = () => {
     setSucesso(true);
+    limparListaLojas();
+    setLimparFornecimento(true);
     window.scrollTo(0, 0);
     setTimeout(() => {
-      window.location.reload();
-    }, 15000);
+      setSucesso(false);
+      setMensagem("");
+    }, 10000);
   };
 
   const validaUniformes = payload => {
@@ -378,6 +387,7 @@ export let CadastroEmpresa = props => {
                     reset();
                     limparListaLojas();
                     setLimparFornecimento(true);
+                    window.scrollTo(0, 0);
                   }}
                   type="reset"
                   variant="outline-danger"
