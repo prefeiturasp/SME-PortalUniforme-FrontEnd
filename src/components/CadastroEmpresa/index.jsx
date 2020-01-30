@@ -168,14 +168,7 @@ export let CadastroEmpresa = props => {
   };
 
   const showSucess = () => {
-    setSucesso(true);
-    limparListaLojas();
-    setLimparFornecimento(true);
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      setSucesso(false);
-      setMensagem("");
-    }, 10000);
+    window.location.href = "/confirmacao-cadastro";
   };
 
   const validaUniformes = payload => {

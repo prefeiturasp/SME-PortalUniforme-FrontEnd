@@ -53,7 +53,6 @@ const LojaFisica = props => {
     const response = await axios.get(
       `https://republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`
     );
-    console.log(response);
     
     if (response.status === 200) {      
       const data = response.data;
