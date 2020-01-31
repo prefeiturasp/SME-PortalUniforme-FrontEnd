@@ -205,15 +205,15 @@ const LojaFisica = props => {
         <Col>
           <InputLabelRequiredMask
             Autocomplete="off"
-            mask="(99) 99999-9999"
+            mask="(99) 9999-99999"
             label="Telefone"
             value={telefone}
-            placeholder="(xx) xxxxx-xxxx"
+            placeholder="Fixo ou celular"
             className="form-control mb-2"
             required
             key={props.chave}
             onChange={e => {
-              const valor = e.target.value;
+              const valor = e.target.value.replace("_", "");
               setTelefone(valor);
               setPayload({ ...payload, telefone: valor });
               props.onUpdate({ ...payload, telefone: valor }, props.chave);
