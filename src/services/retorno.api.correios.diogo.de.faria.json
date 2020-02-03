@@ -1,0 +1,68 @@
+[
+    {
+      "cep": "04037-000",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "até 315/316",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    },
+    {
+      "cep": "04037-003",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "de 841/842 a 1115/1116",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    },
+    {
+      "cep": "04037-001",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "de 317/318 a 569/570",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    },
+    {
+      "cep": "04037-004",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "de 1117/1118 a 1249/1250",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    },
+    {
+      "cep": "04037-002",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "de 571/572 a 839/840",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    },
+    {
+      "cep": "04037-005",
+      "logradouro": "Rua Doutor Diogo de Faria",
+      "complemento": "de 1251/1252 ao fim",
+      "bairro": "Vila Clementino",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "unidade": "",
+      "ibge": "3550308",
+      "gia": "1004"
+    }
+  ]

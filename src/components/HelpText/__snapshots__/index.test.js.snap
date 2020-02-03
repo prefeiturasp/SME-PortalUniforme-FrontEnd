@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test <HelpText> renders component 1`] = `
+<HelpText
+  helpText="Teste"
+>
+  <div
+    className="help-text"
+  >
+    Teste
+  </div>
+</HelpText>
+`;

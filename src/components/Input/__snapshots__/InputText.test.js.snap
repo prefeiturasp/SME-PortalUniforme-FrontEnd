@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test <InputText> renders component 1`] = `
+<InputText
+  className="teste"
+  disabled={false}
+  esconderAsterisco={false}
+  helpText=""
+  input={
+    Object {
+      "onChange": [MockFunction],
+      "value": "",
+    }
+  }
+  label="mylabel"
+  labelClassName=""
+  meta={
+    Object {
+      "error": "This field is required",
+      "touched": true,
+    }
+  }
+  name="myCombo"
+  placeholder=""
+  required={true}
+  type="text"
+  validate={[Function]}
+>
+  <div
+    className="input"
+  >
+    <span
+      className="required-asterisk"
+      key="1"
+    >
+      *
+    </span>
+    <label
+      className="col-form-label "
+      htmlFor="myCombo"
+      key="2"
+    >
+      mylabel
+    </label>
+    <input
+      className="form-control teste invalid-field"
+      disabled={false}
+      name="myCombo"
+      onChange={[MockFunction]}
+      placeholder=""
+      required={true}
+      type="text"
+      value=""
+    />
+    <HelpText
+      helpText=""
+    >
+      <div
+        className="help-text"
+      />
+    </HelpText>
+    <InputErroMensagem
+      meta={
+        Object {
+          "error": "This field is required",
+          "touched": true,
+        }
+      }
+    >
+      <div
+        className="error-or-warning-message"
+      >
+        <div
+          className="error-message"
+        >
+          This field is required
+        </div>
+      </div>
+    </InputErroMensagem>
+  </div>
+</InputText>
+`;
+
+exports[`test <InputText> renders component customChange 1`] = `
+<InputText
+  className="teste"
+  customChange={[Function]}
+  disabled={false}
+  esconderAsterisco={false}
+  helpText=""
+  input={
+    Object {
+      "onChange": [MockFunction],
+      "value": "",
+    }
+  }
+  label="mylabel"
+  labelClassName=""
+  meta={
+    Object {
+      "error": "This field is required",
+      "touched": true,
+    }
+  }
+  name="myCombo"
+  placeholder=""
+  required={true}
+  type="text"
+  validate={[Function]}
+>
+  <div
+    className="input"
+  >
+    <span
+      className="required-asterisk"
+      key="1"
+    >
+      *
+    </span>
+    <label
+      className="col-form-label "
+      htmlFor="myCombo"
+      key="2"
+    >
+      mylabel
+    </label>
+    <input
+      className="form-control teste invalid-field"
+      disabled={false}
+      name="myCombo"
+      onChange={[Function]}
+      placeholder=""
+      required={true}
+      type="text"
+      value=""
+    />
+    <HelpText
+      helpText=""
+    >
+      <div
+        className="help-text"
+      />
+    </HelpText>
+    <InputErroMensagem
+      meta={
+        Object {
+          "error": "This field is required",
+          "touched": true,
+        }
+      }
+    >
+      <div
+        className="error-or-warning-message"
+      >
+        <div
+          className="error-message"
+        >
+          This field is required
+        </div>
+      </div>
+    </InputErroMensagem>
+  </div>
+</InputText>
+`;

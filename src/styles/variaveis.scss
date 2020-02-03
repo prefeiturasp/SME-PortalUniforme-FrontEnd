@@ -1,0 +1,47 @@
+// Cores
+
+$corBranco: #ffffff;
+
+$corCinzaClaro: #f3f3f3;
+$corCinzaClaroSelect: #a4a4a4;
+$corCinzaEscuro: #c4c4c4;
+$corCinzaHome: #5c6f78;
+$corCinzaBuscaOff: #ced4da;
+$corCinzaRodape: #5a5a5a;
+$corCinzaToggle: #565656;
+
+$corPretoPortal: #42474a;
+
+$corVerdeClaro: #afd367;
+$corVerdeEscuro: #4e9c45;
+$corVerdeBotaoHome: #afce68;
+
+$corAzulFiltro: #00a6e2;
+$corAzulBackgroundTable: #d7f0ff;
+$corAzulBuscaOn: #80bdff;
+$corAzulPortal: #196cbd;
+
+/* SME */
+$red: #a50e05;
+$grayPlaceholder: $corCinzaClaroSelect;
+$gray: #686868;
+$blackInput: $corPretoPortal;
+$grayDisabled: #dadada;
+
+/* Toasts */
+$blueBackgroundToastInfo: #d1ecf1;
+$blueBackgroundToastPrimary: #cce5fd;
+$blueToastInfo: #0c5460;
+$greenBackgroundToastSuccess: #d4edda;
+$greenToastSuccess: #155724;
+$redToastError: #721c24;
+$redBackgroundToastError: #f8d7da;
+$yellowBackgroundToastWarning: #fff3cd;
+$yellowToastWarning: #856404;
+
+// Fontes
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700");
+
+@mixin roboto-sans {
+  font-family: "Roboto", sans-serif !important;
+}

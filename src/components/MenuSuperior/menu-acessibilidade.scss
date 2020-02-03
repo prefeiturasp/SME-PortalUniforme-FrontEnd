@@ -1,0 +1,43 @@
+div.conheca-a-rede-subtitulo {
+  font-weight: bold;
+  font-size: 12px;
+  color: #7cd8f9;
+}
+
+div.header-acessibilidade {
+  height: auto;
+  background-color: #363636;
+  color: #fff !important;
+  font-size: 12px !important;
+  line-height: 20px;
+  li {
+    a {
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+  li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  span.span-accesskey {
+    margin-left: 5px;
+    padding: 1px 6px;
+    background-color: #196cbd;
+  }
+  svg {
+    margin-left: 5px;
+  }
+}
+
+.pref-menu {
+  background-color: #9d9d9c;
+  font-size: 12px;
+  line-height: 12px;
+  li {
+    a {
+      color: white;
+    }
+  }
+}
+
