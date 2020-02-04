@@ -18,6 +18,7 @@ const LojaFisica = props => {
   const [uf, setUf] = useState("");
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
+  const [nome_fantasia, setNomeFantasia] = useState("");
 
   useEffect(() => {
     setTelefone(props.telefone);
@@ -28,16 +29,18 @@ const LojaFisica = props => {
     setUf(props.uf);
     setNumero(props.numero);
     setComplemento(props.complemento);
+    setNomeFantasia(props.nome_fantasia);
   }, [props]);
 
   const buscaCep = async value => {
+    setErro(false);
     if (value) {
       let cep = value.replace("-", "").replace("_", "");
       if (cep.length === 8) {
         const data = await cepServico(cep);
         if (data !== null) {
           data["cep"] = value;
-          if (data.cidade !== "São Paulo" && data.uf !== "SP") {
+          if (data.cidade !== "São Paulo" || data.uf !== "SP") {
             setErro(true);
           } else {
             const payload = populaPayload(data);
@@ -75,12 +78,30 @@ const LojaFisica = props => {
       cidade: data.cidade,
       uf: data.uf,
       bairro: data.bairro,
-      cep: data.cep
+      cep: data.cep,
+      nome_fantasia: nome_fantasia
     };
   };
 
   return (
     <Fragment>
+      <Row>
+        <Col>
+          <InputLabelRequired
+            autocomplete="off"
+            label="Nome Fantasia"
+            placeholder="Nome fantasia da loja."
+            name={`loja.nome_fantasia_${props.chave}`}
+            value={nome_fantasia}
+            onChange={e => {
+              const valor = e.target.value;
+              setNomeFantasia(valor);
+              setPayload({ ...payload, nome_fantasia: valor });
+              props.onUpdate({ ...payload, nome_fantasia: valor }, props.chave);
+            }}
+          />
+        </Col>
+      </Row>      
       <Row>
         <Col lg={6} xl={6}>
           <InputLabelRequiredMask
@@ -101,7 +122,7 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
             erro={erro}
-            mensagem="O CEP deve ser de São Paulo"
+            mensagem="A loja precisa estar em São Paulo-SP"
             required
           />
           <div class="valid-feedback">Deve ser São Paulo</div>
@@ -125,7 +146,7 @@ const LojaFisica = props => {
           <InputLabelRequired
             autocomplete="off"
             label="Endereço"
-            placeholder="Linha única para logradouro, número e complemento"
+            placeholder="Digite o logradouro"
             name={`loja.endereco_${props.chave}`}
             value={endereco}
             onChange={e => {

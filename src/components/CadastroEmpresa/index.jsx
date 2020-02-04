@@ -5,7 +5,7 @@ import DadosEmpresa from "./DadosEmpresa";
 import TipoFornecimento from "./TipoFornecimento";
 import BandeiraAnexo from "./BandeiraAnexo";
 import LojaFisica from "./LojaFisica";
-import { validaOfertaUniforme, parsePayload } from "./helper";
+import { validaOfertaUniforme } from "./helper";
 import {
   cadastrarEmpresa,
   getUniformes,
@@ -16,6 +16,7 @@ import { FileUpload } from "components/Input/FileUpload";
 import { required } from "helpers/fieldValidators";
 export let CadastroEmpresa = props => {
   const initialValue = {
+    nome_fantasia: "",
     endereco: "",
     numero: "",
     complemento: "",
@@ -67,7 +68,7 @@ export let CadastroEmpresa = props => {
     setLoja(lista);
   };
 
-  const onUpdateLoja = (valor, chave) => {
+  const onUpdateLoja = (valor, chave) => {        
     loja[chave] = valor;
     setLoja([...loja]);
   };
@@ -102,6 +103,7 @@ export let CadastroEmpresa = props => {
   };
 
   const onSubmit = async payload => {
+    
     let cnpjStatus = await verificaCnpj(payload.cnpj);
 
     if (cnpjStatus && cnpjStatus.cnpj_cadastrado === "Sim") {
@@ -122,6 +124,7 @@ export let CadastroEmpresa = props => {
 
     if (validaMeiosRecebimentos(bandeiras)) {
       if (validaUniformes(novoFornecimento)) {
+        
         payload["lojas"] = loja;
         payload["meios_de_recebimento"] = bandeiras;
         payload["ofertas_de_uniformes"] = novoFornecimento;
@@ -251,6 +254,7 @@ export let CadastroEmpresa = props => {
                         <>
                           <LojaFisica
                             chave={key}
+                            nome_fantasia={value.nome_fantasia}
                             endereco={value.endereco}
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
