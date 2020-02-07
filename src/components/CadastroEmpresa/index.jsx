@@ -259,6 +259,22 @@ export let CadastroEmpresa = props => {
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
                           />
+                          <Row>
+                          <Card className="w-100 mt-2 ml-2">
+                            <Card.Body>
+                              <Field
+                                component={FileUpload}
+                                name="arquivos_anexos"
+                                id="anexos_loja"
+                                accept="file/pdf"
+                                className="form-control-file"
+                                label="Foto Faixada"
+                                required
+                                validate={required}
+                              />
+                            </Card.Body>
+                          </Card>
+                          </Row>
                           <Button
                             disabled={contadorLoja <= 1 ? true : false}
                             variant="outline-danger"
