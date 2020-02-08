@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import BlocoTexto from 'components/BlocoTexto'
 import imgFachadaLoja from 'img/fachada-loja.png'
 import imgPecasUniforme from 'img/pecas-uniforme.png'
+import { getUniformes } from 'services/uniformes.service'
 
 import './home.scss'
 
@@ -9,6 +10,15 @@ export default class Home extends Component {
   constructor() {
     super()
     this.irParaFormulario = this.irParaFormulario.bind(this)
+
+    this.state = {
+      uniformes: []
+    }
+  }
+
+  async componentDidMount() {
+    const uniformes = await getUniformes()
+    this.setState({ uniformes })
   }
 
   irParaFormulario() {
@@ -17,6 +27,7 @@ export default class Home extends Component {
   }
 
   render() {
+    const { uniformes } = this.state
     return (
       <Fragment>
         <div className="w-100 oferta-imoveis position-relative">
@@ -32,12 +43,6 @@ export default class Home extends Component {
                   critérios nessários para o credenciamento e faça a diferença
                   na educação de nossos estudantes.
                 </p>
-                {/*<button
-                                    className="btn btn-primary pl-5 pr-5"
-                                    onClick={this.irParaFormulario}
-                                >
-                                    Saiba mais
-                                </button>*/}
                 <a className="btn btn-primary pl-5 pr-5" href="#conteudo">
                   Saiba Mais
                 </a>
@@ -126,13 +131,10 @@ export default class Home extends Component {
               <div className="col-lg-6 col-sm-12 mb-lg-0">
                 <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
                   <ul className="lista-home ml-0 pl-0">
-                    <li>Camiseta</li>
-                    <li>Bermuda</li>
-                    <li>Calça</li>
-                    <li>Jaqueta</li>
-                    <li>Blusa de moleton</li>
-                    <li>Meia</li>
-                    <li>Tênis</li>
+                    {uniformes &&
+                      uniformes.map(uniforme => {
+                        return <li key={uniforme.id}>{uniforme.nome}</li>
+                      })}
                   </ul>
                 </BlocoTexto>
               </div>
