@@ -122,38 +122,37 @@ export let CadastroEmpresa = props => {
 
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
-    if (validaMeiosRecebimentos(bandeiras)) {
-      if (validaUniformes(novoFornecimento)) {
-        
-        payload["lojas"] = loja;
-        payload["meios_de_recebimento"] = bandeiras;
-        payload["ofertas_de_uniformes"] = novoFornecimento;
+    if (validaUniformes(novoFornecimento)) {
+      
+      payload["lojas"] = loja;
+      payload["meios_de_recebimento"] = bandeiras;
+      payload["ofertas_de_uniformes"] = novoFornecimento;
 
-        try {
-          const response = await cadastrarEmpresa(payload);
+      try {
+        console.log(payload)
+        const response = await cadastrarEmpresa(payload);
 
-          if (response.status === 201) {
-            props.reset();
-            limparListaLojas();
-            showSucess();
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
-          }
-        } catch (error) {
-          if (error.response.data.email) {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-            );
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
-          }
+        if (response.status === 201) {
+          props.reset();
+          limparListaLojas();
+          showSucess();
+        } else {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+          );
+        }
+      } catch (error) {
+        if (error.response.data.email) {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+          );
+        } else {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+          );
         }
       }
     }
@@ -259,22 +258,7 @@ export let CadastroEmpresa = props => {
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
                           />
-                          <Row>
-                          <Card className="w-100 mt-2 ml-2">
-                            <Card.Body>
-                              <Field
-                                component={FileUpload}
-                                name="arquivos_anexos"
-                                id="anexos_loja"
-                                accept="file/pdf"
-                                className="form-control-file"
-                                label="Foto Faixada"
-                                required
-                                validate={required}
-                              />
-                            </Card.Body>
-                          </Card>
-                          </Row>
+                          
                           <Button
                             disabled={contadorLoja <= 1 ? true : false}
                             variant="outline-danger"
@@ -309,27 +293,6 @@ export let CadastroEmpresa = props => {
                                 onUpdate={onUpdateUniforme}
                                 limpar={limparFornecimento}
                                 setLimpar={setLimparFornecimento}
-                              />
-                            );
-                          })
-                        : null}
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Meios de Recebimentos</Card.Title>
-                      <hr />
-                      {pagamento
-                        ? pagamento.map((value, key) => {
-                            return (
-                              <BandeiraAnexo
-                                label={value.nome}
-                                chave={key}
-                                valor={value.id}
-                                onUpdate={addBandeira}
-                                onRemove={delBandeira}
                               />
                             );
                           })
