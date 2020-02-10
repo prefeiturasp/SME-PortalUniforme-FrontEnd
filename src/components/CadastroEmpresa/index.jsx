@@ -127,9 +127,9 @@ export let CadastroEmpresa = props => {
       payload["lojas"] = loja;
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
+      delete payload['foto_fachada']
 
       try {
-        console.log(payload)
         const response = await cadastrarEmpresa(payload);
 
         if (response.status === 201) {
@@ -258,7 +258,6 @@ export let CadastroEmpresa = props => {
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
                           />
-                          
                           <Button
                             disabled={contadorLoja <= 1 ? true : false}
                             variant="outline-danger"

@@ -1,10 +1,13 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import { Field } from "redux-form";
 import {
   InputLabelRequired,
   InputLabel
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
+import { FileUpload } from "components/Input/FileUpload";
+import { required } from "helpers/fieldValidators";
 import axios from "axios";
 
 const LojaFisica = props => {
@@ -16,6 +19,7 @@ const LojaFisica = props => {
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
+  const [foto_fachada, setFotoFachada] = useState("");
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
@@ -30,6 +34,7 @@ const LojaFisica = props => {
     setNumero(props.numero);
     setComplemento(props.complemento);
     setNomeFantasia(props.nome_fantasia);
+    setFotoFachada(props.foto_fachada);
   }, [props]);
 
   const buscaCep = async value => {
@@ -217,7 +222,7 @@ const LojaFisica = props => {
               const valor = "SP";
               setUf(valor);
               setPayload({ ...payload, uf: valor });
-              props.onUpdate({ ...payload, uf: valor }, props.chave);
+              props.onUpdate({...payload, uf: valor }, props.chave);
             }}
           />
         </Col>
@@ -242,6 +247,24 @@ const LojaFisica = props => {
           />
         </Col>
       </Row>
+      <Field
+        component={FileUpload}
+        name="foto_fachada"
+        id="anexo_fachada"
+        accept="file/pdf"
+        className="form-control-file"
+        label="Foto Fachada"
+        required
+        validate={required}
+        onChange={e => {
+          if (e.length > 0) {
+            setFotoFachada({foto_fachada: e[0].arquivo});
+            setPayload({...payload, foto_fachada: e[0].arquivo});
+            props.onUpdate({...payload, foto_fachada: e[0].arquivo }, props.chave);
+          }
+        }
+        }
+      />
       <hr />
     </Fragment>
   );
