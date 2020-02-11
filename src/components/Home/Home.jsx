@@ -3,23 +3,57 @@ import BlocoTexto from 'components/BlocoTexto'
 import imgFachadaLoja from 'img/fachada-loja.png'
 import imgPecasUniforme from 'img/pecas-uniforme.png'
 import { getUniformes } from 'services/uniformes.service'
+import {busca_url_edital} from "../../services/uniformes.service";
 
 import './home.scss'
 
 export default class Home extends Component {
   constructor() {
-    super()
-    this.irParaFormulario = this.irParaFormulario.bind(this)
+      super();
+      this.state = {
+        uniformes: [],
+        edital: {
+          url: "",
+          label: ""
+        }
+      }
 
-    this.state = {
-      uniformes: []
-    }
+      this.irParaFormulario = this.irParaFormulario.bind(this);
+      this.editalClick = !this.state.edital.url  ? (e) => {this.downloadEdital(e)} : null
+      this.get_edital_link();
   }
 
   async componentDidMount() {
     const uniformes = await getUniformes()
     this.setState({ uniformes })
   }
+
+  get_edital_link = async () => {
+      let edital = {}
+      try {
+          const url = await busca_url_edital();
+          edital = {
+              url: url,
+              label: "[Link Edital]"
+          }
+      } catch (e) {
+          edital = {
+              url: "",
+              label: "[Link Edital] (Em Breve)"
+          }
+      }
+      this.setState({edital: edital});
+  }
+
+  downloadEdital = (e) => {
+      e.preventDefault();
+      if (this.state.edital.url) {
+          const link = document.createElement('a');
+          link.href = this.state.edital.url;
+          link.click();
+      }
+  }
+
 
   irParaFormulario() {
     let path = `/cadastro`
@@ -108,14 +142,11 @@ export default class Home extends Component {
                       </a>
                     </p>
                     <p>
-                      <a
-                        className="links-intrucoes"
-                        href="#!"
-                        onClick={e => {
-                          e.preventDefault()
-                        }}
-                      >
-                        <strong>[Link Edital] (Em Breve)</strong>
+                      <a 
+                        className="links-intrucoes" 
+                        href={this.state.edital.url} 
+                        onClick={this.editalClick}>
+                        <strong>{this.state.edital.label}</strong>
                       </a>
                     </p>
                   </div>
