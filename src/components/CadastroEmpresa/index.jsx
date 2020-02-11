@@ -9,7 +9,8 @@ import { validaOfertaUniforme } from "./helper";
 import {
   cadastrarEmpresa,
   getUniformes,
-  verificaCnpj
+  getTiposDocumentos,
+  verificaCnpj,
 } from "services/uniformes.service";
 import { getMeiosRecebimento } from "services/bandeiras.service";
 import { FileUpload } from "components/Input/FileUpload";
@@ -34,6 +35,8 @@ export let CadastroEmpresa = props => {
   const [pagamento, setPagamento] = useState([]);
   const [alerta, setAlerta] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [tiposDocumentos, setTiposDocumentos] = useState([])
+  const [arquivosAnexos, setArquivosAnexos] = useState([])
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
 
@@ -49,8 +52,13 @@ export let CadastroEmpresa = props => {
       const formaPagamento = await getMeiosRecebimento();
       setPagamento(formaPagamento);
     };
+    const carregaTiposDocumentos = async () => {
+      const documentos = await getTiposDocumentos();
+      setTiposDocumentos(documentos);
+    };
     carregaUniformes();
     carregaFormaPagamento();
+    carregaTiposDocumentos();
   }, [limparFornecimento]);
 
   const addLoja = () => {
@@ -127,7 +135,9 @@ export let CadastroEmpresa = props => {
       payload["lojas"] = loja;
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
+      payload["arquivos_anexos"] = arquivosAnexos;
       delete payload['foto_fachada']
+      delete payload['arqs_anexos']
 
       try {
         const response = await cadastrarEmpresa(payload);
@@ -201,6 +211,23 @@ export let CadastroEmpresa = props => {
     }
     return true;
   };
+
+  const adicionaTipoDocumento = (e, tipo) => {
+    const arquivo_anexo = {
+      ...e[0],
+      tipo_documento: tipo.id
+    }
+    let arquivos = arquivosAnexos;
+    arquivos.push(arquivo_anexo);
+    setArquivosAnexos(arquivos);
+  }
+
+  const removeTipoDocumento = (tipo) => {
+    const arquivos = arquivosAnexos.filter((item) => {
+      return item.tipo_documento !== tipo.id
+    });
+    setArquivosAnexos(arquivos);
+  }
 
   const { handleSubmit, pristine, submitting, reset } = props;
 
@@ -304,16 +331,27 @@ export let CadastroEmpresa = props => {
                     <Card.Body>
                       <Card.Title>Documentos Anexos</Card.Title>
                       <hr />
-                      <Field
+                      {tiposDocumentos? tiposDocumentos.map((tipo, key)=> {
+                        return (
+                        <Field
                         component={FileUpload}
-                        name="arquivos_anexos"
-                        id="anexos_loja"
+                        name="arqs_anexos"
+                        id={key}
                         accept="file/pdf"
                         className="form-control-file"
-                        label="Anexos / Documentos"
-                        required
-                        validate={required}
-                      />
+                        label={tipo.nome}
+                        required={tipo.obrigatorio}
+                        validate={tipo.obrigatorio}
+                        multiple={false}
+                        onChange={e => {
+                          if (e.length > 0) {
+                            adicionaTipoDocumento(e, tipo);
+                          } else {
+                            removeTipoDocumento(tipo);
+                          }
+                        }}
+                      />);
+                      }): null}
                     </Card.Body>
                   </Card>
                 </Row>
