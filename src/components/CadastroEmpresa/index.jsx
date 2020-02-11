@@ -3,6 +3,7 @@ import { Row, Col, Card, Button, Alert } from "react-bootstrap";
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TipoFornecimento from "./TipoFornecimento";
+import TiposFornecimentos from "./TiposFornecimentos";
 import BandeiraAnexo from "./BandeiraAnexo";
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme } from "./helper";
@@ -10,6 +11,7 @@ import {
   cadastrarEmpresa,
   getUniformes,
   getTiposDocumentos,
+  getTiposFornecimentos,
   verificaCnpj,
 } from "services/uniformes.service";
 import { getMeiosRecebimento } from "services/bandeiras.service";
@@ -35,8 +37,9 @@ export let CadastroEmpresa = props => {
   const [pagamento, setPagamento] = useState([]);
   const [alerta, setAlerta] = useState(false);
   const [sucesso, setSucesso] = useState(false);
-  const [tiposDocumentos, setTiposDocumentos] = useState([])
-  const [arquivosAnexos, setArquivosAnexos] = useState([])
+  const [tiposDocumentos, setTiposDocumentos] = useState([]);
+  const [tiposFornecimentos, setTiposFornecimentos] = useState([]);
+  const [arquivosAnexos, setArquivosAnexos] = useState([]);
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
 
@@ -56,9 +59,14 @@ export let CadastroEmpresa = props => {
       const documentos = await getTiposDocumentos();
       setTiposDocumentos(documentos);
     };
+    const carregaTiposFornecimentos = async () => {
+      const fornecimentos = await getTiposFornecimentos();
+      setTiposFornecimentos(fornecimentos);
+    }
     carregaUniformes();
     carregaFormaPagamento();
     carregaTiposDocumentos();
+    carregaTiposFornecimentos();
   }, [limparFornecimento]);
 
   const addLoja = () => {
@@ -309,7 +317,7 @@ export let CadastroEmpresa = props => {
                     <Card.Body>
                       <Card.Title>Tipo de Fornecimento</Card.Title>
                       <hr />
-                      {produtos
+                      {/* {produtos
                         ? produtos.map((value, key) => {
                             return (
                               <TipoFornecimento
@@ -322,7 +330,17 @@ export let CadastroEmpresa = props => {
                               />
                             );
                           })
-                        : null}
+                        : null} */}
+
+                        {tiposFornecimentos
+                        ? tiposFornecimentos.map((tipo, key) => {
+                          return (
+                            <ul>
+                              <TiposFornecimentos tipo={tipo}/>
+                            </ul>
+                          )
+                        })
+                        :null}
                     </Card.Body>
                   </Card>
                 </Row>

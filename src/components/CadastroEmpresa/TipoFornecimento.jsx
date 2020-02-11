@@ -75,14 +75,15 @@ const TipoFornecimento = props => {
     <Fragment>
       <Row>
         <Col lg={4}>
-          <CheckInputLabel
+          {/* <CheckInputLabel
             label={produto}
             type="checkbox"
             onChange={e => checkProduto(e.target.checked)}
             checked={checado}
-          />
+          /> */}
+          {produto}
         </Col>
-        <Col lg={8}>
+        <Col lg={4}>
           <InputLabelInLine
             autocomplete="off"
             className={obrigar ? "is-invalid" : null}
