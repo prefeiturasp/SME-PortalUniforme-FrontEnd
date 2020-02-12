@@ -142,21 +142,50 @@ export default class Home extends Component {
                 <BlocoTexto title="O que é necessário para ser fornecedor?">
                   <div className="justify-content-lg-end justify-content-center">
                     <p className="mb-1">
-                      Conforme a Instrução Normativa nº xxx. o fornecedor deve:
+                      Para ser credenciado, o comerciante deve:
                     </p>
                     <ul className="lista-home ml-0 pl-0 mb-2">
                       <li>Ser pessoa Jurídica;</li>
                       <li>
-                        Possuir toda a documentação necessária conforme Art. 40
-                        do Decreto Municipal 44.279/2003;
+                        Possuir toda a documentação válida conforme as condições
+                        do
+                        <a
+                          className="links-intrucoes"
+                          href={this.state.edital.url}
+                          onClick={this.editalClick}
+                        >
+                          <strong> Edital</strong>
+                        </a>
+                        ;
                       </li>
                       <li>
-                        Comercializar os uniformes (peças têxteis, calçado ou
-                        ambos) na padronização conforme Edital;
+                        Conhecer e concordar com as regras previstas no{' '}
+                        <a
+                          className="links-intrucoes"
+                          href={this.state.edital.url}
+                          onClick={this.editalClick}
+                        >
+                          <strong> Edital </strong>
+                        </a>
+                        de Credenciamento;
+                      </li>
+                      <li>
+                        Responsabilizar-se por todas as informações fornecidas;
                       </li>
                       <li>
                         Possuir stand de vendas ou loja física na cidade de São
-                        Paulo.
+                        Paulo;
+                      </li>
+                      <li>Fornecer os itens pelo valor máximo determinado;</li>
+                      <li>Emitir Nota Fiscal Eletrônica;</li>
+                      <li>
+                        Comprometer-se em fornecer os itens com a qualidade
+                        exigida nas especificações técnicas;
+                      </li>
+                      <li>Estar ciente das hipóteses de descredenciamento;</li>
+                      <li>Estar ciente das penalidades previstas;</li>
+                      <li>
+                        Concordar com as possíveis taxas do “meio de pagamento”.
                       </li>
                     </ul>
                     <p className="mb-2">
