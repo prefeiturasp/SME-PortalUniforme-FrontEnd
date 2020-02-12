@@ -31,9 +31,15 @@ export const verificaCnpj = async cnpj => {
 
 export const busca_url_edital = async () => {
   console.log(endPont.API_URL)
+  const response = await axios.get(`${endPont.API_URL}/edital`, authHeader)
+  return `${endPont.API_URL}${response.data}`
+}
+
+export const busca_url_instrucao_normativa = async () => {
+  console.log(endPont.API_URL)
   const response = await axios.get(
-    `${endPont.API_URL}/edital`,
+    `${endPont.API_URL}/instrucao-normativa`,
     authHeader
   )
-  return `${endPont.API_URL}${response.data}`;
+  return `${endPont.API_URL}${response.data}`
 }
