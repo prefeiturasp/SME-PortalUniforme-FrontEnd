@@ -3,24 +3,42 @@ import BlocoTexto from 'components/BlocoTexto'
 import imgFachadaLoja from 'img/fachada-loja.png'
 import imgPecasUniforme from 'img/pecas-uniforme.png'
 import { getUniformes } from 'services/uniformes.service'
-import {busca_url_edital} from "../../services/uniformes.service";
+import {
+  busca_url_edital,
+  busca_url_instrucao_normativa
+} from '../../services/uniformes.service'
 
 import './home.scss'
 
 export default class Home extends Component {
   constructor() {
-      super();
-      this.state = {
-        uniformes: [],
-        edital: {
-          url: "",
-          label: ""
-        }
+    super()
+    this.state = {
+      uniformes: [],
+      edital: {
+        url: '',
+        label: ''
+      },
+      instrucaoNormativa: {
+        url: '',
+        label: ''
       }
+    }
 
-      this.irParaFormulario = this.irParaFormulario.bind(this);
-      this.editalClick = !this.state.edital.url  ? (e) => {this.downloadEdital(e)} : null
-      this.get_edital_link();
+    this.irParaFormulario = this.irParaFormulario.bind(this)
+    this.editalClick = !this.state.edital.url
+      ? e => {
+          this.downloadEdital(e)
+        }
+      : null
+    this.get_edital_link()
+
+    this.instrucaoNormativaClick = !this.state.instrucaoNormativa.url
+      ? e => {
+          this.downloadInstrucaoNormativa(e)
+        }
+      : null
+    this.get_instrucao_normativa_link()
   }
 
   async componentDidMount() {
@@ -29,31 +47,56 @@ export default class Home extends Component {
   }
 
   get_edital_link = async () => {
-      let edital = {}
-      try {
-          const url = await busca_url_edital();
-          edital = {
-              url: url,
-              label: "[Link Edital]"
-          }
-      } catch (e) {
-          edital = {
-              url: "",
-              label: "[Link Edital] (Em Breve)"
-          }
+    let edital = {}
+    try {
+      const url = await busca_url_edital()
+      edital = {
+        url: url,
+        label: '[Link Edital]'
       }
-      this.setState({edital: edital});
+    } catch (e) {
+      edital = {
+        url: '',
+        label: '[Link Edital] (Em Breve)'
+      }
+    }
+    this.setState({ edital: edital })
   }
 
-  downloadEdital = (e) => {
-      e.preventDefault();
-      if (this.state.edital.url) {
-          const link = document.createElement('a');
-          link.href = this.state.edital.url;
-          link.click();
+  get_instrucao_normativa_link = async () => {
+    let instrucaoNormativa = {}
+    try {
+      const url = await busca_url_instrucao_normativa()
+      instrucaoNormativa = {
+        url: url,
+        label: '[Link Instrução Normativa]'
       }
+    } catch (e) {
+      instrucaoNormativa = {
+        url: '',
+        label: '[Link Instrução Normativa] (Em Breve)'
+      }
+    }
+    this.setState({ instrucaoNormativa })
   }
 
+  downloadEdital = e => {
+    e.preventDefault()
+    if (this.state.edital.url) {
+      const link = document.createElement('a')
+      link.href = this.state.edital.url
+      link.click()
+    }
+  }
+
+  downloadInstrucaoNormativa = e => {
+    e.preventDefault()
+    if (this.state.instrucaoNormativa.url) {
+      const link = document.createElement('a')
+      link.href = this.state.instrucaoNormativa.url
+      link.click()
+    }
+  }
 
   irParaFormulario() {
     let path = `/cadastro`
@@ -122,15 +165,10 @@ export default class Home extends Component {
                     <p>
                       <a
                         className="links-intrucoes"
-                        href="#!"
-                        onClick={e => {
-                          e.preventDefault()
-                        }}
+                        href={this.state.instrucaoNormativa.url}
+                        onClick={this.instrucaoNormativaClick}
                       >
-                        {' '}
-                        <strong>
-                          [Link da Instrução Normativa Nº xxxx] (Em Breve)
-                        </strong>
+                        <strong>{this.state.instrucaoNormativa.label}</strong>
                       </a>
                     </p>
                     <p>
@@ -142,10 +180,11 @@ export default class Home extends Component {
                       </a>
                     </p>
                     <p>
-                      <a 
-                        className="links-intrucoes" 
-                        href={this.state.edital.url} 
-                        onClick={this.editalClick}>
+                      <a
+                        className="links-intrucoes"
+                        href={this.state.edital.url}
+                        onClick={this.editalClick}
+                      >
                         <strong>{this.state.edital.label}</strong>
                       </a>
                     </p>
