@@ -1,19 +1,21 @@
 import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { Row, Col, Card, Button, Alert } from "react-bootstrap";
+import { required, valide } from 'helpers/fieldValidators'
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
-import TipoFornecimento from "./TipoFornecimento";
-import BandeiraAnexo from "./BandeiraAnexo";
+import TiposFornecimentos from "./TiposFornecimentos";
+
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme } from "./helper";
 import {
   cadastrarEmpresa,
   getUniformes,
-  verificaCnpj
+  getTiposDocumentos,
+  getTiposFornecimentos,
+  verificaCnpj,
+  busca_url_edital
 } from "services/uniformes.service";
-import { getMeiosRecebimento } from "services/bandeiras.service";
 import { FileUpload } from "components/Input/FileUpload";
-import { required } from "helpers/fieldValidators";
 export let CadastroEmpresa = props => {
   const initialValue = {
     nome_fantasia: "",
@@ -34,8 +36,14 @@ export let CadastroEmpresa = props => {
   const [pagamento, setPagamento] = useState([]);
   const [alerta, setAlerta] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [tiposDocumentos, setTiposDocumentos] = useState([]);
+  const [tiposFornecimentos, setTiposFornecimentos] = useState([]);
+  const [arquivosAnexos, setArquivosAnexos] = useState([]);
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
+  const [limite, setLimite] = useState(false);
+  const [edital, setEdital] = useState({url: '', label: 'edital'});
+  const [editalClick, setEditalClick] = useState(null);
 
   const limparListaLojas = () => {
     setLoja([initialValue]);
@@ -45,12 +53,23 @@ export let CadastroEmpresa = props => {
       const uniformes = await getUniformes();
       setProdutos(uniformes);
     };
-    const carregaFormaPagamento = async () => {
-      const formaPagamento = await getMeiosRecebimento();
-      setPagamento(formaPagamento);
+    const carregaTiposDocumentos = async () => {
+      const documentos = await getTiposDocumentos();
+      setTiposDocumentos(documentos);
     };
+    const carregaTiposFornecimentos = async () => {
+      const fornecimentos = await getTiposFornecimentos();
+      setTiposFornecimentos(fornecimentos);
+    }
     carregaUniformes();
-    carregaFormaPagamento();
+    carregaTiposDocumentos();
+    carregaTiposFornecimentos();
+    setEditalClick(!edital.url
+      ? e => {
+          downloadEdital(e)
+        }
+      : null);
+    get_edital_link();
   }, [limparFornecimento]);
 
   const addLoja = () => {
@@ -72,6 +91,10 @@ export let CadastroEmpresa = props => {
     loja[chave] = valor;
     setLoja([...loja]);
   };
+
+  const maiorQueLimite = (eMaior) => {
+    setLimite(eMaior);
+  }
 
   const onUpdateUniforme = (valor, chave) => {
     fornecimento[chave] = valor;
@@ -102,6 +125,24 @@ export let CadastroEmpresa = props => {
     }, 10000);
   };
 
+  const downloadEdital = e => {
+    //e.preventDefault()
+    if (edital.url) {
+      const link = document.createElement('a')
+      link.href = edital.url
+      link.click()
+    }
+  }
+
+  const get_edital_link = async () => {
+    let url = ''
+    try {
+      url = await busca_url_edital()
+    } catch (e) {
+    }
+    setEdital({...edital, url })
+  }
+
   const onSubmit = async payload => {
     
     let cnpjStatus = await verificaCnpj(payload.cnpj);
@@ -120,40 +161,48 @@ export let CadastroEmpresa = props => {
       return;
     }
 
+    if (limite) {
+      window.scrollTo(0, 0);
+      showMessage("O seu valor está acima do permitido, por este motivo seu cadastro não será registrado.");
+      return;
+    }
+
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
-    if (validaMeiosRecebimentos(bandeiras)) {
-      if (validaUniformes(novoFornecimento)) {
+    if (validaUniformes(novoFornecimento)) {
+      
+      payload["lojas"] = loja;
+      payload["meios_de_recebimento"] = bandeiras;
+      payload["ofertas_de_uniformes"] = novoFornecimento;
+      payload["arquivos_anexos"] = arquivosAnexos;
+      delete payload['foto_fachada']
+      delete payload['arqs_anexos']
+
+      try {
+        const response = await cadastrarEmpresa(payload);
+
+        if (response.status === 201) {
+          props.reset();
+          limparListaLojas();
+          showSucess();
+        } else {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+          );
+        }
         
-        payload["lojas"] = loja;
-        payload["meios_de_recebimento"] = bandeiras;
-        payload["ofertas_de_uniformes"] = novoFornecimento;
-
-        try {
-          const response = await cadastrarEmpresa(payload);
-
-          if (response.status === 201) {
-            props.reset();
-            limparListaLojas();
-            showSucess();
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
-          }
-        } catch (error) {
-          if (error.response.data.email) {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-            );
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
-          }
+      } catch (error) {
+        if (error.response.data.email) {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+          );
+        } else {
+          window.scrollTo(0, 0);
+          showMessage(
+            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+          );
         }
       }
     }
@@ -202,6 +251,23 @@ export let CadastroEmpresa = props => {
     }
     return true;
   };
+
+  const adicionaTipoDocumento = (e, tipo) => {
+    const arquivo_anexo = {
+      ...e[0],
+      tipo_documento: tipo.id
+    }
+    let arquivos = arquivosAnexos;
+    arquivos.push(arquivo_anexo);
+    setArquivosAnexos(arquivos);
+  }
+
+  const removeTipoDocumento = (tipo) => {
+    const arquivos = arquivosAnexos.filter((item) => {
+      return item.tipo_documento !== tipo.id
+    });
+    setArquivosAnexos(arquivos);
+  }
 
   const { handleSubmit, pristine, submitting, reset } = props;
 
@@ -283,41 +349,17 @@ export let CadastroEmpresa = props => {
                     <Card.Body>
                       <Card.Title>Tipo de Fornecimento</Card.Title>
                       <hr />
-                      {produtos
-                        ? produtos.map((value, key) => {
-                            return (
-                              <TipoFornecimento
-                                produto={value.nome}
-                                index={value.id}
-                                chave={key}
+                        {tiposFornecimentos
+                        ? tiposFornecimentos.map((tipo, key) => {
+                          return (                              
+                              <TiposFornecimentos 
+                                key={key}
+                                tipo={tipo}
                                 onUpdate={onUpdateUniforme}
-                                limpar={limparFornecimento}
-                                setLimpar={setLimparFornecimento}
-                              />
-                            );
-                          })
-                        : null}
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Meios de Recebimentos</Card.Title>
-                      <hr />
-                      {pagamento
-                        ? pagamento.map((value, key) => {
-                            return (
-                              <BandeiraAnexo
-                                label={value.nome}
-                                chave={key}
-                                valor={value.id}
-                                onUpdate={addBandeira}
-                                onRemove={delBandeira}
-                              />
-                            );
-                          })
-                        : null}
+                                maiorQueLimite={maiorQueLimite}/>
+                          )
+                        })
+                        :null}
                     </Card.Body>
                   </Card>
                 </Row>
@@ -326,16 +368,28 @@ export let CadastroEmpresa = props => {
                     <Card.Body>
                       <Card.Title>Documentos Anexos</Card.Title>
                       <hr />
-                      <Field
+                      {tiposDocumentos? tiposDocumentos.map((tipo, key)=> {
+                        return (
+                        <Field
                         component={FileUpload}
-                        name="arquivos_anexos"
-                        id="anexos_loja"
+                        name={`arqs_${key}`}
+                        id={`${key}`}
+                        key={key}
                         accept="file/pdf"
                         className="form-control-file"
-                        label="Anexos / Documentos"
-                        required
-                        validate={required}
-                      />
+                        label={tipo.nome}
+                        required={tipo.obrigatorio}
+                        validate={valide(tipo.obrigatorio)}
+                        multiple={false}
+                        onChange={e => {
+                          if (e.length > 0) {
+                            adicionaTipoDocumento(e, tipo);
+                          } else {
+                            removeTipoDocumento(tipo);
+                          }
+                        }}
+                      />);
+                      }): null}
                     </Card.Body>
                   </Card>
                 </Row>
@@ -370,8 +424,14 @@ export let CadastroEmpresa = props => {
                     id={5}
                   />
                   <label title="" class="form-check-label">
-                    Li e concordo com os termos e condições apresentados neste
-                    portal.
+                    Li e concordo com os termos e condições apresentados no 
+                    <a
+                        className="links-intrucoes"
+                        href={edital.url}
+                        onClick={editalClick}
+                      >
+                        <strong> {edital.label}.</strong>
+                      </a>
                   </label>
                 </div>
               </div>

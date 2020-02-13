@@ -374,3 +374,13 @@ h2 {
     }
   }
 }
+
+.tipo-fornecimento {
+  padding-left: 30px;
+  .tipo-fornecimento-quantidade {
+    padding-left: 0px;
+  }
+  .tipo-fornecimento-valor {
+    padding-right: 0px;
+  }
+}
