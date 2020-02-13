@@ -12,10 +12,10 @@ import {
   getTiposDocumentos,
   getTiposFornecimentos,
   verificaCnpj,
+  busca_url_edital
 } from "services/uniformes.service";
 import { getMeiosRecebimento } from "services/bandeiras.service";
 import { FileUpload } from "components/Input/FileUpload";
-import { required } from "helpers/fieldValidators";
 export let CadastroEmpresa = props => {
   const initialValue = {
     nome_fantasia: "",
@@ -42,6 +42,8 @@ export let CadastroEmpresa = props => {
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
   const [limite, setLimite] = useState(false);
+  const [edital, setEdital] = useState({url: '', label: 'portal'});
+  const [editalClick, setEditalClick] = useState(null);
 
   const limparListaLojas = () => {
     setLoja([initialValue]);
@@ -67,6 +69,12 @@ export let CadastroEmpresa = props => {
     carregaFormaPagamento();
     carregaTiposDocumentos();
     carregaTiposFornecimentos();
+    setEditalClick(!edital.url
+      ? e => {
+          downloadEdital(e)
+        }
+      : null);
+    get_edital_link();
   }, [limparFornecimento]);
 
   const addLoja = () => {
@@ -121,6 +129,24 @@ export let CadastroEmpresa = props => {
       setMensagem("");
     }, 10000);
   };
+
+  const downloadEdital = e => {
+    //e.preventDefault()
+    if (edital.url) {
+      const link = document.createElement('a')
+      link.href = edital.url
+      link.click()
+    }
+  }
+
+  const get_edital_link = async () => {
+    let url = ''
+    try {
+      url = await busca_url_edital()
+    } catch (e) {
+    }
+    setEdital({...edital, url })
+  }
 
   const onSubmit = async payload => {
     
@@ -328,21 +354,6 @@ export let CadastroEmpresa = props => {
                     <Card.Body>
                       <Card.Title>Tipo de Fornecimento</Card.Title>
                       <hr />
-                      {/* {produtos
-                        ? produtos.map((value, key) => {
-                            return (
-                              <TipoFornecimento
-                                produto={value.nome}
-                                index={value.id}
-                                chave={key}
-                                onUpdate={onUpdateUniforme}
-                                limpar={limparFornecimento}
-                                setLimpar={setLimparFornecimento}
-                              />
-                            );
-                          })
-                        : null} */}
-
                         {tiposFornecimentos
                         ? tiposFornecimentos.map((tipo, key) => {
                           return (                              
@@ -416,8 +427,14 @@ export let CadastroEmpresa = props => {
                     id={5}
                   />
                   <label title="" class="form-check-label">
-                    Li e concordo com os termos e condições apresentados neste
-                    portal.
+                    Li e concordo com os termos e condições apresentados neste 
+                    <a
+                        className="links-intrucoes"
+                        href={edital.url}
+                        onClick="{this.editalClick}"
+                      >
+                        <strong> {edital.label}.</strong>
+                      </a>
                   </label>
                 </div>
               </div>

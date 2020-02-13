@@ -65,5 +65,4 @@ export const busca_url_instrucao_normativa = async () => {
     `${endPont.API_URL}/instrucao-normativa`,
     authHeader
   )
-  return `${endPont.API_URL}${response.data}`
 }
