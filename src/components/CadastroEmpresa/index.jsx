@@ -2,9 +2,8 @@ import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { Row, Col, Card, Button, Alert } from "react-bootstrap";
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
-import TipoFornecimento from "./TipoFornecimento";
 import TiposFornecimentos from "./TiposFornecimentos";
-import BandeiraAnexo from "./BandeiraAnexo";
+
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme } from "./helper";
 import {
@@ -42,6 +41,7 @@ export let CadastroEmpresa = props => {
   const [arquivosAnexos, setArquivosAnexos] = useState([]);
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
+  const [limite, setLimite] = useState(false);
 
   const limparListaLojas = () => {
     setLoja([initialValue]);
@@ -88,6 +88,10 @@ export let CadastroEmpresa = props => {
     loja[chave] = valor;
     setLoja([...loja]);
   };
+
+  const maiorQueLimite = (eMaior) => {
+    setLimite(eMaior);
+  }
 
   const onUpdateUniforme = (valor, chave) => {
     fornecimento[chave] = valor;
@@ -136,6 +140,12 @@ export let CadastroEmpresa = props => {
       return;
     }
 
+    if (limite) {
+      window.scrollTo(0, 0);
+      showMessage("Valor limite atingido.");
+      return;
+    }
+
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
     if (validaUniformes(novoFornecimento)) {
@@ -160,6 +170,7 @@ export let CadastroEmpresa = props => {
             "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
           );
         }
+        
       } catch (error) {
         if (error.response.data.email) {
           window.scrollTo(0, 0);
@@ -334,10 +345,11 @@ export let CadastroEmpresa = props => {
 
                         {tiposFornecimentos
                         ? tiposFornecimentos.map((tipo, key) => {
-                          return (
-                            <ul>
-                              <TiposFornecimentos tipo={tipo}/>
-                            </ul>
+                          return (                              
+                              <TiposFornecimentos 
+                                tipo={tipo}
+                                onUpdate={onUpdateUniforme}
+                                maiorQueLimite={maiorQueLimite}/>
                           )
                         })
                         :null}

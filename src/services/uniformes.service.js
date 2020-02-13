@@ -28,6 +28,14 @@ export const getTiposDocumentos = async () => {
   return response.data;
 }
 
+export const getLimites = async () => {
+  const response = await axios.get(
+    `${endPont.API_URL}/limites-categorias/`,
+    authHeader
+  )
+  return response.data;
+}
+
 export const cadastrarEmpresa = async payload => {
   const response = await axios.post(
     `${endPont.API_URL}/proponentes/`,

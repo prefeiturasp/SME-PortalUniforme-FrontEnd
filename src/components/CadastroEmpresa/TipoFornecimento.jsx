@@ -1,56 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { InputLabelInLine } from "components/Input/InputLabelInLine";
-import { CheckInputLabel } from "components/Input/CheckInputLabel";
 
 const TipoFornecimento = props => {
   const initialValue = { preco: "", uniforme: "" };
   const [produto, setPoduto] = useState("");
-  const [valor, setValor] = useState("");
-  const [requerido, setRequerido] = useState(false);
-  const [desabilitado, setDesabilitado] = useState(true);
   const [payload, setPayload] = useState(initialValue);
   const [obrigar, setObrigar] = useState(false);
-  const [checado, SetChecado] = useState(false)
 
   useEffect(() => {
     setPoduto(props.produto);
-    limpafornecimento();
   }, [payload, props]);
 
-  const limpafornecimento = () => {
-    if (props.limpar) {
-      setValor("");
-      setDesabilitado(true);
-      setRequerido(false);
-      delUniforme();
-      SetChecado(false)
-      props.setLimpar(false)
-    }
-  };
-
-
-  const addValor = valor => {
-    setValor(valor);
+  const addValor = (valor, quantidade) => {
+    props.addValor(valor.replace(",", "."), quantidade, props.chave, props.index);
     setPayload({ ...payload, preco: valor.replace(",", ".") });
-    props.onUpdate(payload, props.chave);
-  };
-
-  const checkProduto = event => {
-    if (event) {
-      
-      setDesabilitado(false);
-      setRequerido(true);
-      addUniforme();
-      SetChecado(true)
-    } else {
-      SetChecado(false)
-      setDesabilitado(true);
-      setRequerido(false);
-      delUniforme();
-      setValor("");
-      setObrigar(false);
-    }
   };
 
   const addUniforme = () => {
@@ -73,31 +37,27 @@ const TipoFornecimento = props => {
 
   return (
     <Fragment>
-      <Row>
+      <Row className="tipo-fornecimento">
         <Col lg={4}>
-          {/* <CheckInputLabel
-            label={produto}
-            type="checkbox"
-            onChange={e => checkProduto(e.target.checked)}
-            checked={checado}
-          /> */}
-          {produto}
+          <p>{props.uniforme.descricao}</p>
         </Col>
         <Col lg={4}>
           <InputLabelInLine
             autocomplete="off"
             className={obrigar ? "is-invalid" : null}
             onFocus={obrigar ? true : false}
-            label="Valor R$"
+            label="R$"
             style={{ marginTop: "-10px" }}
             type="number"
-            value={valor}
-            disabled={desabilitado}
-            required={requerido}
-            onChange={e => addValor(e.target.value)}
+            value={props.valor}
+            disabled={props.desabilitado}
+            required={props.requerido}
+            onChange={e => addValor(e.target.value, props.uniforme.quantidade)}
             onBlur={e => valorDevido(e.target.value)}
-            
           />
+        </Col>
+        <Col lg={4}>
+          <p><strong>Total R$:</strong>{props.total}</p>
         </Col>
       </Row>
     </Fragment>
