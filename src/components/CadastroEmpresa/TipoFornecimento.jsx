@@ -39,7 +39,7 @@ const TipoFornecimento = props => {
     <Fragment>
       <Row className="tipo-fornecimento">
         <Col sm={4}>
-          <p>{props.uniforme.descricao}</p>
+          <p><strong>{props.uniforme.nome}</strong></p>
         </Col>
         <Col sm={4} className="tipo-fornecimento-valor">
           <InputLabelInLine

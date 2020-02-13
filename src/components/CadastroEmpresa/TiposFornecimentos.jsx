@@ -99,6 +99,7 @@ const TiposFornecimentos = props => {
                               uniforme={uniforme}
                               index={uniforme.id}
                               chave={key}
+                              key={key}
                               desabilitado={desabilitado}
                               valor={uniformesInfo[key].preco}
                               addValor={addValor}
@@ -117,7 +118,7 @@ const TiposFornecimentos = props => {
                 </Col>
                 <Col sm={4} className="text-right">
                     <strong>R$</strong> {sum(uniformesInfo.map(item => (item.total)))}
-                    <Form.Text className="text-muted">
+                    <Form.Text className="text-danger">
                         {maiorQueLimite(sum(uniformesInfo.map(item => (item.total))))
                          ? `Valor maior que limite: ${limite}`
                          : ''}

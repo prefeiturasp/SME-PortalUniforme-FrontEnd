@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { Row, Col, Card, Button, Alert } from "react-bootstrap";
+import { required, valide } from 'helpers/fieldValidators'
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TiposFornecimentos from "./TiposFornecimentos";
@@ -14,7 +15,6 @@ import {
   verificaCnpj,
   busca_url_edital
 } from "services/uniformes.service";
-import { getMeiosRecebimento } from "services/bandeiras.service";
 import { FileUpload } from "components/Input/FileUpload";
 export let CadastroEmpresa = props => {
   const initialValue = {
@@ -42,7 +42,7 @@ export let CadastroEmpresa = props => {
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
   const [limite, setLimite] = useState(false);
-  const [edital, setEdital] = useState({url: '', label: 'portal'});
+  const [edital, setEdital] = useState({url: '', label: 'edital'});
   const [editalClick, setEditalClick] = useState(null);
 
   const limparListaLojas = () => {
@@ -53,10 +53,6 @@ export let CadastroEmpresa = props => {
       const uniformes = await getUniformes();
       setProdutos(uniformes);
     };
-    const carregaFormaPagamento = async () => {
-      const formaPagamento = await getMeiosRecebimento();
-      setPagamento(formaPagamento);
-    };
     const carregaTiposDocumentos = async () => {
       const documentos = await getTiposDocumentos();
       setTiposDocumentos(documentos);
@@ -66,7 +62,6 @@ export let CadastroEmpresa = props => {
       setTiposFornecimentos(fornecimentos);
     }
     carregaUniformes();
-    carregaFormaPagamento();
     carregaTiposDocumentos();
     carregaTiposFornecimentos();
     setEditalClick(!edital.url
@@ -168,7 +163,7 @@ export let CadastroEmpresa = props => {
 
     if (limite) {
       window.scrollTo(0, 0);
-      showMessage("Valor limite atingido.");
+      showMessage("O seu valor está acima do permitido, por este motivo seu cadastro não será registrado.");
       return;
     }
 
@@ -358,6 +353,7 @@ export let CadastroEmpresa = props => {
                         ? tiposFornecimentos.map((tipo, key) => {
                           return (                              
                               <TiposFornecimentos 
+                                key={key}
                                 tipo={tipo}
                                 onUpdate={onUpdateUniforme}
                                 maiorQueLimite={maiorQueLimite}/>
@@ -376,13 +372,14 @@ export let CadastroEmpresa = props => {
                         return (
                         <Field
                         component={FileUpload}
-                        name="arqs_anexos"
-                        id={key}
+                        name={`arqs_${key}`}
+                        id={`${key}`}
+                        key={key}
                         accept="file/pdf"
                         className="form-control-file"
                         label={tipo.nome}
                         required={tipo.obrigatorio}
-                        validate={tipo.obrigatorio}
+                        validate={valide(tipo.obrigatorio)}
                         multiple={false}
                         onChange={e => {
                           if (e.length > 0) {
@@ -427,7 +424,7 @@ export let CadastroEmpresa = props => {
                     id={5}
                   />
                   <label title="" class="form-check-label">
-                    Li e concordo com os termos e condições apresentados neste 
+                    Li e concordo com os termos e condições apresentados no 
                     <a
                         className="links-intrucoes"
                         href={edital.url}
