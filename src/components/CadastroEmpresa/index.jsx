@@ -431,7 +431,7 @@ export let CadastroEmpresa = props => {
                     <a
                         className="links-intrucoes"
                         href={edital.url}
-                        onClick="{this.editalClick}"
+                        onClick={editalClick}
                       >
                         <strong> {edital.label}.</strong>
                       </a>
