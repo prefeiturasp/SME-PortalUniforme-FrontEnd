@@ -38,10 +38,10 @@ const TipoFornecimento = props => {
   return (
     <Fragment>
       <Row className="tipo-fornecimento">
-        <Col lg={4}>
+        <Col sm={4}>
           <p>{props.uniforme.descricao}</p>
         </Col>
-        <Col lg={4}>
+        <Col sm={4} className="tipo-fornecimento-valor">
           <InputLabelInLine
             autocomplete="off"
             className={obrigar ? "is-invalid" : null}
@@ -56,8 +56,9 @@ const TipoFornecimento = props => {
             onBlur={e => valorDevido(e.target.value)}
           />
         </Col>
-        <Col lg={4}>
-          <p><strong>Total R$:</strong>{props.total}</p>
+        <Col sm={4} className="text-right tipo-fornecimento-quantidade">
+          <div class="float-left">x {props.uniforme.quantidade}</div>
+          <strong>R$:</strong> {props.total}
         </Col>
       </Row>
     </Fragment>

@@ -60,7 +60,7 @@ const TiposFornecimentos = props => {
 
     const addValor = (valor, quantidade, key, index) => {
         let uniInfos = uniformesInfo
-        let total = valor ? (quantidade * parseFloat(valor)).toFixed(2): 0;
+        let total = valor ? parseFloat((quantidade * parseFloat(valor)).toFixed(2)): 0;
         uniInfos[key].preco = valor
         uniInfos[key].total = total
         setUniformesInfo(uniInfos);
@@ -68,7 +68,7 @@ const TiposFornecimentos = props => {
     };
 
     const getSum = (total, num) => {
-        return total + Math.round(num);
+        return total + num;
     }
     
     const sum = (prices) => {
@@ -112,8 +112,11 @@ const TiposFornecimentos = props => {
                 </Col>
             </Row>
             <Row>
-                <Col lg={{ span: 4, offset: 8 }}>
-                    <strong>Valor Total R$:</strong> {sum(uniformesInfo.map(item => (item.total)))}
+                <Col sm={{ span: 4, offset: 4 }}>
+                    <div class="float-right"><strong>TOTAL</strong></div>
+                </Col>
+                <Col sm={4} className="text-right">
+                    <strong>R$</strong> {sum(uniformesInfo.map(item => (item.total)))}
                     <Form.Text className="text-muted">
                         {maiorQueLimite(sum(uniformesInfo.map(item => (item.total))))
                          ? `Valor maior que limite: ${limite}`
