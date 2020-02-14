@@ -130,6 +130,7 @@ export let CadastroEmpresa = props => {
     if (edital.url) {
       const link = document.createElement('a')
       link.href = edital.url
+      link.target="_blank"
       link.click()
     }
   }
@@ -428,6 +429,7 @@ export let CadastroEmpresa = props => {
                     <a
                         className="links-intrucoes"
                         href={edital.url}
+                        target="_blank"
                         onClick={editalClick}
                       >
                         <strong> {edital.label}.</strong>
