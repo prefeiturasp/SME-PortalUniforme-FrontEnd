@@ -274,10 +274,11 @@ export default class Home extends Component {
               </h3>
               <p className="mb-0">
                 <button
-                  className="btn btn-primary pl-4 pr-4"
+                  size="lg"
+                  className="btn btn-light pl-4 pr-4"
                   onClick={this.irParaFormulario}
                 >
-                  Cadastrar fornecedor
+                  <strong>Cadastre sua Loja</strong>
                 </button>
               </p>
             </div>
