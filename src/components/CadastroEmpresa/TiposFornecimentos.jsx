@@ -31,7 +31,7 @@ const TiposFornecimentos = props => {
             setLimite(parseFloat(limite[0].preco_maximo));
         };
         carregaLimite();
-    });
+    }, {});
     
     const checkProduto = event => {
         if (event) {
