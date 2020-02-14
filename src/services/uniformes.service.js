@@ -64,4 +64,6 @@ export const busca_url_instrucao_normativa = async () => {
     `${endPont.API_URL}/instrucao-normativa`,
     authHeader
   )
+  const domain = endPont.API_URL.includes('/api') ? endPont.API_URL.slice(0, -4) : endPont.API_URL
+  return `${domain}${response.data}`
 }
