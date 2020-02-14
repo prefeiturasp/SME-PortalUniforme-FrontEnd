@@ -85,7 +85,8 @@ const TiposFornecimentos = props => {
         <Fragment>
             <Row>
                 <Col>
-                    <CheckInputLabel 
+                    <CheckInputLabel
+                        id={props.tipo.id} 
                         label={props.tipo.nome}
                         key={props.tipo.id}
                         type="checkbox"
