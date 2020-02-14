@@ -60,7 +60,7 @@ export class FileUpload extends React.Component {
   }
 
   onSelect = (e, files) => {
-    if (this.fileUpload.current.props) {
+    if (this.fileUpload.current.files.length > 0) {
       this.setDisabled(true);
     }
   }

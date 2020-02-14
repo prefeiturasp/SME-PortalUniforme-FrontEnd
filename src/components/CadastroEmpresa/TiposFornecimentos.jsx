@@ -31,7 +31,7 @@ const TiposFornecimentos = props => {
             setLimite(parseFloat(limite[0].preco_maximo));
         };
         carregaLimite();
-    });
+    }, {});
     
     const checkProduto = event => {
         if (event) {
@@ -85,7 +85,8 @@ const TiposFornecimentos = props => {
         <Fragment>
             <Row>
                 <Col>
-                    <CheckInputLabel 
+                    <CheckInputLabel
+                        id={props.tipo.id} 
                         label={props.tipo.nome}
                         key={props.tipo.id}
                         type="checkbox"

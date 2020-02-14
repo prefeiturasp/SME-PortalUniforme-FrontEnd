@@ -85,6 +85,7 @@ export default class Home extends Component {
     if (this.state.edital.url) {
       const link = document.createElement('a')
       link.href = this.state.edital.url
+      link.target="_blank"
       link.click()
     }
   }
@@ -94,6 +95,7 @@ export default class Home extends Component {
     if (this.state.instrucaoNormativa.url) {
       const link = document.createElement('a')
       link.href = this.state.instrucaoNormativa.url
+      link.target="_blank"
       link.click()
     }
   }
@@ -195,6 +197,7 @@ export default class Home extends Component {
                       <a
                         className="links-intrucoes"
                         href={this.state.instrucaoNormativa.url}
+                        target="_blank"
                         onClick={this.instrucaoNormativaClick}
                       >
                         <strong>{this.state.instrucaoNormativa.label}</strong>
@@ -212,6 +215,7 @@ export default class Home extends Component {
                       <a
                         className="links-intrucoes"
                         href={this.state.edital.url}
+                        target="_blank"
                         onClick={this.editalClick}
                       >
                         <strong>{this.state.edital.label}</strong>
