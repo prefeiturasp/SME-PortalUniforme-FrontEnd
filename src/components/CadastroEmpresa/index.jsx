@@ -176,6 +176,7 @@ export let CadastroEmpresa = props => {
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
       payload["arquivos_anexos"] = arquivosAnexos;
+      payload['telefone'] = payload['telefone'].replace("_", "");
       delete payload['foto_fachada']
       delete payload['arqs_anexos']
 
