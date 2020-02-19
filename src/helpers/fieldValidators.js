@@ -82,7 +82,7 @@ export const validaTelefone = value => {
     .replace(")", "")
     .replace(" ", "")
     .replace(/_/g, "");
-  return numero.length >= 10 ? undefined : "Necessário um telefone valido!";
+  return numero.length >= 10 ? undefined : "Necessário um telefone válido!";
 };
 
 export const validaCEP = value => {
