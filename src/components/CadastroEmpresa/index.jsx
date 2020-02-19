@@ -271,6 +271,10 @@ export let CadastroEmpresa = props => {
     setArquivosAnexos(arquivos);
   }
 
+  const labelTemplate = (tipo) => {
+    return <div dangerouslySetInnerHTML={{ __html: tipo.nome }}/>
+  }
+
   const { handleSubmit, pristine, submitting, reset } = props;
 
   return (
@@ -379,7 +383,7 @@ export let CadastroEmpresa = props => {
                         key={key}
                         accept="file/pdf"
                         className="form-control-file"
-                        label={tipo.nome}
+                        label={labelTemplate(tipo)}
                         required={tipo.obrigatorio}
                         validate={valide(tipo.obrigatorio)}
                         multiple={false}
