@@ -97,6 +97,7 @@ const LojaFisica = props => {
             label="Nome Fantasia"
             placeholder="Nome fantasia da loja."
             name={`loja.nome_fantasia_${props.chave}`}
+            id={`loja.nome_fantasia_${props.chave}`}
             value={nome_fantasia}
             onChange={e => {
               const valor = e.target.value;
@@ -137,6 +138,7 @@ const LojaFisica = props => {
             autocomplete="off"
             value={bairro}
             label="Bairro"
+            id={`bairro_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setBairro(valor);
@@ -153,6 +155,7 @@ const LojaFisica = props => {
             label="Endereço"
             placeholder="Digite o logradouro"
             name={`loja.endereco_${props.chave}`}
+            id={`loja.endereco_${props.chave}`}
             value={endereco}
             onChange={e => {
               const valor = e.target.value;
@@ -169,6 +172,7 @@ const LojaFisica = props => {
             autocomplete="off"
             value={numero}
             label="Número"
+            id={`numero_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setNumero(valor);
@@ -181,6 +185,7 @@ const LojaFisica = props => {
           <InputLabel
             value={complemento}
             label="Complemento"
+            id={`complemento_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setComplemento(valor);
@@ -196,6 +201,7 @@ const LojaFisica = props => {
             autocomplete="off"
             label="Cidade"
             value={cidade}
+            id={`cidade_${props.chave}`}
             placeholder="São Paulo"
             className="form-control mb-2"
             required
@@ -234,6 +240,7 @@ const LojaFisica = props => {
             mask="(99) 9999-99999"
             label="Telefone"
             value={telefone}
+            id={`telefone_${props.chave}`}
             placeholder="Fixo ou celular"
             className="form-control mb-2"
             required

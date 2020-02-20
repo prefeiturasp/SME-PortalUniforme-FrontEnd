@@ -69,11 +69,11 @@ const DadosEmpresa = props => {
       />
       <Field
         component={InputText}
-        label="Nome Responsável"
+        label="Nome do responsável"
         name="responsavel"
         required
         validate={required}
-        placeholder="Digite o nome do resposável da empresa"
+        placeholder="Digite o nome do responsável da empresa"
       />
       <Field
         {...fieldCel}
