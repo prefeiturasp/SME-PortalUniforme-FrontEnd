@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Routes from './components/Routes'
 import Rodape from "./components/Rodape/Rodape";
 import MenuAcessibilidade from "./components/MenuSuperior/MenuAcessibilidade";

@@ -198,6 +198,7 @@ export default class Home extends Component {
                         className="links-intrucoes"
                         href={this.state.instrucaoNormativa.url}
                         target="_blank"
+                        rel="noopener noreferrer"
                         onClick={this.instrucaoNormativaClick}
                       >
                         <strong>{this.state.instrucaoNormativa.label}</strong>
@@ -216,6 +217,7 @@ export default class Home extends Component {
                         className="links-intrucoes"
                         href={this.state.edital.url}
                         target="_blank"
+                        rel="noopener noreferrer"
                         onClick={this.editalClick}
                       >
                         <strong>{this.state.edital.label}</strong>

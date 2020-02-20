@@ -18,7 +18,6 @@ const TiposFornecimentos = props => {
     const [desabilitado, setDesabilitado] = useState(true);
     const [checado, setChecado] = useState(false);
     const [limite, setLimite] = useState(0);
-    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         const carregaLimite = async () => {

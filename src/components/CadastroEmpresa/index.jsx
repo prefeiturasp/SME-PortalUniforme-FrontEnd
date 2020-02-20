@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { Row, Col, Card, Button, Alert } from "react-bootstrap";
-import { required, valide } from 'helpers/fieldValidators'
+import { valide } from 'helpers/fieldValidators'
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
 import TiposFornecimentos from "./TiposFornecimentos";
@@ -33,7 +33,6 @@ export let CadastroEmpresa = props => {
   const [produtos, setProdutos] = useState([]);
   const [fornecimento, setFornecimento] = useState([]);
   const [bandeiras, setBandeiras] = useState([]);
-  const [pagamento, setPagamento] = useState([]);
   const [alerta, setAlerta] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [tiposDocumentos, setTiposDocumentos] = useState([]);
@@ -99,19 +98,6 @@ export let CadastroEmpresa = props => {
   const onUpdateUniforme = (valor, chave) => {
     fornecimento[chave] = valor;
     setFornecimento([...fornecimento]);
-  };
-
-  const addBandeira = value => {
-    bandeiras.push(value);
-    setBandeiras([...bandeiras]);
-  };
-
-  const delBandeira = value => {
-    const key = bandeiras.indexOf(value);
-    if (key) {
-      bandeiras.splice(key, 1);
-      setBandeiras(bandeiras);
-    }
   };
 
   const contadorLoja = useMemo(() => loja.length, [loja]);
@@ -325,6 +311,8 @@ export let CadastroEmpresa = props => {
                       {loja.map((value, key) => (
                         <>
                           <LojaFisica
+                            id={key}
+                            key={key}
                             chave={key}
                             nome_fantasia={value.nome_fantasia}
                             endereco={value.endereco}
