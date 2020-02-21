@@ -1,0 +1,42 @@
+@import "../../styles/variaveis.scss";
+
+div.desenvolvimento-escolar {
+  div.tabs {
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 1em;
+    margin-right: 1em;
+    .tab {
+      padding-bottom: 5px;
+      &.active {
+        color: $corAzulPortal;
+        border-bottom: 3px solid $corAzulPortal;
+      }
+      &.inactive {
+        color: $grayDisabled;
+        border-bottom: 3px solid $grayDisabled;
+      }
+    }
+  }
+}
+
+div.file-existent {
+  div.label {
+    font-size: 14px;
+    color: $gray;
+  }
+  span.delete {
+    margin-left: 2em;
+    font-weight: bold;
+    background-color: $corAzulFiltro;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    &:hover {
+      background-color: $corAzulPortal;
+    }
+  }
+}

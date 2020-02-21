@@ -6,7 +6,6 @@ import { HelpText } from "components/HelpText";
 import { asyncForEach, readerFile } from "helpers/utils";
 
 class CustomFileUploadPR extends FileUploadPR {
-
   async upload() {
     const { onUploadChange } = this.props;
     const { files } = this.state;
@@ -27,10 +26,13 @@ class CustomFileUploadPR extends FileUploadPR {
       if (i !== index) return v;
     });
 
-    this.setState({
-      files: currentFiles
-    }, this.upload);
-    
+    this.setState(
+      {
+        files: currentFiles
+      },
+      this.upload
+    );
+
     this.props.setDisabled(false);
   }
 }
@@ -38,7 +40,7 @@ class CustomFileUploadPR extends FileUploadPR {
 export class FileUpload extends React.Component {
   state = {
     disabled: false
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -55,15 +57,15 @@ export class FileUpload extends React.Component {
     }
   }
 
-  setDisabled = (value) => {
-    this.setState({disabled: value})
-  }
+  setDisabled = value => {
+    this.setState({ disabled: value });
+  };
 
   onSelect = (e, files) => {
     if (this.fileUpload.current.files.length > 0) {
       this.setDisabled(true);
     }
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (this.props.resetarFile && !prevProps.resetarFile) {
