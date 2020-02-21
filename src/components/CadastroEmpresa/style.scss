@@ -1,22 +1,41 @@
 @import "../../styles/variaveis.scss";
 
 div.desenvolvimento-escolar {
-  div.tabs {
-    font-weight: bold;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    margin-left: 1em;
-    margin-right: 1em;
-    .tab {
-      padding-bottom: 5px;
-      &.active {
-        color: $corAzulPortal;
-        border-bottom: 3px solid $corAzulPortal;
+  .container {
+    div.tabs {
+      font-weight: bold;
+      text-align: center;
+      font-size: 20px;
+      cursor: pointer;
+      margin-left: 2em;
+      margin-right: 1em;
+      .tab {
+        padding-bottom: 5px;
+        margin-left: -8px;
+        &.active {
+          color: $corAzulPortal;
+          border-bottom: 3px solid $corAzulPortal;
+        }
+        &.inactive {
+          color: $grayDisabled;
+          border-bottom: 3px solid $grayDisabled;
+        }
+        &.enabled {
+          color: $blueEnabled;
+          border-bottom: 3px solid $blueEnabled;
+        }
       }
-      &.inactive {
-        color: $grayDisabled;
-        border-bottom: 3px solid $grayDisabled;
+    }
+    .card {
+      .card-body {
+        .card-title {
+          font-size: 20px;
+          font-weight: bold;
+        }
+        .undertitle {
+          font-size: 16px;
+          font-weight: bold;
+        } 
       }
     }
   }

@@ -47,8 +47,7 @@ export const cadastrarEmpresa = async payload => {
 
 export const getEmpresa = async uuid => {
   const response = await axios.get(
-    //`${endPont.API_URL}/proponentes/${uuid}/`,
-    `https://portaldeuniformes.sme.prefeitura.sp.gov.br/api/proponentes/${uuid}/`,
+    `${endPont.API_URL}/proponentes/${uuid}/`,
     authHeader
   );
   return response;

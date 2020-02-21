@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useMemo, useEffect } from "react";
 import HTTP_STATUS from "http-status-codes";
-import { Row, Col, Card, Button, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { valide } from "helpers/fieldValidators";
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
@@ -45,7 +45,7 @@ export let CadastroEmpresa = props => {
   const [tiposDocumentos, setTiposDocumentos] = useState([]);
   const [tiposFornecimentos, setTiposFornecimentos] = useState([]);
   const [arquivosAnexos, setArquivosAnexos] = useState([]);
-  const [tab, setTab] = useState("anexos");
+  const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
   const [limparFornecimento, setLimparFornecimento] = useState(false);
   const [limite, setLimite] = useState(false);
@@ -60,6 +60,7 @@ export let CadastroEmpresa = props => {
       const urlParams = new URLSearchParams(window.location.search);
       const uuid = urlParams.get("uuid");
       if (uuid) {
+        setTab("anexos");
         const empresa = await getEmpresa(uuid);
         setEmpresa(empresa.data);
         setUuid(uuid);
@@ -197,7 +198,7 @@ export let CadastroEmpresa = props => {
         if (response.status === HTTP_STATUS.CREATED) {
           props.reset();
           limparListaLojas();
-          showSucess();
+          window.location.search += `?uuid=${response.data.uuid}`;
         } else {
           window.scrollTo(0, 0);
           showMessage(
@@ -306,8 +307,8 @@ export let CadastroEmpresa = props => {
 
   return (
     <Fragment>
-      <div id="conteudo" className="w-100 desenvolvimento-escolar">
-        <div className="container pt-5 pb-5">
+      <div id="conteudo" className="desenvolvimento-escolar">
+        <div className="container pt-3 pb-5">
           {alerta ? (
             <Alert key={1} variant={"danger"}>
               <div className="text-weight-bold text-center">
@@ -328,15 +329,15 @@ export let CadastroEmpresa = props => {
               <div
                 onClick={() => switchTab("cadastro")}
                 className={`tab col-6 ${
-                  tab === "cadastro" ? "active" : "inactive"
+                  tab === "cadastro" ? "active" : uuid ? "enabled" : "inactive"
                 }`}
               >
                 CADASTRO
               </div>
               <div
                 onClick={() => switchTab("anexos")}
-                className={`tab col-6 ${
-                  tab === "anexos" ? "active" : "inactive"
+                className={`tab col-6 ml-2 ${
+                  tab === "anexos" ? "active" : uuid ? "enabled" : "inactive"
                 }`}
               >
                 ANEXOS
@@ -346,209 +347,198 @@ export let CadastroEmpresa = props => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             {tab === "cadastro" && (
               <Fragment>
-                <Row className="mb-2">
-                  <Col lg={6} xl={6}>
-                    <Row>
-                      <Card className="w-100 mr-2">
-                        <Card.Body>
-                          <Card.Title>Dados da Empresa</Card.Title>
-                          <hr />
-                          <DadosEmpresa />
-                        </Card.Body>
-                      </Card>
-                    </Row>
-                    <Row>
-                      <Card className="w-100 mr-2 mt-2">
-                        <Card.Body>
-                          <Card.Title>
-                            Informações ponto de venda físico ou stand de vendas
-                          </Card.Title>
-                          <hr />
-                          {loja.map((value, key) => (
-                            <>
-                              <LojaFisica
-                                id={key}
+                <div className="row mb-2">
+                  <div className="col-6">
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="card-title">Dados da Empresa</div>
+                        <DadosEmpresa />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="card-title">Preços (fornecimento)</div>
+                        <div className="pt-3 undertitle">
+                          Tipo de Fornecimento
+                        </div>
+                        <hr className="pb-3" />
+                        {tiposFornecimentos ? (
+                          tiposFornecimentos.map((tipo, key) => {
+                            return (
+                              <TiposFornecimentos
                                 key={key}
-                                chave={key}
-                                nome_fantasia={value.nome_fantasia}
-                                endereco={value.endereco}
-                                telefone={value.telefone}
-                                onUpdate={onUpdateLoja}
+                                tipo={tipo}
+                                onUpdate={onUpdateUniforme}
+                                maiorQueLimite={maiorQueLimite}
                               />
-                              <Button
-                                disabled={contadorLoja <= 1 ? true : false}
-                                variant="outline-danger"
-                                block
-                                onClick={() => delLoja(key)}
-                                className="mb-1"
-                              >
-                                <i className="fas fa-trash" />
-                              </Button>
-                            </>
-                          ))}
-                          <Button block onClick={() => addLoja(contadorLoja)}>
-                            <i className="fas fa-plus-circle" /> Novo Endereço
-                          </Button>
-                        </Card.Body>
-                      </Card>
-                    </Row>
-                  </Col>
-                  <Col lg={6} xl={6}>
-                    <Row>
-                      <Card className="w-100 ml-2">
-                        <Card.Body>
-                          <Card.Title>Tipo de Fornecimento</Card.Title>
-                          <hr />
-                          {tiposFornecimentos
-                            ? tiposFornecimentos.map((tipo, key) => {
-                                return (
-                                  <TiposFornecimentos
-                                    key={key}
-                                    tipo={tipo}
-                                    onUpdate={onUpdateUniforme}
-                                    maiorQueLimite={maiorQueLimite}
-                                  />
-                                );
-                              })
-                            : null}
-                        </Card.Body>
-                      </Card>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <div className="form-group">
-                    <div class="form-check">
-                      <Field
-                        component={"input"}
-                        name="declaracao"
-                        className="form-check-input"
-                        required
-                        type="checkbox"
-                        id={5}
-                      />
-                      <label title="" class="form-check-label">
-                        Declaro que as informações acima prestadas são
-                        verdadeiras.
-                      </label>
+                            );
+                          })
+                        ) : (
+                          <div>Erro ao carregar tipos de fornecimentos</div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </Row>
-                <Row>
-                  <div className="form-group">
-                    <div class="form-check">
-                      <Field
-                        component={"input"}
-                        name="condicoes"
-                        className="form-check-input"
-                        required
-                        type="checkbox"
-                        id={5}
-                      />
-                      <label title="" class="form-check-label">
-                        Li e concordo com os termos e condições apresentados no
-                        <a
-                          className="links-intrucoes"
-                          href={edital.url}
-                          target="_blank"
-                          onClick={editalClick}
+                </div>
+                <div className="card mt-2">
+                  <div className="card-body">
+                    <div className="card-title">
+                      Informações ponto de venda físico ou stand de vendas
+                    </div>
+                    {loja.map((value, key) => (
+                      <>
+                        <LojaFisica
+                          id={key}
+                          key={key}
+                          chave={key}
+                          nome_fantasia={value.nome_fantasia}
+                          endereco={value.endereco}
+                          telefone={value.telefone}
+                          onUpdate={onUpdateLoja}
+                        />
+                        <Button
+                          disabled={contadorLoja <= 1 ? true : false}
+                          variant="outline-danger"
+                          block
+                          onClick={() => delLoja(key)}
+                          className="mb-1"
                         >
-                          <strong> {edital.label}.</strong>
-                        </a>
-                      </label>
-                    </div>
+                          <i className="fas fa-trash" />
+                        </Button>
+                      </>
+                    ))}
+                    <Button block onClick={() => addLoja(contadorLoja)}>
+                      <i className="fas fa-plus-circle" /> Novo Endereço
+                    </Button>
                   </div>
-                </Row>
+                </div>
+                <div className="form-group">
+                  <div class="form-check">
+                    <Field
+                      component={"input"}
+                      name="declaracao"
+                      className="form-check-input"
+                      required
+                      type="checkbox"
+                      id={5}
+                    />
+                    <label title="" class="form-check-label">
+                      Declaro que as informações acima prestadas são
+                      verdadeiras.
+                    </label>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div class="form-check">
+                    <Field
+                      component={"input"}
+                      name="condicoes"
+                      className="form-check-input"
+                      required
+                      type="checkbox"
+                      id={5}
+                    />
+                    <label title="" class="form-check-label">
+                      Li e concordo com os termos e condições apresentados no
+                      <a
+                        className="links-intrucoes"
+                        href={edital.url}
+                        target="_blank"
+                        onClick={editalClick}
+                      >
+                        <strong> {edital.label}.</strong>
+                      </a>
+                    </label>
+                  </div>
+                </div>
               </Fragment>
             )}
             {tab === "anexos" && (
               <Fragment>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Fachadas das Lojas/dos Estandes</Card.Title>
-                      <hr />
-                      {empresa &&
-                        empresa.lojas.map((loja, key) => {
-                          return (
-                            <Field
-                              component={FileUpload}
-                              name={`arqs_${key}`}
-                              id={`${key}`}
-                              key={key}
-                              accept="file/pdf"
-                              className="form-control-file"
-                              label={`${loja.nome_fantasia} - ${loja.endereco}`}
-                              required
-                              validate={valide(true)}
-                              multiple={false}
-                              onChange={e => {
-                                if (e.length > 0) {
-                                  adicionaTipoDocumento(e, loja);
-                                } else {
-                                  removeTipoDocumento(loja);
-                                }
-                              }}
-                            />
-                          );
-                        })}
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Documentos Anexos</Card.Title>
-                      <hr />
-                      {tiposDocumentos ? (
-                        tiposDocumentos.map((tipo, key) => {
-                          return !empresa ||
-                            !empresa.arquivos_anexos.find(
-                              arquivo => arquivo.tipo_documento === tipo.id
-                            ) ? (
-                            <Field
-                              component={FileUpload}
-                              name={`arqs_${key}`}
-                              id={`${key}`}
-                              key={key}
-                              accept="file/pdf"
-                              className="form-control-file"
+                <div className="card w-100 mt-2">
+                  <div className="card-body">
+                    <div className="card-title">
+                      Fachadas das Lojas/dos Estandes
+                    </div>
+                    {empresa &&
+                      empresa.lojas.map((loja, key) => {
+                        return (
+                          <Field
+                            component={FileUpload}
+                            name={`arqs_${key}`}
+                            id={`${key}`}
+                            key={key}
+                            accept="file/pdf"
+                            className="form-control-file"
+                            label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                            required
+                            validate={valide(true)}
+                            multiple={false}
+                            onChange={e => {
+                              if (e.length > 0) {
+                                adicionaTipoDocumento(e, loja);
+                              } else {
+                                removeTipoDocumento(loja);
+                              }
+                            }}
+                          />
+                        );
+                      })}
+                  </div>
+                </div>
+                <div className="card w-100 mt-2">
+                  <div className="card-body">
+                    <div className="card-title">Documentos Anexos</div>
+                    {tiposDocumentos ? (
+                      tiposDocumentos.map((tipo, key) => {
+                        return !empresa ||
+                          !empresa.arquivos_anexos.find(
+                            arquivo => arquivo.tipo_documento === tipo.id
+                          ) ? (
+                          <Field
+                            component={FileUpload}
+                            name={`arqs_${key}`}
+                            id={`${key}`}
+                            key={key}
+                            accept="file/pdf"
+                            className="form-control-file"
+                            label={labelTemplate(tipo)}
+                            resetarFile={tipo.resetarFile}
+                            required={tipo.obrigatorio}
+                            validate={valide(tipo.obrigatorio)}
+                            multiple={false}
+                            onChange={e => {
+                              if (e.length > 0) {
+                                uploadAnexo(e, tipo);
+                              } else {
+                                removeTipoDocumento(tipo);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div>
+                            <ArquivoExistente
                               label={labelTemplate(tipo)}
-                              resetarFile={tipo.resetarFile}
-                              required={tipo.obrigatorio}
-                              validate={valide(tipo.obrigatorio)}
-                              multiple={false}
-                              onChange={e => {
-                                if (e.length > 0) {
-                                  uploadAnexo(e, tipo);
-                                } else {
-                                  removeTipoDocumento(tipo);
-                                }
-                              }}
+                              arquivo={empresa.arquivos_anexos.find(
+                                arquivo => arquivo.tipo_documento === tipo.id
+                              )}
                             />
-                          ) : (
-                            <div>
-                              <ArquivoExistente
-                                label={labelTemplate(tipo)}
-                                arquivo={empresa.arquivos_anexos.find(
-                                  arquivo => arquivo.tipo_documento === tipo.id
-                                )}
-                              />
-                            </div>
-                          );
-                        })
-                      ) : (
-                        <div>
-                          Erro ao carregar Tipos de Documentos para anexar.
-                        </div>
-                      )}
-                    </Card.Body>
-                  </Card>
-                </Row>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div>
+                        Erro ao carregar Tipos de Documentos para anexar.
+                      </div>
+                    )}
+                  </div>
+                </div>
               </Fragment>
             )}
-            <Row>
-              <Col lg={6} xl={6} className="d-flex justify-content-start mt-4">
+            <div className="row">
+              <div className="col-6 d-flex justify-content-start mt-4">
                 <Button
                   onClick={() => {
                     reset();
@@ -561,8 +551,8 @@ export let CadastroEmpresa = props => {
                 >
                   Limpar
                 </Button>
-              </Col>
-              <Col lg={6} xl={6} className="d-flex justify-content-end mt-4">
+              </div>
+              <div className="col-6 d-flex justify-content-end mt-4">
                 <Button
                   type="submit"
                   variant="primary"
@@ -571,8 +561,8 @@ export let CadastroEmpresa = props => {
                 >
                   Enviar
                 </Button>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </Form>
         </div>
       </div>
