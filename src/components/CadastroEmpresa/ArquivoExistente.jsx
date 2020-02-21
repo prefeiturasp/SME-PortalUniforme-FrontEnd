@@ -6,8 +6,15 @@ const ArquivoExistente = props => {
   return (
     <div className="file-existent">
       <div className="label">{props.label}</div>
-      {props.arquivo.arquivo}
-      <span className="delete">x</span>
+      <a target="blank" href={props.arquivo.arquivo}>
+        Visualizar arquivo
+      </a>
+      <span
+        onClick={() => props.removeAnexo(props.arquivo.uuid)}
+        className="delete"
+      >
+        x
+      </span>
     </div>
   );
 };

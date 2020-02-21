@@ -64,6 +64,17 @@ export const setAnexo = payload => {
     });
 };
 
+export const deleteAnexo = uuid => {
+  return axios
+    .delete(`${endPont.API_URL}/anexos/${uuid}/`, authHeader)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
+};
+
 export const verificaCnpj = async cnpj => {
   const response = await axios.get(
     `${endPont.API_URL}/proponentes/verifica-cnpj/?cnpj=${cnpj}`,

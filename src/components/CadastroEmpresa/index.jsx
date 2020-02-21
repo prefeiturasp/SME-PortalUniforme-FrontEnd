@@ -17,7 +17,8 @@ import {
   verificaCnpj,
   busca_url_edital,
   getEmpresa,
-  setAnexo
+  setAnexo,
+  deleteAnexo
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
@@ -278,10 +279,11 @@ export let CadastroEmpresa = props => {
   const uploadAnexo = async (e, tipo) => {
     const arquivoAnexo = {
       ...e[0],
-      tipo_documento: tipo.id
+      tipo_documento: tipo.id,
+      proponente: uuid
     };
     setAnexo(arquivoAnexo).then(response => {
-      if (response.status === HTTP_STATUS.OK) {
+      if (response.status === HTTP_STATUS.CREATED) {
         toastSuccess("Arquivo salvo com sucesso!");
         getEmpresa(uuid).then(empresa => {
           setEmpresa(empresa.data);
@@ -290,6 +292,21 @@ export let CadastroEmpresa = props => {
         toastError("Erro ao dar upload no arquivo");
       }
     });
+  };
+
+  const removeAnexo = async uuidAnexo => {
+    if (window.confirm("Deseja remover este anexo?")) {
+      deleteAnexo(uuidAnexo).then(response => {
+        if (response.status === HTTP_STATUS.NO_CONTENT) {
+          toastSuccess("Arquivo removido com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresa(empresa.data);
+          });
+        } else {
+          toastError("Erro ao remover arquivo");
+        }
+      });
+    }
   };
 
   const removeTipoDocumento = tipo => {
@@ -512,8 +529,6 @@ export let CadastroEmpresa = props => {
                             onChange={e => {
                               if (e.length > 0) {
                                 uploadAnexo(e, tipo);
-                              } else {
-                                removeTipoDocumento(tipo);
                               }
                             }}
                           />
@@ -524,6 +539,7 @@ export let CadastroEmpresa = props => {
                               arquivo={empresa.arquivos_anexos.find(
                                 arquivo => arquivo.tipo_documento === tipo.id
                               )}
+                              removeAnexo={removeAnexo}
                             />
                           </div>
                         );
