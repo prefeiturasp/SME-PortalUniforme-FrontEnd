@@ -54,7 +54,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { alterarFonte, alterarContraste, focusBuscaAtributo } = this.state;
+    const { alterarFonte, alterarContraste } = this.state;
     return (
         <section role="main" className={`${alterarFonte && "fonte-maior"} ${alterarContraste && "alto-contraste"}`}>
           <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>

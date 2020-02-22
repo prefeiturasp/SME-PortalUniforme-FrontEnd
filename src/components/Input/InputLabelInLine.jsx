@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { Form, Col, Row } from "react-bootstrap";
 
-export const InputLabelInLine = (props, index) => {
+export const InputLabelInLine = (props) => {
   return (
     <Fragment>
-      <Form.Group as={Row} controlId={`formInputInLine_${index}`}>
+      <Form.Group as={Row} controlId={props.id}>
         <Form.Label>{props.label}</Form.Label>
         <Col sm="10">
           <Form.Control {...props} />

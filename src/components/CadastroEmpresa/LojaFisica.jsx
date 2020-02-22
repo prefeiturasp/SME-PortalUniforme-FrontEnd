@@ -1,14 +1,11 @@
+import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import { Field } from "redux-form";
 import {
   InputLabelRequired,
   InputLabel
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
-import { FileUpload } from "components/Input/FileUpload";
-import { required } from "helpers/fieldValidators";
-import axios from "axios";
 
 const LojaFisica = props => {
   const [endereco, setEndereco] = useState("");
@@ -19,7 +16,6 @@ const LojaFisica = props => {
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
-  const [foto_fachada, setFotoFachada] = useState("");
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
@@ -34,7 +30,6 @@ const LojaFisica = props => {
     setNumero(props.numero);
     setComplemento(props.complemento);
     setNomeFantasia(props.nome_fantasia);
-    setFotoFachada(props.foto_fachada);
   }, [props]);
 
   const buscaCep = async value => {
@@ -61,8 +56,8 @@ const LojaFisica = props => {
     const response = await axios.get(
       `https://republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`
     );
-    
-    if (response.status === 200) {      
+
+    if (response.status === 200) {
       const data = response.data;
       if (data.resultado === "1") {
         return data;
@@ -107,7 +102,7 @@ const LojaFisica = props => {
             }}
           />
         </Col>
-      </Row>      
+      </Row>
       <Row>
         <Col lg={6} xl={6}>
           <InputLabelRequiredMask
@@ -148,8 +143,8 @@ const LojaFisica = props => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col>
+      <div className="row">
+        <div className="col-6">
           <InputLabelRequired
             autocomplete="off"
             label="Endereço"
@@ -164,10 +159,8 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, endereco: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-2">
           <InputLabelRequired
             autocomplete="off"
             value={numero}
@@ -180,8 +173,8 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
           />
-        </Col>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-4">
           <InputLabel
             value={complemento}
             label="Complemento"
@@ -193,10 +186,10 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6} xl={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-6">
           <InputLabelRequired
             autocomplete="off"
             label="Cidade"
@@ -213,8 +206,8 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, cidade: valor }, props.chave);
             }}
           />
-        </Col>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-2">
           <InputLabelRequired
             label="UF"
             name=""
@@ -228,13 +221,11 @@ const LojaFisica = props => {
               const valor = "SP";
               setUf(valor);
               setPayload({ ...payload, uf: valor });
-              props.onUpdate({...payload, uf: valor }, props.chave);
+              props.onUpdate({ ...payload, uf: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </div>
+        <div className="col-4">
           <InputLabelRequiredMask
             Autocomplete="off"
             mask="(99) 9999-99999"
@@ -252,27 +243,8 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, telefone: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Field
-        component={FileUpload}
-        name="foto_fachada"
-        id="anexo_fachada"
-        accept="file/pdf"
-        className="form-control-file"
-        label="Foto Fachada"
-        required
-        validate={required}
-        onChange={e => {
-          if (e.length > 0) {
-            setFotoFachada({foto_fachada: e[0].arquivo});
-            setPayload({...payload, foto_fachada: e[0].arquivo});
-            props.onUpdate({...payload, foto_fachada: e[0].arquivo }, props.chave);
-          }
-        }
-        }
-      />
-      <hr />
+        </div>
+      </div>
     </Fragment>
   );
 };

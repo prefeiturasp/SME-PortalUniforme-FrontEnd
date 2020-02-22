@@ -73,14 +73,14 @@ body {
 // Home
 
 .oferta-imoveis {
-  background:
-          linear-gradient(90deg,
-                  rgba(255, 255, 255, 0.9) 0%,
-                  rgba(255, 255, 255, 0.9) 33.83%,
-                  rgba(255, 255, 255, 0.2) 64.77%,
-                  rgba(255, 255, 255, 0.324) 92.11%),
-          url('../img/duas-criancas-de-uniforme-principal.png'),
-          #C4C4C4;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.9) 33.83%,
+      rgba(255, 255, 255, 0.2) 64.77%,
+      rgba(255, 255, 255, 0.324) 92.11%
+    ),
+    url("../img/duas-criancas-de-uniforme-principal.png"), #c4c4c4;
   color: $corPretoPortal;
   height: 490px;
   background-repeat: no-repeat;
@@ -110,8 +110,8 @@ body {
   &.btn-primary {
     font-weight: bold;
     font-size: 16px;
-    background-color: #1A6EB8;
-    border-color: #1A6EB8;
+    background-color: #1a6eb8;
+    border-color: #1a6eb8;
     &:hover {
       background-color: #004a99;
       border-color: #004a99;
@@ -139,10 +139,10 @@ body {
     margin-top: 0;
     border: 1px solid #fff;
     font-size: 18px;
-    &:hover{
+    &:hover {
       background-color: #ffffff;
       color: #196cbd;
-    }  
+    }
   }
 }
 
@@ -376,10 +376,8 @@ h2 {
 }
 
 .tipo-fornecimento {
-  padding-left: 30px;
-  .tipo-fornecimento-quantidade {
-    padding-left: 0px;
-  }
+  font-size: 14px;
+  color: $gray;
   .tipo-fornecimento-valor {
     padding-right: 0px;
   }
