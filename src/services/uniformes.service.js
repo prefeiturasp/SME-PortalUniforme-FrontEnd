@@ -46,11 +46,28 @@ export const cadastrarEmpresa = async payload => {
 };
 
 export const getEmpresa = async uuid => {
-  const response = await axios.get(
-    `${endPont.API_URL}/proponentes/${uuid}/`,
-    authHeader
-  );
-  return response;
+  return axios
+    .get(`${endPont.API_URL}/proponentes/${uuid}/`, authHeader)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
+};
+
+export const concluirCadastro = async uuid => {
+  return axios
+    .patch(
+      `${endPont.API_URL}/proponentes/${uuid}/concluir-cadastro/`,
+      authHeader
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
 };
 
 export const setAnexo = payload => {
@@ -67,6 +84,17 @@ export const setAnexo = payload => {
 export const deleteAnexo = uuid => {
   return axios
     .delete(`${endPont.API_URL}/anexos/${uuid}/`, authHeader)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
+};
+
+export const setFachadaLoja = (payload, uuid) => {
+  return axios
+    .patch(`${endPont.API_URL}/lojas/${uuid}/`, payload, authHeader)
     .then(response => {
       return response;
     })

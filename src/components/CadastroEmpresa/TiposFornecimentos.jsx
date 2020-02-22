@@ -19,15 +19,13 @@ const TiposFornecimentos = props => {
   useEffect(() => {
     const carregaLimite = async () => {
       const limites = await getLimites();
-      const limite = limites.filter((value, key) => {
-        if (value.categoria_uniforme === props.tipo.id) {
-          return value;
-        }
-      });
+      const limite = limites.filter(
+        value => value.categoria_uniforme === props.tipo.id
+      );
       setLimite(parseFloat(limite[0].preco_maximo));
     };
     carregaLimite();
-  }, {});
+  });
 
   const checkProduto = event => {
     if (event) {

@@ -11,14 +11,15 @@ import { validaOfertaUniforme } from "./helper";
 import { toastSuccess, toastError } from "../Toast/dialogs";
 import {
   cadastrarEmpresa,
-  getUniformes,
   getTiposDocumentos,
   getTiposFornecimentos,
   verificaCnpj,
   busca_url_edital,
   getEmpresa,
   setAnexo,
-  deleteAnexo
+  deleteAnexo,
+  setFachadaLoja,
+  concluirCadastro
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
@@ -36,19 +37,20 @@ export let CadastroEmpresa = props => {
   };
 
   const [empresa, setEmpresa] = useState(null);
+  const [erroGetEmpresa, setErroGetEmpresa] = useState(false);
+  const [faltaArquivos, setFaltaArquivos] = useState(true);
   const [loja, setLoja] = useState([initialValue]);
-  const [produtos, setProdutos] = useState([]);
   const [fornecimento, setFornecimento] = useState([]);
-  const [bandeiras, setBandeiras] = useState([]);
+  const [bandeiras] = useState([]);
   const [uuid, setUuid] = useState(null);
   const [alerta, setAlerta] = useState(false);
-  const [sucesso, setSucesso] = useState(false);
+  const [sucesso] = useState(false);
   const [tiposDocumentos, setTiposDocumentos] = useState([]);
   const [tiposFornecimentos, setTiposFornecimentos] = useState([]);
-  const [arquivosAnexos, setArquivosAnexos] = useState([]);
+  const [limparFornecimento, setLimparFornecimento] = useState(false);
+  const [arquivosAnexos] = useState([]);
   const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
-  const [limparFornecimento, setLimparFornecimento] = useState(false);
   const [limite, setLimite] = useState(false);
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
@@ -57,31 +59,33 @@ export let CadastroEmpresa = props => {
     setLoja([initialValue]);
   };
   useEffect(() => {
+    const carregaTiposDocumentos = async () => {
+      const documentos = await getTiposDocumentos();
+      setTiposDocumentos(documentos);
+    };
     const carregaEmpresa = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const uuid = urlParams.get("uuid");
       if (uuid) {
         setTab("anexos");
-        const empresa = await getEmpresa(uuid);
-        setEmpresa(empresa.data);
-        setUuid(uuid);
+        getEmpresa(uuid).then(response => {
+          if (response.status === HTTP_STATUS.OK) {
+            setEmpresaEFaltaArquivos(response.data);
+            setUuid(uuid);
+          } else {
+            setErroGetEmpresa(true);
+          }
+        });
       }
-    };
-    const carregaUniformes = async () => {
-      const uniformes = await getUniformes();
-      setProdutos(uniformes);
-    };
-    const carregaTiposDocumentos = async () => {
-      const documentos = await getTiposDocumentos();
-      setTiposDocumentos(documentos);
     };
     const carregaTiposFornecimentos = async () => {
       const fornecimentos = await getTiposFornecimentos();
       setTiposFornecimentos(fornecimentos);
     };
-    carregaEmpresa();
-    carregaUniformes();
-    carregaTiposDocumentos();
+    carregaTiposDocumentos().then(_ => {
+      carregaEmpresa();
+    });
+
     carregaTiposFornecimentos();
     setEditalClick(
       !edital.url
@@ -90,12 +94,36 @@ export let CadastroEmpresa = props => {
           }
         : null
     );
+
     get_edital_link();
   }, [limparFornecimento]);
+
+  const setEmpresaEFaltaArquivos = empresa => {
+    setEmpresa(empresa);
+    verificarSeFaltamArquivos(empresa);
+  };
+
+  const verificarSeFaltamArquivos = empresa => {
+    let aindaFaltamArquivos =
+      empresa.lojas.find(loja => loja.foto_fachada === null) ||
+      empresa.arquivos_anexos.length === 0 ||
+      empresa.arquivos_anexos.length !== tiposDocumentos.length;
+    setFaltaArquivos(aindaFaltamArquivos);
+  };
 
   const addLoja = () => {
     loja.push(initialValue);
     setLoja([...loja]);
+  };
+
+  const downloadEdital = e => {
+    //e.preventDefault()
+    if (edital.url) {
+      const link = document.createElement("a");
+      link.href = edital.url;
+      link.target = "_blank";
+      link.click();
+    }
   };
 
   const switchTab = tab => {
@@ -137,16 +165,6 @@ export let CadastroEmpresa = props => {
       setAlerta(false);
       setMensagem("");
     }, 10000);
-  };
-
-  const downloadEdital = e => {
-    //e.preventDefault()
-    if (edital.url) {
-      const link = document.createElement("a");
-      link.href = edital.url;
-      link.target = "_blank";
-      link.click();
-    }
   };
 
   const get_edital_link = async () => {
@@ -223,18 +241,9 @@ export let CadastroEmpresa = props => {
   };
 
   const filtrarFornecimento = payload => {
-    const novoPayload = payload.filter((value, key) => {
-      if (value !== undefined) {
-        if (Object.keys(value).length > 0) {
-          return value;
-        }
-      }
-    });
-    return novoPayload;
-  };
-
-  const showSucess = () => {
-    window.location.href = "/confirmacao-cadastro";
+    return payload.filter(
+      value => value !== undefined && Object.keys(value).length > 0
+    );
   };
 
   const validaUniformes = payload => {
@@ -257,25 +266,6 @@ export let CadastroEmpresa = props => {
     return true;
   };
 
-  const validaMeiosRecebimentos = payload => {
-    if (payload.length === 0) {
-      window.scrollTo(0, 0);
-      showMessage("Por favor, selecione um Meio de Recebimento");
-      return false;
-    }
-    return true;
-  };
-
-  const adicionaTipoDocumento = (e, tipo) => {
-    const arquivo_anexo = {
-      ...e[0],
-      tipo_documento: tipo.id
-    };
-    let arquivos = arquivosAnexos;
-    arquivos.push(arquivo_anexo);
-    setArquivosAnexos(arquivos);
-  };
-
   const uploadAnexo = async (e, tipo) => {
     const arquivoAnexo = {
       ...e[0],
@@ -286,10 +276,42 @@ export let CadastroEmpresa = props => {
       if (response.status === HTTP_STATUS.CREATED) {
         toastSuccess("Arquivo salvo com sucesso!");
         getEmpresa(uuid).then(empresa => {
-          setEmpresa(empresa.data);
+          setEmpresaEFaltaArquivos(empresa.data);
         });
       } else {
         toastError("Erro ao dar upload no arquivo");
+      }
+    });
+  };
+
+  const uploadFachadaLoja = async (e, uuidLoja) => {
+    const arquivoAnexo = {
+      foto_fachada: e[0].arquivo
+    };
+    setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+      if (response.status === HTTP_STATUS.OK) {
+        toastSuccess("Arquivo salvo com sucesso!");
+        getEmpresa(uuid).then(empresa => {
+          setEmpresaEFaltaArquivos(empresa.data);
+        });
+      } else {
+        toastError("Erro ao dar upload no arquivo");
+      }
+    });
+  };
+
+  const deleteFachadaLoja = async uuidLoja => {
+    const arquivoAnexo = {
+      foto_fachada: null
+    };
+    setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+      if (response.status === HTTP_STATUS.OK) {
+        toastSuccess("Arquivo excluído com sucesso!");
+        getEmpresa(uuid).then(empresa => {
+          setEmpresaEFaltaArquivos(empresa.data);
+        });
+      } else {
+        toastError("Erro ao dar excluir no arquivo");
       }
     });
   };
@@ -300,7 +322,7 @@ export let CadastroEmpresa = props => {
         if (response.status === HTTP_STATUS.NO_CONTENT) {
           toastSuccess("Arquivo removido com sucesso!");
           getEmpresa(uuid).then(empresa => {
-            setEmpresa(empresa.data);
+            setEmpresaEFaltaArquivos(empresa.data);
           });
         } else {
           toastError("Erro ao remover arquivo");
@@ -309,11 +331,20 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const removeTipoDocumento = tipo => {
-    const arquivos = arquivosAnexos.filter(item => {
-      return item.tipo_documento !== tipo.id;
-    });
-    setArquivosAnexos(arquivos);
+  const finalizarCadastro = () => {
+    if (faltaArquivos) {
+      toastError(
+        "É preciso anexar todos os arquivos obrigatórios para finalizar seu cadastro"
+      );
+    } else {
+      concluirCadastro(uuid).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          window.location.href = "/confirmacao-cadastro";
+        } else {
+          toastError("Erro ao finalizar cadastro");
+        }
+      });
+    }
   };
 
   const labelTemplate = tipo => {
@@ -324,264 +355,302 @@ export let CadastroEmpresa = props => {
 
   return (
     <Fragment>
-      <div id="conteudo" className="desenvolvimento-escolar">
-        <div className="container pt-3 pb-5">
-          {alerta ? (
-            <Alert key={1} variant={"danger"}>
-              <div className="text-weight-bold text-center">
-                <strong>{mensagem}</strong>
-              </div>
-            </Alert>
-          ) : null}
+      {erroGetEmpresa ? (
+        <div className="p-5 text-center">Erro ao carregar empresa.</div>
+      ) : (
+        <div id="conteudo" className="desenvolvimento-escolar">
+          <div className="container pt-3 pb-5">
+            {alerta ? (
+              <Alert key={1} variant={"danger"}>
+                <div className="text-weight-bold text-center">
+                  <strong>{mensagem}</strong>
+                </div>
+              </Alert>
+            ) : null}
 
-          {sucesso ? (
-            <Alert key={1} variant={"success"}>
-              <div className="text-weight-bold text-center">
-                <strong>Cadastro realizado com sucesso.</strong>
-              </div>
-            </Alert>
-          ) : null}
-          <div className="tabs pb-5">
-            <div className="row">
-              <div
-                onClick={() => switchTab("cadastro")}
-                className={`tab col-6 ${
-                  tab === "cadastro" ? "active" : uuid ? "enabled" : "inactive"
-                }`}
-              >
-                CADASTRO
-              </div>
-              <div
-                onClick={() => switchTab("anexos")}
-                className={`tab col-6 ml-2 ${
-                  tab === "anexos" ? "active" : uuid ? "enabled" : "inactive"
-                }`}
-              >
-                ANEXOS
+            {sucesso ? (
+              <Alert key={1} variant={"success"}>
+                <div className="text-weight-bold text-center">
+                  <strong>Cadastro realizado com sucesso.</strong>
+                </div>
+              </Alert>
+            ) : null}
+            <div className="tabs pb-5">
+              <div className="row">
+                <div
+                  onClick={() => switchTab("cadastro")}
+                  className={`tab col-6 ${
+                    tab === "cadastro"
+                      ? "active"
+                      : uuid
+                      ? "enabled"
+                      : "inactive"
+                  }`}
+                >
+                  CADASTRO
+                </div>
+                <div
+                  onClick={() => switchTab("anexos")}
+                  className={`tab col-6 ml-2 ${
+                    tab === "anexos" ? "active" : uuid ? "enabled" : "inactive"
+                  }`}
+                >
+                  ANEXOS
+                </div>
               </div>
             </div>
-          </div>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            {tab === "cadastro" && (
-              <Fragment>
-                <div className="row mb-2">
-                  <div className="col-6">
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="card-title">Dados da Empresa</div>
-                        <DadosEmpresa />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="card-title">Preços (fornecimento)</div>
-                        <div className="pt-3 undertitle">
-                          Tipo de Fornecimento
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              {tab === "cadastro" && (
+                <Fragment>
+                  <div className="row mb-2">
+                    <div className="col-6">
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="card-title">Dados da Empresa</div>
+                          <DadosEmpresa />
                         </div>
-                        <hr className="pb-3" />
-                        {tiposFornecimentos ? (
-                          tiposFornecimentos.map((tipo, key) => {
-                            return (
-                              <TiposFornecimentos
-                                key={key}
-                                tipo={tipo}
-                                onUpdate={onUpdateUniforme}
-                                maiorQueLimite={maiorQueLimite}
-                              />
-                            );
-                          })
-                        ) : (
-                          <div>Erro ao carregar tipos de fornecimentos</div>
-                        )}
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="card-title">
+                            Preços (fornecimento)
+                          </div>
+                          <div className="pt-3 undertitle">
+                            Tipo de Fornecimento
+                          </div>
+                          <hr className="pb-3" />
+                          {tiposFornecimentos ? (
+                            tiposFornecimentos.map((tipo, key) => {
+                              return (
+                                <TiposFornecimentos
+                                  key={key}
+                                  tipo={tipo}
+                                  onUpdate={onUpdateUniforme}
+                                  maiorQueLimite={maiorQueLimite}
+                                />
+                              );
+                            })
+                          ) : (
+                            <div>Erro ao carregar tipos de fornecimentos</div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="card mt-2">
-                  <div className="card-body">
-                    <div className="card-title">
-                      Informações ponto de venda físico ou stand de vendas
+                  <div className="card mt-2">
+                    <div className="card-body">
+                      <div className="card-title">
+                        Informações ponto de venda físico ou stand de vendas
+                      </div>
+                      {loja.map((value, key) => (
+                        <>
+                          <LojaFisica
+                            id={key}
+                            key={key}
+                            chave={key}
+                            nome_fantasia={value.nome_fantasia}
+                            endereco={value.endereco}
+                            telefone={value.telefone}
+                            onUpdate={onUpdateLoja}
+                          />
+                          <Button
+                            disabled={contadorLoja <= 1 ? true : false}
+                            variant="outline-danger"
+                            block
+                            onClick={() => delLoja(key)}
+                            className="mb-1"
+                          >
+                            <i className="fas fa-trash" />
+                          </Button>
+                        </>
+                      ))}
+                      <Button block onClick={() => addLoja(contadorLoja)}>
+                        <i className="fas fa-plus-circle" /> Novo Endereço
+                      </Button>
                     </div>
-                    {loja.map((value, key) => (
-                      <>
-                        <LojaFisica
-                          id={key}
-                          key={key}
-                          chave={key}
-                          nome_fantasia={value.nome_fantasia}
-                          endereco={value.endereco}
-                          telefone={value.telefone}
-                          onUpdate={onUpdateLoja}
-                        />
-                        <Button
-                          disabled={contadorLoja <= 1 ? true : false}
-                          variant="outline-danger"
-                          block
-                          onClick={() => delLoja(key)}
-                          className="mb-1"
-                        >
-                          <i className="fas fa-trash" />
-                        </Button>
-                      </>
-                    ))}
-                    <Button block onClick={() => addLoja(contadorLoja)}>
-                      <i className="fas fa-plus-circle" /> Novo Endereço
+                  </div>
+                  {!uuid && (
+                    <Fragment>
+                      <div className="form-group pt-3">
+                        <div class="form-check">
+                          <Field
+                            component={"input"}
+                            name="declaracao"
+                            className="form-check-input"
+                            required
+                            type="checkbox"
+                            id={5}
+                          />
+                          <label title="" class="form-check-label">
+                            Declaro que as informações acima prestadas são
+                            verdadeiras.
+                          </label>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div class="form-check">
+                          <Field
+                            component={"input"}
+                            name="condicoes"
+                            className="form-check-input"
+                            required
+                            type="checkbox"
+                            id={5}
+                          />
+                          <label title="" class="form-check-label">
+                            Li e concordo com os termos e condições apresentados
+                            no
+                            <a
+                              className="links-intrucoes"
+                              href={edital.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={editalClick}
+                            >
+                              <strong> {edital.label}.</strong>
+                            </a>
+                          </label>
+                        </div>
+                      </div>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
+              {tab === "anexos" && (
+                <Fragment>
+                  <div className="card w-100 mt-2">
+                    <div className="card-body">
+                      <div className="card-title">
+                        Fachadas das Lojas/dos Estandes
+                      </div>
+                      {empresa &&
+                        empresa.lojas.map((loja, key) => {
+                          return !loja.foto_fachada ? (
+                            <Field
+                              component={FileUpload}
+                              name={`arqs_${key}`}
+                              id={`${key}`}
+                              key={key}
+                              accept="file/pdf"
+                              className="form-control-file"
+                              label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                              required
+                              validate={valide(true)}
+                              multiple={false}
+                              onChange={e => {
+                                if (e.length > 0) {
+                                  uploadFachadaLoja(e, loja.uuid);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <div>
+                              <ArquivoExistente
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                arquivo={loja.foto_fachada}
+                                lojaUuid={loja.uuid}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={deleteFachadaLoja}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                  <div className="card w-100 mt-2">
+                    <div className="card-body">
+                      <div className="card-title">Documentos Anexos</div>
+                      {tiposDocumentos ? (
+                        tiposDocumentos.map((tipo, key) => {
+                          return !empresa ||
+                            !empresa.arquivos_anexos.find(
+                              arquivo => arquivo.tipo_documento === tipo.id
+                            ) ? (
+                            <Field
+                              component={FileUpload}
+                              name={`arqs_${key}`}
+                              id={`${key}`}
+                              key={key}
+                              accept="file/pdf"
+                              className="form-control-file"
+                              label={labelTemplate(tipo)}
+                              resetarFile={tipo.resetarFile}
+                              required={tipo.obrigatorio}
+                              validate={valide(tipo.obrigatorio)}
+                              multiple={false}
+                              onChange={e => {
+                                if (e.length > 0) {
+                                  uploadAnexo(e, tipo);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <div>
+                              <ArquivoExistente
+                                label={labelTemplate(tipo)}
+                                arquivo={empresa.arquivos_anexos.find(
+                                  arquivo => arquivo.tipo_documento === tipo.id
+                                )}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={removeAnexo}
+                              />
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div>
+                          Erro ao carregar Tipos de Documentos para anexar.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Fragment>
+              )}
+              {tab === "cadastro" && !uuid && (
+                <div className="row">
+                  <div className="col-6 d-flex justify-content-start mt-4">
+                    <Button
+                      onClick={() => {
+                        reset();
+                        limparListaLojas();
+                        window.scrollTo(0, 0);
+                      }}
+                      type="reset"
+                      variant="outline-danger"
+                    >
+                      Limpar
+                    </Button>
+                  </div>
+                  <div className="col-6 d-flex justify-content-end mt-4">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      disabled={pristine || submitting}
+                    >
+                      Enviar
                     </Button>
                   </div>
                 </div>
-                <div className="form-group">
-                  <div class="form-check">
-                    <Field
-                      component={"input"}
-                      name="declaracao"
-                      className="form-check-input"
-                      required
-                      type="checkbox"
-                      id={5}
-                    />
-                    <label title="" class="form-check-label">
-                      Declaro que as informações acima prestadas são
-                      verdadeiras.
-                    </label>
+              )}
+              {tab === "anexos" && empresa && empresa.status !== "INSCRITO" && (
+                <div className="row">
+                  <div className="col-12 text-right mt-4">
+                    <Button
+                      onClick={() => finalizarCadastro()}
+                      type="reset"
+                      variant="primary"
+                    >
+                      Finalizar
+                    </Button>
                   </div>
                 </div>
-                <div className="form-group">
-                  <div class="form-check">
-                    <Field
-                      component={"input"}
-                      name="condicoes"
-                      className="form-check-input"
-                      required
-                      type="checkbox"
-                      id={5}
-                    />
-                    <label title="" class="form-check-label">
-                      Li e concordo com os termos e condições apresentados no
-                      <a
-                        className="links-intrucoes"
-                        href={edital.url}
-                        target="_blank"
-                        onClick={editalClick}
-                      >
-                        <strong> {edital.label}.</strong>
-                      </a>
-                    </label>
-                  </div>
-                </div>
-              </Fragment>
-            )}
-            {tab === "anexos" && (
-              <Fragment>
-                <div className="card w-100 mt-2">
-                  <div className="card-body">
-                    <div className="card-title">
-                      Fachadas das Lojas/dos Estandes
-                    </div>
-                    {empresa &&
-                      empresa.lojas.map((loja, key) => {
-                        return (
-                          <Field
-                            component={FileUpload}
-                            name={`arqs_${key}`}
-                            id={`${key}`}
-                            key={key}
-                            accept="file/pdf"
-                            className="form-control-file"
-                            label={`${loja.nome_fantasia} - ${loja.endereco}`}
-                            required
-                            validate={valide(true)}
-                            multiple={false}
-                            onChange={e => {
-                              if (e.length > 0) {
-                                adicionaTipoDocumento(e, loja);
-                              } else {
-                                removeTipoDocumento(loja);
-                              }
-                            }}
-                          />
-                        );
-                      })}
-                  </div>
-                </div>
-                <div className="card w-100 mt-2">
-                  <div className="card-body">
-                    <div className="card-title">Documentos Anexos</div>
-                    {tiposDocumentos ? (
-                      tiposDocumentos.map((tipo, key) => {
-                        return !empresa ||
-                          !empresa.arquivos_anexos.find(
-                            arquivo => arquivo.tipo_documento === tipo.id
-                          ) ? (
-                          <Field
-                            component={FileUpload}
-                            name={`arqs_${key}`}
-                            id={`${key}`}
-                            key={key}
-                            accept="file/pdf"
-                            className="form-control-file"
-                            label={labelTemplate(tipo)}
-                            resetarFile={tipo.resetarFile}
-                            required={tipo.obrigatorio}
-                            validate={valide(tipo.obrigatorio)}
-                            multiple={false}
-                            onChange={e => {
-                              if (e.length > 0) {
-                                uploadAnexo(e, tipo);
-                              }
-                            }}
-                          />
-                        ) : (
-                          <div>
-                            <ArquivoExistente
-                              label={labelTemplate(tipo)}
-                              arquivo={empresa.arquivos_anexos.find(
-                                arquivo => arquivo.tipo_documento === tipo.id
-                              )}
-                              removeAnexo={removeAnexo}
-                            />
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div>
-                        Erro ao carregar Tipos de Documentos para anexar.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Fragment>
-            )}
-            <div className="row">
-              <div className="col-6 d-flex justify-content-start mt-4">
-                <Button
-                  onClick={() => {
-                    reset();
-                    limparListaLojas();
-                    setLimparFornecimento(true);
-                    window.scrollTo(0, 0);
-                  }}
-                  type="reset"
-                  variant="outline-danger"
-                >
-                  Limpar
-                </Button>
-              </div>
-              <div className="col-6 d-flex justify-content-end mt-4">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={pristine || submitting}
-                  type="submit"
-                >
-                  Enviar
-                </Button>
-              </div>
-            </div>
-          </Form>
+              )}
+            </Form>
+          </div>
         </div>
-      </div>
+      )}
     </Fragment>
   );
 };

@@ -3,13 +3,10 @@ import { InputLabelInLine } from "components/Input/InputLabelInLine";
 
 const TipoFornecimento = props => {
   const initialValue = { preco: "", uniforme: "" };
-  const [produto, setPoduto] = useState("");
   const [payload, setPayload] = useState(initialValue);
   const [obrigar, setObrigar] = useState(false);
 
-  useEffect(() => {
-    setPoduto(props.produto);
-  }, [payload, props]);
+  useEffect(() => {}, [payload, props]);
 
   const addValor = (valor, quantidade) => {
     props.addValor(
@@ -19,16 +16,6 @@ const TipoFornecimento = props => {
       props.index
     );
     setPayload({ ...payload, preco: valor.replace(",", ".") });
-  };
-
-  const addUniforme = () => {
-    setPayload({ ...payload, uniforme: props.index });
-    props.onUpdate(payload, props.chave);
-  };
-
-  const delUniforme = () => {
-    setPayload(initialValue);
-    props.onUpdate({}, props.chave);
   };
 
   const valorDevido = value => {

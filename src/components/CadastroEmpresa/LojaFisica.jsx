@@ -1,14 +1,11 @@
+import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import { Field } from "redux-form";
 import {
   InputLabelRequired,
   InputLabel
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
-import { FileUpload } from "components/Input/FileUpload";
-import { required } from "helpers/fieldValidators";
-import axios from "axios";
 
 const LojaFisica = props => {
   const [endereco, setEndereco] = useState("");

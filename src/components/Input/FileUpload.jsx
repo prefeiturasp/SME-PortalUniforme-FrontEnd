@@ -21,11 +21,7 @@ class CustomFileUploadPR extends FileUploadPR {
   }
   async remove(index) {
     this.clearInputElement();
-
-    const currentFiles = this.state.files.filter((v, i) => {
-      if (i !== index) return v;
-    });
-
+    const currentFiles = this.state.files.filter((v, i) => i !== index);
     this.setState(
       {
         files: currentFiles
@@ -80,7 +76,6 @@ export class FileUpload extends React.Component {
       className,
       id,
       accept,
-      disabled,
       esconderAsterisco,
       helpText,
       label,
