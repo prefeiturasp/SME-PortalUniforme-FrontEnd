@@ -117,7 +117,7 @@ export let CadastroEmpresa = props => {
     let aindaFaltamArquivos =
       empresa.lojas.find(loja => loja.foto_fachada === null) ||
       empresa.arquivos_anexos.length === 0 ||
-      aindaFaltaDocumentoObrigatorio
+      aindaFaltaDocumentoObrigatorio;
     setFaltaArquivos(aindaFaltamArquivos);
   };
 
@@ -295,19 +295,23 @@ export let CadastroEmpresa = props => {
   };
 
   const uploadFachadaLoja = async (e, uuidLoja) => {
-    const arquivoAnexo = {
-      foto_fachada: e[0].arquivo
-    };
-    setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
-      if (response.status === HTTP_STATUS.OK) {
-        toastSuccess("Arquivo salvo com sucesso!");
-        getEmpresa(uuid).then(empresa => {
-          setEmpresaEFaltaArquivos(empresa.data);
-        });
-      } else {
-        toastError("Erro ao dar upload no arquivo");
-      }
-    });
+    if (!e[0].arquivo.includes("image/")) {
+      toastError("Formato de arquivo inválido");
+    } else {
+      const arquivoAnexo = {
+        foto_fachada: e[0].arquivo
+      };
+      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo salvo com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao dar upload no arquivo");
+        }
+      });
+    }
   };
 
   const deleteFachadaLoja = async uuidLoja => {
@@ -543,7 +547,8 @@ export let CadastroEmpresa = props => {
                               name={`arqs_${key}`}
                               id={`${key}`}
                               key={key}
-                              accept="file/pdf"
+                              accept="image/*"
+                              acceptCustom="image/png, image/jpg, image/jpeg"
                               className="form-control-file"
                               label={`${loja.nome_fantasia} - ${loja.endereco}`}
                               required
@@ -583,7 +588,8 @@ export let CadastroEmpresa = props => {
                               name={`arqs_${key}`}
                               id={`${key}`}
                               key={key}
-                              accept="file/pdf"
+                              accept=".pdf, .png, .jpg, .jpeg, .zip"
+                              acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
                               className="form-control-file"
                               label={labelTemplate(tipo)}
                               resetarFile={tipo.resetarFile}

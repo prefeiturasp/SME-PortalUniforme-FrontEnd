@@ -4,20 +4,29 @@ import { FileUpload as FileUploadPR } from "primereact/fileupload";
 import { InputErroMensagem } from "./InputErroMensagem";
 import { HelpText } from "components/HelpText";
 import { asyncForEach, readerFile } from "helpers/utils";
+import { toastError } from "components/Toast/dialogs";
 
 class CustomFileUploadPR extends FileUploadPR {
   async upload() {
     const { onUploadChange } = this.props;
     const { files } = this.state;
-    let data = [];
-    await asyncForEach(files, async file => {
-      await readerFile(file).then(v => {
-        if (this.props.multiple || files.length === 1) {
-          data.push(v);
-        }
+    if (
+      this.props.acceptCustom &&
+      !this.props.acceptCustom.includes(files[0].type)
+    ) {
+      toastError("Formato de arquivo inválido");
+      this.setState({ files: [] });
+    } else {
+      let data = [];
+      await asyncForEach(files, async file => {
+        await readerFile(file).then(v => {
+          if (this.props.multiple || files.length === 1) {
+            data.push(v);
+          }
+        });
       });
-    });
-    onUploadChange(data);
+      onUploadChange(data);
+    }
   }
   async remove(index) {
     this.clearInputElement();
@@ -29,7 +38,6 @@ class CustomFileUploadPR extends FileUploadPR {
       this.upload
     );
 
-    this.props.setDisabled(false);
   }
 }
 
@@ -53,16 +61,6 @@ export class FileUpload extends React.Component {
     }
   }
 
-  setDisabled = value => {
-    this.setState({ disabled: value });
-  };
-
-  onSelect = (e, files) => {
-    if (this.fileUpload.current.files.length > 0) {
-      this.setDisabled(true);
-    }
-  };
-
   componentDidUpdate(prevProps) {
     if (this.props.resetarFile && !prevProps.resetarFile) {
       this.fileUpload.current.clear();
@@ -76,6 +74,7 @@ export class FileUpload extends React.Component {
       className,
       id,
       accept,
+      acceptCustom,
       esconderAsterisco,
       helpText,
       label,
@@ -114,6 +113,7 @@ export class FileUpload extends React.Component {
              ${meta.touched && meta.error && "invalid-field"}`}
           {...inputProps}
           accept={accept}
+          acceptCustom={acceptCustom}
           auto={true}
           multiple={multiple}
           maxFileSize={5242880}
@@ -123,7 +123,6 @@ export class FileUpload extends React.Component {
           cancelLabel="Cancelar"
           onUploadChange={this.onChange}
           onSelect={this.onSelect}
-          setDisabled={this.setDisabled}
         />
         <HelpText helpText={helpText} />
         <InputErroMensagem meta={meta} />
