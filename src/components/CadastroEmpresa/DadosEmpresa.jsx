@@ -88,6 +88,7 @@ const DadosEmpresa = props => {
         component={InputText}
         label="E-mail"
         name="email"
+        type="email"
         required
         validate={required}
         placeholder="Digite o e-mail do responsável"
