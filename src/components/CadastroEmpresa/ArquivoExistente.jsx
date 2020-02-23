@@ -9,7 +9,7 @@ const ArquivoExistente = props => {
       <a target="blank" href={props.arquivo.arquivo || props.arquivo}>
         Visualizar arquivo
       </a>
-      {!props.proponenteStatus && (
+      {props.proponenteStatus !== "INSCRITO" && (
         <span
           onClick={() =>
             props.lojaUuid

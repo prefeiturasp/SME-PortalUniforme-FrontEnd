@@ -104,10 +104,20 @@ export let CadastroEmpresa = props => {
   };
 
   const verificarSeFaltamArquivos = empresa => {
+    let aindaFaltaDocumentoObrigatorio = false;
+    tiposDocumentos.forEach(tipoDocumento => {
+      if (
+        tipoDocumento.obrigatorio &&
+        !empresa.arquivos_anexos.find(
+          arquivo => arquivo.tipo_documento === tipoDocumento.id
+        )
+      )
+        aindaFaltaDocumentoObrigatorio = true;
+    });
     let aindaFaltamArquivos =
       empresa.lojas.find(loja => loja.foto_fachada === null) ||
       empresa.arquivos_anexos.length === 0 ||
-      empresa.arquivos_anexos.length !== tiposDocumentos.length;
+      aindaFaltaDocumentoObrigatorio
     setFaltaArquivos(aindaFaltamArquivos);
   };
 
