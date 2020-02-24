@@ -7,7 +7,7 @@ import DadosEmpresa from "./DadosEmpresa";
 import TiposFornecimentos from "./TiposFornecimentos";
 import "./style.scss";
 import LojaFisica from "./LojaFisica";
-import { validaOfertaUniforme, validaFormulario } from "./helper";
+import { validaOfertaUniforme, validaFormulario, getError } from "./helper";
 import { toastSuccess, toastError } from "../Toast/dialogs";
 import {
   cadastrarEmpresa,
@@ -20,7 +20,8 @@ import {
   deleteAnexo,
   setFachadaLoja,
   concluirCadastro,
-  getLimites
+  getLimites,
+  verificaEmail
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
@@ -219,6 +220,15 @@ export let CadastroEmpresa = props => {
       return;
     }
 
+    let emailStatus = await verificaEmail(payload.email);
+    if (emailStatus && emailStatus.email_cadastrado === "Sim") {
+      window.scrollTo(0, 0);
+      showMessage(
+        "Esse E-mail já está inscrito no programa de fornecimento de uniformes."
+      );
+      return;
+    }
+
     if (limite) {
       window.scrollTo(0, 0);
       showMessage(
@@ -243,16 +253,12 @@ export let CadastroEmpresa = props => {
       } else {
         try {
           const response = await cadastrarEmpresa(payload);
-
           if (response.status === HTTP_STATUS.CREATED) {
             props.reset();
             limparListaLojas();
             window.location.search += `?uuid=${response.data.uuid}`;
           } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
+            toastError(getError(response.data))
           }
         } catch (error) {
           if (error.response.data.email) {
@@ -489,12 +495,12 @@ export let CadastroEmpresa = props => {
                             empresa={empresa}
                             chave={key}
                             nome_fantasia={value.nome_fantasia}
-                            cep={value.cep}
+                            cep={empresa && value.cep}
                             bairro={value.bairro}
-                            numero={value.numero}
-                            complemento={value.complemento}
+                            numero={empresa && value.numero}
+                            complemento={empresa && value.complemento}
                             endereco={value.endereco}
-                            telefone={value.telefone}
+                            telefone={empresa && value.telefone}
                             onUpdate={onUpdateLoja}
                           />
                           {!empresa && (

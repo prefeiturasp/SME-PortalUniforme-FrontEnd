@@ -3,17 +3,15 @@ import { validate } from "cnpj";
 export const required = value =>
   value !== undefined ? undefined : "Campo obrigatório";
 
-const undefinedFuncition = value =>
-  undefined  
+const undefinedFuncition = value => undefined;
 
-export const valide = (obrigatorio) => {
-  if (obrigatorio){
-    return required
+export const valide = obrigatorio => {
+  if (obrigatorio) {
+    return required;
   } else {
-    return undefinedFuncition
+    return undefinedFuncition;
   }
-  
-}
+};
 
 export const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
@@ -86,8 +84,6 @@ export const validaTelefone = value => {
 };
 
 export const validaCEP = value => {
-  let numero = value
-    .replace("-", "")
-    .replace(/_/g, "");
+  let numero = value.replace("-", "").replace(/_/g, "");
   return numero.length === 8 ? undefined : "Necessário CEP válido!";
 };
