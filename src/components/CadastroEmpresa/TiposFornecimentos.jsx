@@ -128,8 +128,13 @@ const TiposFornecimentos = props => {
             ? sum(
                 props.empresa.ofertas_de_uniformes
                   .filter(item => item.uniforme_categoria === props.tipo.id)
-                  .map(item => parseFloat(item.preco) * item.uniforme_quantidade)
+                  .map(
+                    item => parseFloat(item.preco) * item.uniforme_quantidade
+                  )
               )
+                .toFixed(2)
+                .toString()
+                .replace(".", ",")
             : sum(uniformesInfo.map(item => item.total))}
           <Form.Text className="text-danger">
             {maiorQueLimite(sum(uniformesInfo.map(item => item.total)))

@@ -53,7 +53,7 @@ const TipoFornecimento = props => {
       </div>
       <div className="col-4 text-right tipo-fornecimento-quantidade">
         <div class="float-left">x {props.uniforme.quantidade}</div>
-        <strong>R$:</strong> {props.total}
+        <strong>R$:</strong> {props.total.toFixed(2).toString().replace(".", ",")}
       </div>
     </div>
   );
