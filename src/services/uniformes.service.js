@@ -37,12 +37,14 @@ export const getLimites = async () => {
 };
 
 export const cadastrarEmpresa = async payload => {
-  const response = await axios.post(
-    `${endPont.API_URL}/proponentes/`,
-    payload,
-    authHeader
-  );
-  return response;
+  return axios
+    .post(`${endPont.API_URL}/proponentes/`, payload, authHeader)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
 };
 
 export const getEmpresa = async uuid => {
@@ -128,4 +130,18 @@ export const busca_url_instrucao_normativa = async () => {
     ? endPont.API_URL.slice(0, -4)
     : endPont.API_URL;
   return `${domain}${response.data}`;
+};
+
+export const verificaEmail = async email => {
+  return axios
+    .get(
+      `${endPont.API_URL}/proponentes/verifica-email/?email=${email}`,
+      authHeader
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
 };
