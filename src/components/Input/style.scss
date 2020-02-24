@@ -22,11 +22,16 @@ div.input {
       color: $grayPlaceholder;
     }
     &.invalid-field:not(:focus):invalid {
-      box-shadow: none;
-      border-color: $red;
+      box-shadow: none !important;
+      border-color: $red !important;
     }
     &:disabled {
       background-color: $grayDisabled;
     }
   }
+}
+
+.invalid-field {
+  box-shadow: none !important;
+  border-color: $red;
 }

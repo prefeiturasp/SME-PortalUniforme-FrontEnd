@@ -4,7 +4,7 @@ import { Form, Col, Row } from "react-bootstrap";
 export const InputLabelInLine = (props) => {
   return (
     <Fragment>
-      <Form.Group as={Row} controlId={props.id}>
+      <Form.Group as={Row}>
         <Form.Label>{props.label}</Form.Label>
         <Col sm="10">
           <Form.Control {...props} />

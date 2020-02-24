@@ -27,15 +27,15 @@ import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
 export let CadastroEmpresa = props => {
   const initialValue = {
-    nome_fantasia: "",
-    endereco: "",
-    numero: "",
-    complemento: "",
-    telefone: "",
-    cidade: "",
-    uf: "",
-    bairro: "",
-    cep: ""
+    nome_fantasia: undefined,
+    endereco: undefined,
+    numero: undefined,
+    complemento: undefined,
+    telefone: undefined,
+    cidade: undefined,
+    uf: undefined,
+    bairro: undefined,
+    cep: undefined
   };
 
   const [empresa, setEmpresa] = useState(null);
@@ -485,10 +485,10 @@ export let CadastroEmpresa = props => {
                   <div className="card mt-2">
                     <div className="card-body">
                       <div className="card-title">
-                        Informações ponto de venda físico ou stand de vendas
+                        Informações sobre ponto de venda físico ou stand de vendas
                       </div>
                       {loja.map((value, key) => (
-                        <>
+                        <div key={key}>
                           <LojaFisica
                             id={key}
                             key={key}
@@ -498,6 +498,8 @@ export let CadastroEmpresa = props => {
                             cep={empresa && value.cep}
                             bairro={value.bairro}
                             numero={empresa && value.numero}
+                            cidade={empresa && "São Paulo"}
+                            uf={empresa && "SP"}
                             complemento={empresa && value.complemento}
                             endereco={value.endereco}
                             telefone={empresa && value.telefone}
@@ -515,7 +517,7 @@ export let CadastroEmpresa = props => {
                             </Button>
                           )}
                           {empresa && key !== loja.length - 1 && <hr />}
-                        </>
+                        </div>
                       ))}
                       {!empresa && (
                         <Button block onClick={() => addLoja(contadorLoja)}>
@@ -527,32 +529,30 @@ export let CadastroEmpresa = props => {
                   {!uuid && (
                     <Fragment>
                       <div className="form-group pt-3">
-                        <div class="form-check">
+                        <div className="form-check">
                           <Field
                             component={"input"}
                             name="declaracao"
                             className="form-check-input"
                             required
                             type="checkbox"
-                            id={5}
                           />
-                          <label title="" class="form-check-label">
+                          <label title="" className="form-check-label">
                             Declaro que as informações acima prestadas são
                             verdadeiras.
                           </label>
                         </div>
                       </div>
                       <div className="form-group">
-                        <div class="form-check">
+                        <div className="form-check">
                           <Field
                             component={"input"}
                             name="condicoes"
                             className="form-check-input"
                             required
                             type="checkbox"
-                            id={5}
                           />
-                          <label title="" class="form-check-label">
+                          <label title="" className="form-check-label">
                             Li e concordo com os termos e condições apresentados
                             no
                             <a

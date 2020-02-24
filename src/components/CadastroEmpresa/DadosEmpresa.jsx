@@ -39,6 +39,7 @@ const DadosEmpresa = props => {
             name="end_cep"
             required
             validate={[required, validaCEP]}
+            placeholder="Digite o CEP"
           />
         </Col>
         <Col lg={6} xl={6}>

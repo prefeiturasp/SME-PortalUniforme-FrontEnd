@@ -38,12 +38,13 @@ const TipoFornecimento = props => {
       </div>
       <div className="col-4 tipo-fornecimento-valor">
         <InputLabelInLine
-          autocomplete="off"
+          autoComplete="off"
           className={obrigar ? "is-invalid" : null}
           onFocus={obrigar ? true : false}
           label="R$"
           style={{ marginTop: "-10px" }}
           type="number"
+          onKeyDown={evt => evt.key === "e" && evt.preventDefault()}
           value={props.valor}
           disabled={props.desabilitado}
           required={props.requerido}
@@ -52,8 +53,12 @@ const TipoFornecimento = props => {
         />
       </div>
       <div className="col-4 text-right tipo-fornecimento-quantidade">
-        <div class="float-left">x {props.uniforme.quantidade}</div>
-        <strong>R$:</strong> {props.total.toFixed(2).toString().replace(".", ",")}
+        <div className="float-left">x {props.uniforme.quantidade}</div>
+        <strong>R$:</strong>{" "}
+        {props.total
+          .toFixed(2)
+          .toString()
+          .replace(".", ",")}
       </div>
     </div>
   );

@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import { Field } from "redux-form";
 import {
   InputLabelRequired,
   InputLabel
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
+import { required } from "helpers/fieldValidators";
 
 const LojaFisica = props => {
   const [endereco, setEndereco] = useState("");
@@ -88,10 +90,10 @@ const LojaFisica = props => {
       <Row>
         <Col>
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
             disabled={props.empresa}
             label="Nome Fantasia"
-            placeholder="Nome fantasia da loja."
+            placeholder="Nome fantasia da loja"
             name={`loja.nome_fantasia_${props.chave}`}
             id={`loja.nome_fantasia_${props.chave}`}
             value={nome_fantasia}
@@ -107,7 +109,7 @@ const LojaFisica = props => {
       <Row>
         <Col lg={6} xl={6}>
           <InputLabelRequiredMask
-            autocomplete="off"
+            autoComplete="off"
             disabled={props.empresa}
             mask="99999-999"
             label="CEP"
@@ -128,13 +130,13 @@ const LojaFisica = props => {
             mensagem="A loja precisa estar em São Paulo-SP"
             required
           />
-          <div class="valid-feedback">Deve ser São Paulo</div>
+          <div className="valid-feedback">Deve ser São Paulo</div>
         </Col>
         <Col lg={6} xl={6}>
           <InputLabelRequired
-            autocomplete="off"
-            value={bairro}
+            autoComplete="off"
             disabled={props.empresa}
+            value={bairro}
             label="Bairro"
             id={`bairro_${props.chave}`}
             onChange={e => {
@@ -149,7 +151,7 @@ const LojaFisica = props => {
       <div className="row">
         <div className="col-6">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
             disabled={props.empresa}
             label="Endereço"
             placeholder="Digite o logradouro"
@@ -166,7 +168,7 @@ const LojaFisica = props => {
         </div>
         <div className="col-2">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
             disabled={props.empresa}
             value={numero}
             label="Número"
@@ -197,7 +199,7 @@ const LojaFisica = props => {
       <div className="row">
         <div className="col-6">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
             label="Cidade"
             value={cidade}
             id={`cidade_${props.chave}`}
@@ -233,7 +235,7 @@ const LojaFisica = props => {
         </div>
         <div className="col-4">
           <InputLabelRequiredMask
-            Autocomplete="off"
+            autoComplete="off"
             mask="(99) 9999-99999"
             label="Telefone"
             disabled={props.empresa}

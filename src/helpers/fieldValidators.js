@@ -67,7 +67,7 @@ export const validaUF = value => {
   ];
   return UF.find(UF => UF === value)
     ? undefined
-    : "UF Invalido. Necessário Letra Maiuscula.";
+    : "UF Inválido. Necessário letras maiúsculas.";
 };
 
 export const validaCNPJ = value =>

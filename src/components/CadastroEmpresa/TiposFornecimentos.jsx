@@ -121,7 +121,7 @@ const TiposFornecimentos = props => {
       })}
       <Row>
         <Col sm={{ span: 4, offset: 4 }}>
-          <div class="float-right">
+          <div className="float-right">
             <strong>TOTAL</strong>
           </div>
         </Col>
