@@ -107,6 +107,15 @@ export let CadastroEmpresa = props => {
 
   const setEmpresaEFaltaArquivos = empresa => {
     setEmpresa(empresa);
+    props.change("cnpj", empresa.cnpj);
+    props.change("razao_social", empresa.razao_social);
+    props.change("end_logradouro", empresa.end_logradouro)
+    props.change("end_cidade", empresa.end_cidade)
+    props.change("end_uf", empresa.end_uf)
+    props.change("end_cep", empresa.end_cep)
+    props.change("email", empresa.email)
+    props.change("telefone", empresa.telefone)
+    props.change("responsavel", empresa.responsavel)
     verificarSeFaltamArquivos(empresa);
   };
 
@@ -432,7 +441,7 @@ export let CadastroEmpresa = props => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">Dados da Empresa</div>
-                          <DadosEmpresa />
+                          <DadosEmpresa empresa={empresa} />
                         </div>
                       </div>
                     </div>
@@ -448,9 +457,11 @@ export let CadastroEmpresa = props => {
                           <hr className="pb-3" />
                           {tiposFornecimentos ? (
                             tiposFornecimentos.map((tipo, key) => {
+                              console.log(tipo)
                               return (
                                 <TiposFornecimentos
                                   key={key}
+                                  empresa={empresa}
                                   tipo={tipo}
                                   onUpdate={onUpdateUniforme}
                                   limites={limites}
@@ -684,8 +695,8 @@ export let CadastroEmpresa = props => {
 };
 
 CadastroEmpresa = reduxForm({
-  // a unique name for the form
-  form: "CadastroLojaForm"
+  form: "CadastroLojaForm",
+  enableReinitialize: true
 })(CadastroEmpresa);
 
 export default CadastroEmpresa;
