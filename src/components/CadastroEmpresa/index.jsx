@@ -7,7 +7,7 @@ import DadosEmpresa from "./DadosEmpresa";
 import TiposFornecimentos from "./TiposFornecimentos";
 import "./style.scss";
 import LojaFisica from "./LojaFisica";
-import { validaOfertaUniforme } from "./helper";
+import { validaOfertaUniforme, validaFormulario } from "./helper";
 import { toastSuccess, toastError } from "../Toast/dialogs";
 import {
   cadastrarEmpresa,
@@ -227,31 +227,35 @@ export let CadastroEmpresa = props => {
       payload["telefone"] = payload["telefone"].replace("_", "");
       delete payload["foto_fachada"];
       delete payload["arqs_anexos"];
+      const erro = validaFormulario(payload);
+      if (erro) {
+        toastError(erro);
+      } else {
+        try {
+          const response = await cadastrarEmpresa(payload);
 
-      try {
-        const response = await cadastrarEmpresa(payload);
-
-        if (response.status === HTTP_STATUS.CREATED) {
-          props.reset();
-          limparListaLojas();
-          window.location.search += `?uuid=${response.data.uuid}`;
-        } else {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-          );
-        }
-      } catch (error) {
-        if (error.response.data.email) {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-          );
-        } else {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-          );
+          if (response.status === HTTP_STATUS.CREATED) {
+            props.reset();
+            limparListaLojas();
+            window.location.search += `?uuid=${response.data.uuid}`;
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
+        } catch (error) {
+          if (error.response.data.email) {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+            );
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
         }
       }
     }

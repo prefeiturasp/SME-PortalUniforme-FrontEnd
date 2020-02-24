@@ -104,3 +104,13 @@ const extraiValorUniforme = (objeto, valor) => {
     return objeto[valor];
   }
 };
+
+export const validaFormulario = values => {
+  let erro = false;
+  values.ofertas_de_uniformes.forEach(oferta => {
+    if (parseFloat(oferta.preco) <= 0) {
+      erro = "Não pode existir fornecimento com valor menor que 0";
+    }
+  });
+  return erro;
+};

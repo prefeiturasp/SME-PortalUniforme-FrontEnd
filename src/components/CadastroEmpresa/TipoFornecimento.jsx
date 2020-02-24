@@ -19,7 +19,12 @@ const TipoFornecimento = props => {
   };
 
   const valorDevido = value => {
-    if (value === null || value === undefined || value === "") {
+    if (
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      (value && parseFloat(value) <= 0)
+    ) {
       setObrigar(true);
     } else {
       setObrigar(false);
