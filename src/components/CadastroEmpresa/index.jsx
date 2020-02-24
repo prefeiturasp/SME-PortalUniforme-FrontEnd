@@ -19,7 +19,8 @@ import {
   setAnexo,
   deleteAnexo,
   setFachadaLoja,
-  concluirCadastro
+  concluirCadastro,
+  getLimites
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
@@ -52,6 +53,7 @@ export let CadastroEmpresa = props => {
   const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
   const [limite, setLimite] = useState(false);
+  const [limites, setLimites] = useState([]);
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
 
@@ -86,6 +88,11 @@ export let CadastroEmpresa = props => {
       carregaEmpresa();
     });
 
+    const carregaLimites = async () => {
+      const limites = await getLimites();
+      setLimites(limites);
+    };
+    carregaLimites();
     carregaTiposFornecimentos();
     setEditalClick(
       !edital.url
@@ -442,6 +449,7 @@ export let CadastroEmpresa = props => {
                                   key={key}
                                   tipo={tipo}
                                   onUpdate={onUpdateUniforme}
+                                  limites={limites}
                                   maiorQueLimite={maiorQueLimite}
                                 />
                               );

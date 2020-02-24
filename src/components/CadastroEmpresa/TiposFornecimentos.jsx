@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import TipoFornecimento from "./TipoFornecimento";
-import { getLimites } from "services/uniformes.service";
 
 const TiposFornecimentos = props => {
   const initialUniformesInfo = props.tipo.uniformes.map(uniforme => ({
@@ -18,7 +17,7 @@ const TiposFornecimentos = props => {
 
   useEffect(() => {
     const carregaLimite = async () => {
-      const limites = await getLimites();
+      const limites = props.limites;
       const limite = limites.filter(
         value => value.categoria_uniforme === props.tipo.id
       );
