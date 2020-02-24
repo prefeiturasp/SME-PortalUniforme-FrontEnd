@@ -100,14 +100,17 @@ const TiposFornecimentos = props => {
             desabilitado={desabilitado}
             valor={
               props.empresa
-                ? props.empresa.ofertas_de_uniformes[uniforme.id - 1].preco
+                ? props.empresa.ofertas_de_uniformes.find(
+                    oferta => oferta.uniforme === uniforme.id
+                  ).preco
                 : uniformesInfo[key].preco
             }
             addValor={addValor}
             total={
               props.empresa
-                ? props.empresa.ofertas_de_uniformes[uniforme.id - 1].preco *
-                  uniforme.quantidade
+                ? props.empresa.ofertas_de_uniformes.find(
+                    oferta => oferta.uniforme === uniforme.id
+                  ).preco * uniforme.quantidade
                 : uniformesInfo[key].total
             }
             requerido={requerido}
