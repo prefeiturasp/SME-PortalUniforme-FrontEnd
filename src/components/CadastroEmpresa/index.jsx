@@ -109,13 +109,14 @@ export let CadastroEmpresa = props => {
     setEmpresa(empresa);
     props.change("cnpj", empresa.cnpj);
     props.change("razao_social", empresa.razao_social);
-    props.change("end_logradouro", empresa.end_logradouro)
-    props.change("end_cidade", empresa.end_cidade)
-    props.change("end_uf", empresa.end_uf)
-    props.change("end_cep", empresa.end_cep)
-    props.change("email", empresa.email)
-    props.change("telefone", empresa.telefone)
-    props.change("responsavel", empresa.responsavel)
+    props.change("end_logradouro", empresa.end_logradouro);
+    props.change("end_cidade", empresa.end_cidade);
+    props.change("end_uf", empresa.end_uf);
+    props.change("end_cep", empresa.end_cep);
+    props.change("email", empresa.email);
+    props.change("telefone", empresa.telefone);
+    props.change("responsavel", empresa.responsavel);
+    setLoja(empresa.lojas);
     verificarSeFaltamArquivos(empresa);
   };
 
@@ -457,7 +458,6 @@ export let CadastroEmpresa = props => {
                           <hr className="pb-3" />
                           {tiposFornecimentos ? (
                             tiposFornecimentos.map((tipo, key) => {
-                              console.log(tipo)
                               return (
                                 <TiposFornecimentos
                                   key={key}
@@ -486,26 +486,36 @@ export let CadastroEmpresa = props => {
                           <LojaFisica
                             id={key}
                             key={key}
+                            empresa={empresa}
                             chave={key}
                             nome_fantasia={value.nome_fantasia}
+                            cep={value.cep}
+                            bairro={value.bairro}
+                            numero={value.numero}
+                            complemento={value.complemento}
                             endereco={value.endereco}
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
                           />
-                          <Button
-                            disabled={contadorLoja <= 1 ? true : false}
-                            variant="outline-danger"
-                            block
-                            onClick={() => delLoja(key)}
-                            className="mb-1"
-                          >
-                            <i className="fas fa-trash" />
-                          </Button>
+                          {!empresa && (
+                            <Button
+                              disabled={contadorLoja <= 1 ? true : false}
+                              variant="outline-danger"
+                              block
+                              onClick={() => delLoja(key)}
+                              className="mb-1"
+                            >
+                              <i className="fas fa-trash" />
+                            </Button>
+                          )}
+                          {empresa && key !== loja.length - 1 && <hr />}
                         </>
                       ))}
-                      <Button block onClick={() => addLoja(contadorLoja)}>
-                        <i className="fas fa-plus-circle" /> Novo Endereço
-                      </Button>
+                      {!empresa && (
+                        <Button block onClick={() => addLoja(contadorLoja)}>
+                          <i className="fas fa-plus-circle" /> Novo Endereço
+                        </Button>
+                      )}
                     </div>
                   </div>
                   {!uuid && (
@@ -602,10 +612,29 @@ export let CadastroEmpresa = props => {
                       <div className="card-title">Documentos Anexos</div>
                       {tiposDocumentos ? (
                         tiposDocumentos.map((tipo, key) => {
-                          return !empresa ||
-                            !empresa.arquivos_anexos.find(
+                          return empresa &&
+                            empresa.arquivos_anexos.find(
                               arquivo => arquivo.tipo_documento === tipo.id
                             ) ? (
+                            <div>
+                              <ArquivoExistente
+                                label={labelTemplate(tipo)}
+                                arquivo={empresa.arquivos_anexos.find(
+                                  arquivo => arquivo.tipo_documento === tipo.id
+                                )}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={removeAnexo}
+                              />
+                            </div>
+                          ) : empresa && empresa.status === "INSCRITO" ? (
+                            <div className="no-file-end-signup pt-3">
+                              <div className="label">{labelTemplate(tipo)}</div>
+                              <div>
+                                Seu cadastro foi finalizado e você não pode mais
+                                enviar este anexo.
+                              </div>
+                            </div>
+                          ) : (
                             <Field
                               component={FileUpload}
                               name={`arqs_${key}`}
@@ -625,17 +654,6 @@ export let CadastroEmpresa = props => {
                                 }
                               }}
                             />
-                          ) : (
-                            <div>
-                              <ArquivoExistente
-                                label={labelTemplate(tipo)}
-                                arquivo={empresa.arquivos_anexos.find(
-                                  arquivo => arquivo.tipo_documento === tipo.id
-                                )}
-                                proponenteStatus={empresa && empresa.status}
-                                removeAnexo={removeAnexo}
-                              />
-                            </div>
                           );
                         })
                       ) : (

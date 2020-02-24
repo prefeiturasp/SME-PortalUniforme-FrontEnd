@@ -89,6 +89,7 @@ const LojaFisica = props => {
         <Col>
           <InputLabelRequired
             autocomplete="off"
+            disabled={props.empresa}
             label="Nome Fantasia"
             placeholder="Nome fantasia da loja."
             name={`loja.nome_fantasia_${props.chave}`}
@@ -107,6 +108,7 @@ const LojaFisica = props => {
         <Col lg={6} xl={6}>
           <InputLabelRequiredMask
             autocomplete="off"
+            disabled={props.empresa}
             mask="99999-999"
             label="CEP"
             placeholder="xxxxx-xxx"
@@ -132,6 +134,7 @@ const LojaFisica = props => {
           <InputLabelRequired
             autocomplete="off"
             value={bairro}
+            disabled={props.empresa}
             label="Bairro"
             id={`bairro_${props.chave}`}
             onChange={e => {
@@ -147,6 +150,7 @@ const LojaFisica = props => {
         <div className="col-6">
           <InputLabelRequired
             autocomplete="off"
+            disabled={props.empresa}
             label="Endereço"
             placeholder="Digite o logradouro"
             name={`loja.endereco_${props.chave}`}
@@ -163,6 +167,7 @@ const LojaFisica = props => {
         <div className="col-2">
           <InputLabelRequired
             autocomplete="off"
+            disabled={props.empresa}
             value={numero}
             label="Número"
             id={`numero_${props.chave}`}
@@ -178,6 +183,7 @@ const LojaFisica = props => {
           <InputLabel
             value={complemento}
             label="Complemento"
+            disabled={props.empresa}
             id={`complemento_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
@@ -230,6 +236,7 @@ const LojaFisica = props => {
             Autocomplete="off"
             mask="(99) 9999-99999"
             label="Telefone"
+            disabled={props.empresa}
             value={telefone}
             id={`telefone_${props.chave}`}
             placeholder="Fixo ou celular"

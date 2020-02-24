@@ -135,7 +135,10 @@ const TiposFornecimentos = props => {
                 .toFixed(2)
                 .toString()
                 .replace(".", ",")
-            : sum(uniformesInfo.map(item => item.total))}
+            : sum(uniformesInfo.map(item => item.total))
+                .toFixed(2)
+                .toString()
+                .replace(".", ",")}
           <Form.Text className="text-danger">
             {maiorQueLimite(sum(uniformesInfo.map(item => item.total)))
               ? `Valor maior que limite: ${limite}`
