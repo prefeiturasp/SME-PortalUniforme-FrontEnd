@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import TipoFornecimento from "./TipoFornecimento";
-import { getLimites } from "services/uniformes.service";
 
 const TiposFornecimentos = props => {
   const initialUniformesInfo = props.tipo.uniformes.map(uniforme => ({
@@ -18,7 +17,7 @@ const TiposFornecimentos = props => {
 
   useEffect(() => {
     const carregaLimite = async () => {
-      const limites = await getLimites();
+      const limites = props.limites;
       const limite = limites.filter(
         value => value.categoria_uniforme === props.tipo.id
       );
@@ -86,8 +85,9 @@ const TiposFornecimentos = props => {
         label={props.tipo.nome}
         key={props.tipo.id}
         type="checkbox"
+        disabled={props.empresa}
         onChange={e => checkProduto(e.target.checked)}
-        checked={checado}
+        checked={props.empresa ? true : checado}
       />
       {props.tipo.uniformes.map((uniforme, key) => {
         return (
@@ -98,9 +98,18 @@ const TiposFornecimentos = props => {
             chave={key}
             key={key}
             desabilitado={desabilitado}
-            valor={uniformesInfo[key].preco}
+            valor={
+              props.empresa
+                ? props.empresa.ofertas_de_uniformes[uniforme.id - 1].preco
+                : uniformesInfo[key].preco
+            }
             addValor={addValor}
-            total={uniformesInfo[key].total}
+            total={
+              props.empresa
+                ? props.empresa.ofertas_de_uniformes[uniforme.id - 1].preco *
+                  uniforme.quantidade
+                : uniformesInfo[key].total
+            }
             requerido={requerido}
             checkProduto={checkProduto}
             onUpdate={props.onUpdate}
@@ -114,7 +123,22 @@ const TiposFornecimentos = props => {
           </div>
         </Col>
         <Col sm={4} className="text-right">
-          <strong>R$</strong> {sum(uniformesInfo.map(item => item.total))}
+          <strong>R$</strong>{" "}
+          {props.empresa
+            ? sum(
+                props.empresa.ofertas_de_uniformes
+                  .filter(item => item.uniforme_categoria === props.tipo.id)
+                  .map(
+                    item => parseFloat(item.preco) * item.uniforme_quantidade
+                  )
+              )
+                .toFixed(2)
+                .toString()
+                .replace(".", ",")
+            : sum(uniformesInfo.map(item => item.total))
+                .toFixed(2)
+                .toString()
+                .replace(".", ",")}
           <Form.Text className="text-danger">
             {maiorQueLimite(sum(uniformesInfo.map(item => item.total)))
               ? `Valor maior que limite: ${limite}`

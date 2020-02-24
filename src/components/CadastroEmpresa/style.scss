@@ -46,6 +46,10 @@ div.file-existent {
     font-size: 14px;
     color: $gray;
   }
+  div.success-message {
+    color: $corVerdeEscuro;
+    font-weight: bold;
+  }
   span.delete {
     margin-left: 2em;
     font-weight: bold;
@@ -57,5 +61,12 @@ div.file-existent {
     &:hover {
       background-color: $corAzulPortal;
     }
+  }
+}
+
+div.no-file-end-signup {
+  div.label {
+    font-size: 14px;
+    color: $gray;
   }
 }

@@ -7,7 +7,7 @@ import DadosEmpresa from "./DadosEmpresa";
 import TiposFornecimentos from "./TiposFornecimentos";
 import "./style.scss";
 import LojaFisica from "./LojaFisica";
-import { validaOfertaUniforme } from "./helper";
+import { validaOfertaUniforme, validaFormulario } from "./helper";
 import { toastSuccess, toastError } from "../Toast/dialogs";
 import {
   cadastrarEmpresa,
@@ -19,7 +19,8 @@ import {
   setAnexo,
   deleteAnexo,
   setFachadaLoja,
-  concluirCadastro
+  concluirCadastro,
+  getLimites
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
@@ -52,6 +53,7 @@ export let CadastroEmpresa = props => {
   const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
   const [limite, setLimite] = useState(false);
+  const [limites, setLimites] = useState([]);
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
 
@@ -86,6 +88,11 @@ export let CadastroEmpresa = props => {
       carregaEmpresa();
     });
 
+    const carregaLimites = async () => {
+      const limites = await getLimites();
+      setLimites(limites);
+    };
+    carregaLimites();
     carregaTiposFornecimentos();
     setEditalClick(
       !edital.url
@@ -100,14 +107,34 @@ export let CadastroEmpresa = props => {
 
   const setEmpresaEFaltaArquivos = empresa => {
     setEmpresa(empresa);
+    props.change("cnpj", empresa.cnpj);
+    props.change("razao_social", empresa.razao_social);
+    props.change("end_logradouro", empresa.end_logradouro);
+    props.change("end_cidade", empresa.end_cidade);
+    props.change("end_uf", empresa.end_uf);
+    props.change("end_cep", empresa.end_cep);
+    props.change("email", empresa.email);
+    props.change("telefone", empresa.telefone);
+    props.change("responsavel", empresa.responsavel);
+    setLoja(empresa.lojas);
     verificarSeFaltamArquivos(empresa);
   };
 
   const verificarSeFaltamArquivos = empresa => {
+    let aindaFaltaDocumentoObrigatorio = false;
+    tiposDocumentos.forEach(tipoDocumento => {
+      if (
+        tipoDocumento.obrigatorio &&
+        !empresa.arquivos_anexos.find(
+          arquivo => arquivo.tipo_documento === tipoDocumento.id
+        )
+      )
+        aindaFaltaDocumentoObrigatorio = true;
+    });
     let aindaFaltamArquivos =
       empresa.lojas.find(loja => loja.foto_fachada === null) ||
       empresa.arquivos_anexos.length === 0 ||
-      empresa.arquivos_anexos.length !== tiposDocumentos.length;
+      aindaFaltaDocumentoObrigatorio;
     setFaltaArquivos(aindaFaltamArquivos);
   };
 
@@ -210,31 +237,35 @@ export let CadastroEmpresa = props => {
       payload["telefone"] = payload["telefone"].replace("_", "");
       delete payload["foto_fachada"];
       delete payload["arqs_anexos"];
+      const erro = validaFormulario(payload);
+      if (erro) {
+        toastError(erro);
+      } else {
+        try {
+          const response = await cadastrarEmpresa(payload);
 
-      try {
-        const response = await cadastrarEmpresa(payload);
-
-        if (response.status === HTTP_STATUS.CREATED) {
-          props.reset();
-          limparListaLojas();
-          window.location.search += `?uuid=${response.data.uuid}`;
-        } else {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-          );
-        }
-      } catch (error) {
-        if (error.response.data.email) {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-          );
-        } else {
-          window.scrollTo(0, 0);
-          showMessage(
-            "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-          );
+          if (response.status === HTTP_STATUS.CREATED) {
+            props.reset();
+            limparListaLojas();
+            window.location.search += `?uuid=${response.data.uuid}`;
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
+        } catch (error) {
+          if (error.response.data.email) {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+            );
+          } else {
+            window.scrollTo(0, 0);
+            showMessage(
+              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+            );
+          }
         }
       }
     }
@@ -285,19 +316,23 @@ export let CadastroEmpresa = props => {
   };
 
   const uploadFachadaLoja = async (e, uuidLoja) => {
-    const arquivoAnexo = {
-      foto_fachada: e[0].arquivo
-    };
-    setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
-      if (response.status === HTTP_STATUS.OK) {
-        toastSuccess("Arquivo salvo com sucesso!");
-        getEmpresa(uuid).then(empresa => {
-          setEmpresaEFaltaArquivos(empresa.data);
-        });
-      } else {
-        toastError("Erro ao dar upload no arquivo");
-      }
-    });
+    if (!e[0].arquivo.includes("image/")) {
+      toastError("Formato de arquivo inválido");
+    } else {
+      const arquivoAnexo = {
+        foto_fachada: e[0].arquivo
+      };
+      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo salvo com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao dar upload no arquivo");
+        }
+      });
+    }
   };
 
   const deleteFachadaLoja = async uuidLoja => {
@@ -407,7 +442,7 @@ export let CadastroEmpresa = props => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">Dados da Empresa</div>
-                          <DadosEmpresa />
+                          <DadosEmpresa empresa={empresa} />
                         </div>
                       </div>
                     </div>
@@ -426,8 +461,10 @@ export let CadastroEmpresa = props => {
                               return (
                                 <TiposFornecimentos
                                   key={key}
+                                  empresa={empresa}
                                   tipo={tipo}
                                   onUpdate={onUpdateUniforme}
+                                  limites={limites}
                                   maiorQueLimite={maiorQueLimite}
                                 />
                               );
@@ -449,26 +486,36 @@ export let CadastroEmpresa = props => {
                           <LojaFisica
                             id={key}
                             key={key}
+                            empresa={empresa}
                             chave={key}
                             nome_fantasia={value.nome_fantasia}
+                            cep={value.cep}
+                            bairro={value.bairro}
+                            numero={value.numero}
+                            complemento={value.complemento}
                             endereco={value.endereco}
                             telefone={value.telefone}
                             onUpdate={onUpdateLoja}
                           />
-                          <Button
-                            disabled={contadorLoja <= 1 ? true : false}
-                            variant="outline-danger"
-                            block
-                            onClick={() => delLoja(key)}
-                            className="mb-1"
-                          >
-                            <i className="fas fa-trash" />
-                          </Button>
+                          {!empresa && (
+                            <Button
+                              disabled={contadorLoja <= 1 ? true : false}
+                              variant="outline-danger"
+                              block
+                              onClick={() => delLoja(key)}
+                              className="mb-1"
+                            >
+                              <i className="fas fa-trash" />
+                            </Button>
+                          )}
+                          {empresa && key !== loja.length - 1 && <hr />}
                         </>
                       ))}
-                      <Button block onClick={() => addLoja(contadorLoja)}>
-                        <i className="fas fa-plus-circle" /> Novo Endereço
-                      </Button>
+                      {!empresa && (
+                        <Button block onClick={() => addLoja(contadorLoja)}>
+                          <i className="fas fa-plus-circle" /> Novo Endereço
+                        </Button>
+                      )}
                     </div>
                   </div>
                   {!uuid && (
@@ -533,7 +580,8 @@ export let CadastroEmpresa = props => {
                               name={`arqs_${key}`}
                               id={`${key}`}
                               key={key}
-                              accept="file/pdf"
+                              accept="image/*"
+                              acceptCustom="image/png, image/jpg, image/jpeg"
                               className="form-control-file"
                               label={`${loja.nome_fantasia} - ${loja.endereco}`}
                               required
@@ -564,16 +612,36 @@ export let CadastroEmpresa = props => {
                       <div className="card-title">Documentos Anexos</div>
                       {tiposDocumentos ? (
                         tiposDocumentos.map((tipo, key) => {
-                          return !empresa ||
-                            !empresa.arquivos_anexos.find(
+                          return empresa &&
+                            empresa.arquivos_anexos.find(
                               arquivo => arquivo.tipo_documento === tipo.id
                             ) ? (
+                            <div>
+                              <ArquivoExistente
+                                label={labelTemplate(tipo)}
+                                arquivo={empresa.arquivos_anexos.find(
+                                  arquivo => arquivo.tipo_documento === tipo.id
+                                )}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={removeAnexo}
+                              />
+                            </div>
+                          ) : empresa && empresa.status === "INSCRITO" ? (
+                            <div className="no-file-end-signup pt-3">
+                              <div className="label">{labelTemplate(tipo)}</div>
+                              <div>
+                                Seu cadastro foi finalizado e você não pode mais
+                                enviar este anexo.
+                              </div>
+                            </div>
+                          ) : (
                             <Field
                               component={FileUpload}
                               name={`arqs_${key}`}
                               id={`${key}`}
                               key={key}
-                              accept="file/pdf"
+                              accept=".pdf, .png, .jpg, .jpeg, .zip"
+                              acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
                               className="form-control-file"
                               label={labelTemplate(tipo)}
                               resetarFile={tipo.resetarFile}
@@ -586,17 +654,6 @@ export let CadastroEmpresa = props => {
                                 }
                               }}
                             />
-                          ) : (
-                            <div>
-                              <ArquivoExistente
-                                label={labelTemplate(tipo)}
-                                arquivo={empresa.arquivos_anexos.find(
-                                  arquivo => arquivo.tipo_documento === tipo.id
-                                )}
-                                proponenteStatus={empresa && empresa.status}
-                                removeAnexo={removeAnexo}
-                              />
-                            </div>
                           );
                         })
                       ) : (
@@ -656,8 +713,8 @@ export let CadastroEmpresa = props => {
 };
 
 CadastroEmpresa = reduxForm({
-  // a unique name for the form
-  form: "CadastroLojaForm"
+  form: "CadastroLojaForm",
+  enableReinitialize: true
 })(CadastroEmpresa);
 
 export default CadastroEmpresa;

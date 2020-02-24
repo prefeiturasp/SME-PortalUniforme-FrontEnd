@@ -19,7 +19,12 @@ const TipoFornecimento = props => {
   };
 
   const valorDevido = value => {
-    if (value === null || value === undefined || value === "") {
+    if (
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      (value && parseFloat(value) <= 0)
+    ) {
       setObrigar(true);
     } else {
       setObrigar(false);
@@ -48,7 +53,7 @@ const TipoFornecimento = props => {
       </div>
       <div className="col-4 text-right tipo-fornecimento-quantidade">
         <div class="float-left">x {props.uniforme.quantidade}</div>
-        <strong>R$:</strong> {props.total}
+        <strong>R$:</strong> {props.total.toFixed(2).toString().replace(".", ",")}
       </div>
     </div>
   );
