@@ -4,7 +4,7 @@ import { FileUpload as FileUploadPR } from "primereact/fileupload";
 import { InputErroMensagem } from "./InputErroMensagem";
 import { HelpText } from "components/HelpText";
 import { asyncForEach, readerFile } from "helpers/utils";
-import { toastError } from "components/Toast/dialogs";
+import { toastError, toastInfo } from "components/Toast/dialogs";
 
 class CustomFileUploadPR extends FileUploadPR {
   async upload() {
@@ -37,7 +37,6 @@ class CustomFileUploadPR extends FileUploadPR {
       },
       this.upload
     );
-
   }
 }
 
@@ -50,6 +49,10 @@ export class FileUpload extends React.Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.fileUpload = React.createRef();
+  }
+
+  onSelect() {
+    toastInfo("Upload em andamento. Aguarde...");
   }
 
   onChange(data) {
