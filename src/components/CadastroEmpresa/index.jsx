@@ -344,16 +344,23 @@ export let CadastroEmpresa = props => {
     });
   };
 
-  const uploadFachadaLoja = async (e, uuidLoja) => {
+  const uploadFachadaLoja = async (e, uuidLoja, key) => {
     if (!e[0].arquivo.includes("image/")) {
       toastError("Formato de arquivo inválido");
     } else {
       const arquivoAnexo = {
         foto_fachada: e[0].arquivo
       };
+      let empresa_ = empresa;
+      empresa_.lojas[key].uploadEmAndamento = true;
+      setEmpresa(empresa_);
+      forceUpdate();
       setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
         if (response.status === HTTP_STATUS.OK) {
           toastSuccess("Arquivo salvo com sucesso!");
+          let empresa_ = empresa;
+          empresa_.lojas[key].uploadEmAndamento = false;
+          setEmpresa(empresa_);
           getEmpresa(uuid).then(empresa => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
@@ -605,24 +612,32 @@ export let CadastroEmpresa = props => {
                       {empresa &&
                         empresa.lojas.map((loja, key) => {
                           return !loja.foto_fachada ? (
-                            <Field
-                              component={FileUpload}
-                              name={`arqs_${key}`}
-                              id={`${key}`}
-                              key={key}
-                              accept="image/*"
-                              acceptCustom="image/png, image/jpg, image/jpeg"
-                              className="form-control-file"
-                              label={`${loja.nome_fantasia} - ${loja.endereco}`}
-                              required
-                              validate={valide(true)}
-                              multiple={false}
-                              onChange={e => {
-                                if (e.length > 0) {
-                                  uploadFachadaLoja(e, loja.uuid);
-                                }
-                              }}
-                            />
+                            <Fragment>
+                              <Field
+                                component={FileUpload}
+                                name={`arqs_${key}`}
+                                id={`${key}`}
+                                key={key}
+                                accept="image/*"
+                                acceptCustom="image/png, image/jpg, image/jpeg"
+                                className="form-control-file"
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                required
+                                validate={valide(true)}
+                                multiple={false}
+                                onChange={e => {
+                                  if (e.length > 0) {
+                                    uploadFachadaLoja(e, loja.uuid, key);
+                                  }
+                                }}
+                              />
+                              {loja.uploadEmAndamento && (
+                                <span className="font-weight-bold">
+                                  {`Upload de ${loja.nome_fantasia} em andamento. Aguarde`}
+                                  <span className="blink">...</span>
+                                </span>
+                              )}
+                            </Fragment>
                           ) : (
                             <div>
                               <ArquivoExistente
@@ -686,7 +701,10 @@ export let CadastroEmpresa = props => {
                                 }}
                               />
                               {tipo.uploadEmAndamento && (
-                                <span className="font-weight-bold">{`Upload de ${tipo.nome} em andamento. Aguarde...`}</span>
+                                <span className="font-weight-bold">
+                                  {`Upload de ${tipo.nome} em andamento. Aguarde`}
+                                  <span className="blink">...</span>
+                                </span>
                               )}
                             </Fragment>
                           );
