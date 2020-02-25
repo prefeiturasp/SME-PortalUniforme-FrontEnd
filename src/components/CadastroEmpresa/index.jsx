@@ -1,4 +1,10 @@
-import React, { Fragment, useState, useMemo, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback
+} from "react";
 import HTTP_STATUS from "http-status-codes";
 import { Button, Alert } from "react-bootstrap";
 import { valide } from "helpers/fieldValidators";
@@ -120,6 +126,16 @@ export let CadastroEmpresa = props => {
     setLoja(empresa.lojas);
     verificarSeFaltamArquivos(empresa);
   };
+
+  const useForceUpdate = () => {
+    const [, setTick] = useState(0);
+    const update = useCallback(() => {
+      setTick(tick => tick + 1);
+    }, []);
+    return update;
+  };
+
+  const forceUpdate = useForceUpdate();
 
   const verificarSeFaltamArquivos = empresa => {
     let aindaFaltaDocumentoObrigatorio = false;
@@ -258,7 +274,7 @@ export let CadastroEmpresa = props => {
             limparListaLojas();
             window.location.search += `?uuid=${response.data.uuid}`;
           } else {
-            toastError(getError(response.data))
+            toastError(getError(response.data));
           }
         } catch (error) {
           if (error.response.data.email) {
@@ -303,15 +319,22 @@ export let CadastroEmpresa = props => {
     return true;
   };
 
-  const uploadAnexo = async (e, tipo) => {
+  const uploadAnexo = async (e, tipo, key) => {
     const arquivoAnexo = {
       ...e[0],
       tipo_documento: tipo.id,
       proponente: uuid
     };
+    let tiposDocumentos_ = tiposDocumentos;
+    tiposDocumentos_[key].uploadEmAndamento = true;
+    setTiposDocumentos(tiposDocumentos_);
+    forceUpdate();
     setAnexo(arquivoAnexo).then(response => {
       if (response.status === HTTP_STATUS.CREATED) {
         toastSuccess("Arquivo salvo com sucesso!");
+        let tiposDocumentos_ = tiposDocumentos;
+        tiposDocumentos_[key].uploadEmAndamento = false;
+        setTiposDocumentos(tiposDocumentos_);
         getEmpresa(uuid).then(empresa => {
           setEmpresaEFaltaArquivos(empresa.data);
         });
@@ -485,7 +508,8 @@ export let CadastroEmpresa = props => {
                   <div className="card mt-2">
                     <div className="card-body">
                       <div className="card-title">
-                        Informações sobre ponto de venda físico ou stand de vendas
+                        Informações sobre ponto de venda físico ou stand de
+                        vendas
                       </div>
                       {loja.map((value, key) => (
                         <div key={key}>
@@ -641,25 +665,30 @@ export let CadastroEmpresa = props => {
                               </div>
                             </div>
                           ) : (
-                            <Field
-                              component={FileUpload}
-                              name={`arqs_${key}`}
-                              id={`${key}`}
-                              key={key}
-                              accept=".pdf, .png, .jpg, .jpeg, .zip"
-                              acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
-                              className="form-control-file"
-                              label={labelTemplate(tipo)}
-                              resetarFile={tipo.resetarFile}
-                              required={tipo.obrigatorio}
-                              validate={valide(tipo.obrigatorio)}
-                              multiple={false}
-                              onChange={e => {
-                                if (e.length > 0) {
-                                  uploadAnexo(e, tipo);
-                                }
-                              }}
-                            />
+                            <Fragment>
+                              <Field
+                                component={FileUpload}
+                                name={`arqs_${key}`}
+                                id={`${key}`}
+                                key={key}
+                                accept=".pdf, .png, .jpg, .jpeg, .zip"
+                                acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                                className="form-control-file"
+                                label={labelTemplate(tipo)}
+                                resetarFile={tipo.resetarFile}
+                                required={tipo.obrigatorio}
+                                validate={valide(tipo.obrigatorio)}
+                                multiple={false}
+                                onChange={e => {
+                                  if (e.length > 0) {
+                                    uploadAnexo(e, tipo, key);
+                                  }
+                                }}
+                              />
+                              {tipo.uploadEmAndamento && (
+                                <span className="font-weight-bold">{`Upload de ${tipo.nome} em andamento. Aguarde...`}</span>
+                              )}
+                            </Fragment>
                           );
                         })
                       ) : (
