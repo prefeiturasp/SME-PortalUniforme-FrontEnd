@@ -527,12 +527,12 @@ export let CadastroEmpresa = props => {
                             chave={key}
                             nome_fantasia={value.nome_fantasia}
                             cep={empresa && value.cep}
-                            bairro={value.bairro}
+                            bairro={empresa && value.bairro}
                             numero={empresa && value.numero}
                             cidade={empresa && "São Paulo"}
                             uf={empresa && "SP"}
                             complemento={empresa && value.complemento}
-                            endereco={value.endereco}
+                            endereco={empresa && value.endereco}
                             telefone={empresa && value.telefone}
                             onUpdate={onUpdateLoja}
                           />
