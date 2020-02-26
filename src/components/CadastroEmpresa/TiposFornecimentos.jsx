@@ -87,7 +87,14 @@ const TiposFornecimentos = props => {
         type="checkbox"
         disabled={props.empresa}
         onChange={e => checkProduto(e.target.checked)}
-        checked={props.empresa ? true : checado}
+        checked={
+          props.empresa &&
+          props.empresa.ofertas_de_uniformes.find(
+            oferta => oferta.uniforme_categoria === props.tipo.id
+          )
+            ? true
+            : checado
+        }
       />
       {props.tipo.uniformes.map((uniforme, key) => {
         return (
@@ -102,6 +109,9 @@ const TiposFornecimentos = props => {
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
                     oferta => oferta.uniforme === uniforme.id
+                  ) &&
+                  props.empresa.ofertas_de_uniformes.find(
+                    oferta => oferta.uniforme === uniforme.id
                   ).preco
                 : uniformesInfo[key].preco
             }
@@ -109,6 +119,9 @@ const TiposFornecimentos = props => {
             total={
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
+                    oferta => oferta.uniforme === uniforme.id
+                  ) &&
+                  props.empresa.ofertas_de_uniformes.find(
                     oferta => oferta.uniforme === uniforme.id
                   ).preco * uniforme.quantidade
                 : uniformesInfo[key].total

@@ -56,9 +56,11 @@ const TipoFornecimento = props => {
         <div className="float-left">x {props.uniforme.quantidade}</div>
         <strong>R$:</strong>{" "}
         {props.total
-          .toFixed(2)
-          .toString()
-          .replace(".", ",")}
+          ? props.total
+              .toFixed(2)
+              .toString()
+              .replace(".", ",")
+          : "0,00"}
       </div>
     </div>
   );
