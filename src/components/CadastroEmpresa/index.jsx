@@ -343,6 +343,10 @@ export let CadastroEmpresa = props => {
         });
       } else {
         toastError("Erro ao dar upload no arquivo");
+        let tiposDocumentos_ = tiposDocumentos;
+        tiposDocumentos_[key].uploadEmAndamento = false;
+        setTiposDocumentos(tiposDocumentos_);
+        setAlgumUploadEmAndamento(false);
       }
     });
   };
@@ -371,6 +375,10 @@ export let CadastroEmpresa = props => {
           });
         } else {
           toastError("Erro ao dar upload no arquivo");
+          let empresa_ = empresa;
+          empresa_.lojas[key].uploadEmAndamento = false;
+          setEmpresa(empresa_);
+          setAlgumUploadEmAndamento(false);
         }
       });
     }
