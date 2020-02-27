@@ -119,7 +119,7 @@ export default class Home extends Component {
                 </h1>
                 <p>
                   Leia o regulamento, veja se sua loja está de acordo com os
-                  critérios nessários para o credenciamento e faça a diferença
+                  critérios necessários para o credenciamento e faça a diferença
                   na educação de nossos estudantes.
                 </p>
                 <a className="btn btn-primary pl-5 pr-5" href="#conteudo">
