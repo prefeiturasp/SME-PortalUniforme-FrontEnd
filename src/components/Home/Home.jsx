@@ -187,7 +187,7 @@ export default class Home extends Component {
                       <li>Estar ciente das hipóteses de descredenciamento;</li>
                       <li>Estar ciente das penalidades previstas;</li>
                       <li>
-                        Concordar com as possíveis taxas do “meio de pagamento”.
+                      Concordar com a taxa de 0,8% sobre o valor das transações a serem realizadas pela operadora do “meio de pagamento”.
                       </li>
                     </ul>
                     <p className="mb-2">
