@@ -46,6 +46,7 @@ export let CadastroEmpresa = props => {
 
   const [empresa, setEmpresa] = useState(null);
   const [erroGetEmpresa, setErroGetEmpresa] = useState(false);
+  const [algumUploadEmAndamento, setAlgumUploadEmAndamento] = useState(false);
   const [faltaArquivos, setFaltaArquivos] = useState(true);
   const [loja, setLoja] = useState([initialValue]);
   const [fornecimento, setFornecimento] = useState([]);
@@ -328,6 +329,7 @@ export let CadastroEmpresa = props => {
     let tiposDocumentos_ = tiposDocumentos;
     tiposDocumentos_[key].uploadEmAndamento = true;
     setTiposDocumentos(tiposDocumentos_);
+    setAlgumUploadEmAndamento(true);
     forceUpdate();
     setAnexo(arquivoAnexo).then(response => {
       if (response.status === HTTP_STATUS.CREATED) {
@@ -335,6 +337,7 @@ export let CadastroEmpresa = props => {
         let tiposDocumentos_ = tiposDocumentos;
         tiposDocumentos_[key].uploadEmAndamento = false;
         setTiposDocumentos(tiposDocumentos_);
+        setAlgumUploadEmAndamento(false);
         getEmpresa(uuid).then(empresa => {
           setEmpresaEFaltaArquivos(empresa.data);
         });
@@ -354,6 +357,7 @@ export let CadastroEmpresa = props => {
       let empresa_ = empresa;
       empresa_.lojas[key].uploadEmAndamento = true;
       setEmpresa(empresa_);
+      setAlgumUploadEmAndamento(true);
       forceUpdate();
       setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
         if (response.status === HTTP_STATUS.OK) {
@@ -361,6 +365,7 @@ export let CadastroEmpresa = props => {
           let empresa_ = empresa;
           empresa_.lojas[key].uploadEmAndamento = false;
           setEmpresa(empresa_);
+          setAlgumUploadEmAndamento(false);
           getEmpresa(uuid).then(empresa => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
@@ -372,19 +377,21 @@ export let CadastroEmpresa = props => {
   };
 
   const deleteFachadaLoja = async uuidLoja => {
-    const arquivoAnexo = {
-      foto_fachada: null
-    };
-    setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
-      if (response.status === HTTP_STATUS.OK) {
-        toastSuccess("Arquivo excluído com sucesso!");
-        getEmpresa(uuid).then(empresa => {
-          setEmpresaEFaltaArquivos(empresa.data);
-        });
-      } else {
-        toastError("Erro ao dar excluir no arquivo");
-      }
-    });
+    if (window.confirm("Deseja remover este anexo?")) {
+      const arquivoAnexo = {
+        foto_fachada: null
+      };
+      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo excluído com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao dar excluir no arquivo");
+        }
+      });
+    }
   };
 
   const removeAnexo = async uuidAnexo => {
@@ -428,6 +435,10 @@ export let CadastroEmpresa = props => {
     <Fragment>
       {erroGetEmpresa ? (
         <div className="p-5 text-center">Erro ao carregar empresa.</div>
+      ) : window.document.documentMode ? (
+        <div className="p-5 text-center">
+          Página não suportada em Internet Explorer
+        </div>
       ) : (
         <div id="conteudo" className="desenvolvimento-escolar">
           <div className="container pt-3 pb-5">
@@ -474,7 +485,7 @@ export let CadastroEmpresa = props => {
               {tab === "cadastro" && (
                 <Fragment>
                   <div className="row mb-2">
-                    <div className="col-6">
+                    <div className="col-md-6 col-xs-12">
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">Dados da Empresa</div>
@@ -482,7 +493,7 @@ export let CadastroEmpresa = props => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-6">
+                    <div className="col-md-6 col-xs-12">
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">
@@ -612,10 +623,18 @@ export let CadastroEmpresa = props => {
                       {empresa &&
                         empresa.lojas.map((loja, key) => {
                           return !loja.foto_fachada ? (
-                            <Fragment>
+                            <div
+                              className={`${
+                                algumUploadEmAndamento &&
+                                !loja.uploadEmAndamento
+                                  ? "set-opacity"
+                                  : undefined
+                              } `}
+                            >
                               <Field
                                 component={FileUpload}
                                 name={`arqs_${key}`}
+                                disabled={algumUploadEmAndamento}
                                 id={`${key}`}
                                 key={key}
                                 accept="image/*"
@@ -633,11 +652,12 @@ export let CadastroEmpresa = props => {
                               />
                               {loja.uploadEmAndamento && (
                                 <span className="font-weight-bold">
-                                  {`Upload de ${loja.nome_fantasia} em andamento. Aguarde`}
+                                  {`Upload de documento em andamento. `}
+                                  <span className="red-word">Aguarde</span>
                                   <span className="blink">...</span>
                                 </span>
                               )}
-                            </Fragment>
+                            </div>
                           ) : (
                             <div>
                               <ArquivoExistente
@@ -680,10 +700,18 @@ export let CadastroEmpresa = props => {
                               </div>
                             </div>
                           ) : (
-                            <Fragment>
+                            <div
+                              className={`${
+                                algumUploadEmAndamento &&
+                                !tipo.uploadEmAndamento
+                                  ? "set-opacity"
+                                  : undefined
+                              } `}
+                            >
                               <Field
                                 component={FileUpload}
                                 name={`arqs_${key}`}
+                                disabled={algumUploadEmAndamento}
                                 id={`${key}`}
                                 key={key}
                                 accept=".pdf, .png, .jpg, .jpeg, .zip"
@@ -702,11 +730,12 @@ export let CadastroEmpresa = props => {
                               />
                               {tipo.uploadEmAndamento && (
                                 <span className="font-weight-bold">
-                                  {`Upload de ${tipo.nome} em andamento. Aguarde`}
+                                  {`Upload de documento em andamento. `}
+                                  <span className="red-word">Aguarde</span>
                                   <span className="blink">...</span>
                                 </span>
                               )}
-                            </Fragment>
+                            </div>
                           );
                         })
                       ) : (

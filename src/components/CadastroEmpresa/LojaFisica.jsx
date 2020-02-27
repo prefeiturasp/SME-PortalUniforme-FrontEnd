@@ -149,7 +149,7 @@ const LojaFisica = props => {
         </Col>
       </Row>
       <div className="row">
-        <div className="col-6">
+        <div className="col-md-6 col-xs-5">
           <InputLabelRequired
             autoComplete="off"
             disabled={props.empresa}
@@ -166,7 +166,7 @@ const LojaFisica = props => {
             }}
           />
         </div>
-        <div className="col-2">
+        <div className="col-md-2 col-xs-6">
           <InputLabelRequired
             autoComplete="off"
             disabled={props.empresa}
@@ -181,7 +181,7 @@ const LojaFisica = props => {
             }}
           />
         </div>
-        <div className="col-4">
+        <div className="col-md-4 col-xs-6">
           <InputLabel
             value={complemento}
             label="Complemento"
@@ -197,7 +197,7 @@ const LojaFisica = props => {
         </div>
       </div>
       <div className="row">
-        <div className="col-6">
+        <div className="col-md-6 col-xs-4">
           <InputLabelRequired
             autoComplete="off"
             label="Cidade"
@@ -215,7 +215,7 @@ const LojaFisica = props => {
             }}
           />
         </div>
-        <div className="col-2">
+        <div className="col-md-2 col-xs-3">
           <InputLabelRequired
             label="UF"
             name=""
@@ -233,7 +233,7 @@ const LojaFisica = props => {
             }}
           />
         </div>
-        <div className="col-4">
+        <div className="col-md-4 col-xs-3">
           <InputLabelRequiredMask
             autoComplete="off"
             mask="(99) 9999-99999"

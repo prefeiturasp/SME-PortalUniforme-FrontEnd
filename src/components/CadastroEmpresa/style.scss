@@ -83,7 +83,12 @@ input[type=number] {
   -moz-appearance:textfield;
 }
 
+.red-word {
+  color: $red;
+}
+
 .blink {
+  color: $red;
   animation: blink-animation 1s steps(5, start) infinite;
   -webkit-animation: blink-animation 1s steps(5, start) infinite;
 }
@@ -96,4 +101,8 @@ input[type=number] {
   to {
     visibility: hidden;
   }
+}
+
+.set-opacity {
+  opacity: 0.5;
 }

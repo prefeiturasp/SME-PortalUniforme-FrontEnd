@@ -51,10 +51,6 @@ export class FileUpload extends React.Component {
     this.fileUpload = React.createRef();
   }
 
-  onSelect() {
-    toastInfo("Upload em andamento. Aguarde...");
-  }
-
   onChange(data) {
     const {
       input: { onChange }
@@ -90,24 +86,26 @@ export class FileUpload extends React.Component {
     } = this.props;
     return (
       <div className="input">
-        {label && [
-          required && !esconderAsterisco && (
-            <span key={1} className="required-asterisk">
-              *
-            </span>
-          ),
-          <label
-            key={2}
-            htmlFor={name}
-            className={`col-form-label ${labelClassName}`}
-          >
-            {label}
-          </label>
-        ]}
+        <div style={{display: 'flex'}}>
+          {label && [
+            required && !esconderAsterisco && (
+              <span key={1} className="required-asterisk">
+                *
+              </span>
+            ),
+            <label
+              key={2}
+              htmlFor={name}
+              className={`col-form-label ${labelClassName}`}
+            >
+              {label}
+            </label>
+          ]}
+        </div>
 
         <CustomFileUploadPR
           ref={this.fileUpload}
-          disabled={this.state.disabled}
+          disabled={this.props.disabled || this.state.disabled}
           name={name}
           id={id}
           placeholder={placeholder}
@@ -125,7 +123,6 @@ export class FileUpload extends React.Component {
           chooseLabel="Selecione o arquivo"
           cancelLabel="Cancelar"
           onUploadChange={this.onChange}
-          onSelect={this.onSelect}
         />
         <HelpText helpText={helpText} />
         <InputErroMensagem meta={meta} />
