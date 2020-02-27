@@ -4,7 +4,7 @@ import { FileUpload as FileUploadPR } from "primereact/fileupload";
 import { InputErroMensagem } from "./InputErroMensagem";
 import { HelpText } from "components/HelpText";
 import { asyncForEach, readerFile } from "helpers/utils";
-import { toastError, toastInfo } from "components/Toast/dialogs";
+import { toastError } from "components/Toast/dialogs";
 
 class CustomFileUploadPR extends FileUploadPR {
   async upload() {
