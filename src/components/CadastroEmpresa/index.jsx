@@ -268,26 +268,32 @@ export let CadastroEmpresa = props => {
       if (erro) {
         toastError(erro);
       } else {
-        try {
-          const response = await cadastrarEmpresa(payload);
-          if (response.status === HTTP_STATUS.CREATED) {
-            props.reset();
-            limparListaLojas();
-            window.location.search += `?uuid=${response.data.uuid}`;
-          } else {
-            toastError(getError(response.data));
-          }
-        } catch (error) {
-          if (error.response.data.email) {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-            );
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
+        if (
+          window.confirm(
+            "Deseja mesmo enviar essas informações? Após o envio essas informações não poderão ser alteradas. Certifique-se que tudo foi informado corretamente e que você adicionou todas as suas lojas."
+          )
+        ) {
+          try {
+            const response = await cadastrarEmpresa(payload);
+            if (response.status === HTTP_STATUS.CREATED) {
+              props.reset();
+              limparListaLojas();
+              window.location.search += `?uuid=${response.data.uuid}`;
+            } else {
+              toastError(getError(response.data));
+            }
+          } catch (error) {
+            if (error.response.data.email) {
+              window.scrollTo(0, 0);
+              showMessage(
+                "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+              );
+            } else {
+              window.scrollTo(0, 0);
+              showMessage(
+                "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+              );
+            }
           }
         }
       }
