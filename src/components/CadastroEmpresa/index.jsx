@@ -1,60 +1,180 @@
-import React, { Fragment, useState, useMemo, useEffect } from "react";
-import { Row, Col, Card, Button, Alert } from "react-bootstrap";
+import React, {
+  Fragment,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback
+} from "react";
+import HTTP_STATUS from "http-status-codes";
+import { Button, Alert } from "react-bootstrap";
+import { valide } from "helpers/fieldValidators";
 import { Form, reduxForm, Field } from "redux-form";
 import DadosEmpresa from "./DadosEmpresa";
-import TipoFornecimento from "./TipoFornecimento";
-import BandeiraAnexo from "./BandeiraAnexo";
+import TiposFornecimentos from "./TiposFornecimentos";
+import "./style.scss";
 import LojaFisica from "./LojaFisica";
-import { validaOfertaUniforme, parsePayload } from "./helper";
+import { validaOfertaUniforme, validaFormulario, getError } from "./helper";
+import { toastSuccess, toastError } from "../Toast/dialogs";
 import {
   cadastrarEmpresa,
-  getUniformes,
-  verificaCnpj
+  getTiposDocumentos,
+  getTiposFornecimentos,
+  verificaCnpj,
+  busca_url_edital,
+  getEmpresa,
+  setAnexo,
+  deleteAnexo,
+  setFachadaLoja,
+  concluirCadastro,
+  getLimites,
+  verificaEmail
 } from "services/uniformes.service";
-import { getMeiosRecebimento } from "services/bandeiras.service";
 import { FileUpload } from "components/Input/FileUpload";
-import { required } from "helpers/fieldValidators";
+import ArquivoExistente from "./ArquivoExistente";
 export let CadastroEmpresa = props => {
   const initialValue = {
-    endereco: "",
-    numero: "",
-    complemento: "",
-    telefone: "",
-    cidade: "",
-    uf: "",
-    bairro: "",
-    cep: ""
+    nome_fantasia: undefined,
+    endereco: undefined,
+    numero: undefined,
+    complemento: undefined,
+    telefone: undefined,
+    cidade: undefined,
+    uf: undefined,
+    bairro: undefined,
+    cep: undefined
   };
 
+  const [empresa, setEmpresa] = useState(null);
+  const [erroGetEmpresa, setErroGetEmpresa] = useState(false);
+  const [algumUploadEmAndamento, setAlgumUploadEmAndamento] = useState(false);
+  const [faltaArquivos, setFaltaArquivos] = useState(true);
   const [loja, setLoja] = useState([initialValue]);
-  const [produtos, setProdutos] = useState([]);
   const [fornecimento, setFornecimento] = useState([]);
-  const [bandeiras, setBandeiras] = useState([]);
-  const [pagamento, setPagamento] = useState([]);
+  const [bandeiras] = useState([]);
+  const [uuid, setUuid] = useState(null);
   const [alerta, setAlerta] = useState(false);
-  const [sucesso, setSucesso] = useState(false);
-  const [mensagem, setMensagem] = useState("");
+  const [sucesso] = useState(false);
+  const [tiposDocumentos, setTiposDocumentos] = useState([]);
+  const [tiposFornecimentos, setTiposFornecimentos] = useState([]);
   const [limparFornecimento, setLimparFornecimento] = useState(false);
+  const [arquivosAnexos] = useState([]);
+  const [tab, setTab] = useState("cadastro");
+  const [mensagem, setMensagem] = useState("");
+  const [limite, setLimite] = useState(false);
+  const [limites, setLimites] = useState([]);
+  const [edital, setEdital] = useState({ url: "", label: "edital" });
+  const [editalClick, setEditalClick] = useState(null);
 
   const limparListaLojas = () => {
     setLoja([initialValue]);
   };
   useEffect(() => {
-    const carregaUniformes = async () => {
-      const uniformes = await getUniformes();
-      setProdutos(uniformes);
+    const carregaTiposDocumentos = async () => {
+      const documentos = await getTiposDocumentos();
+      setTiposDocumentos(documentos);
     };
-    const carregaFormaPagamento = async () => {
-      const formaPagamento = await getMeiosRecebimento();
-      setPagamento(formaPagamento);
+    const carregaEmpresa = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const uuid = urlParams.get("uuid");
+      if (uuid) {
+        setTab("anexos");
+        getEmpresa(uuid).then(response => {
+          if (response.status === HTTP_STATUS.OK) {
+            setEmpresaEFaltaArquivos(response.data);
+            setUuid(uuid);
+          } else {
+            setErroGetEmpresa(true);
+          }
+        });
+      }
     };
-    carregaUniformes();
-    carregaFormaPagamento();
+    const carregaTiposFornecimentos = async () => {
+      const fornecimentos = await getTiposFornecimentos();
+      setTiposFornecimentos(fornecimentos);
+    };
+    carregaTiposDocumentos().then(_ => {
+      carregaEmpresa();
+    });
+
+    const carregaLimites = async () => {
+      const limites = await getLimites();
+      setLimites(limites);
+    };
+    carregaLimites();
+    carregaTiposFornecimentos();
+    setEditalClick(
+      !edital.url
+        ? e => {
+            downloadEdital(e);
+          }
+        : null
+    );
+
+    get_edital_link();
   }, [limparFornecimento]);
+
+  const setEmpresaEFaltaArquivos = empresa => {
+    setEmpresa(empresa);
+    props.change("cnpj", empresa.cnpj);
+    props.change("razao_social", empresa.razao_social);
+    props.change("end_logradouro", empresa.end_logradouro);
+    props.change("end_cidade", empresa.end_cidade);
+    props.change("end_uf", empresa.end_uf);
+    props.change("end_cep", empresa.end_cep);
+    props.change("email", empresa.email);
+    props.change("telefone", empresa.telefone);
+    props.change("responsavel", empresa.responsavel);
+    setLoja(empresa.lojas);
+    verificarSeFaltamArquivos(empresa);
+  };
+
+  const useForceUpdate = () => {
+    const [, setTick] = useState(0);
+    const update = useCallback(() => {
+      setTick(tick => tick + 1);
+    }, []);
+    return update;
+  };
+
+  const forceUpdate = useForceUpdate();
+
+  const verificarSeFaltamArquivos = empresa => {
+    let aindaFaltaDocumentoObrigatorio = false;
+    tiposDocumentos.forEach(tipoDocumento => {
+      if (
+        tipoDocumento.obrigatorio &&
+        !empresa.arquivos_anexos.find(
+          arquivo => arquivo.tipo_documento === tipoDocumento.id
+        )
+      )
+        aindaFaltaDocumentoObrigatorio = true;
+    });
+    let aindaFaltamArquivos =
+      empresa.lojas.find(loja => loja.foto_fachada === null) ||
+      empresa.arquivos_anexos.length === 0 ||
+      aindaFaltaDocumentoObrigatorio;
+    setFaltaArquivos(aindaFaltamArquivos);
+  };
 
   const addLoja = () => {
     loja.push(initialValue);
     setLoja([...loja]);
+  };
+
+  const downloadEdital = e => {
+    //e.preventDefault()
+    if (edital.url) {
+      const link = document.createElement("a");
+      link.href = edital.url;
+      link.target = "_blank";
+      link.click();
+    }
+  };
+
+  const switchTab = tab => {
+    if (uuid) {
+      setTab(tab);
+    }
   };
 
   const delLoja = index => {
@@ -72,22 +192,13 @@ export let CadastroEmpresa = props => {
     setLoja([...loja]);
   };
 
+  const maiorQueLimite = eMaior => {
+    setLimite(eMaior);
+  };
+
   const onUpdateUniforme = (valor, chave) => {
     fornecimento[chave] = valor;
     setFornecimento([...fornecimento]);
-  };
-
-  const addBandeira = value => {
-    bandeiras.push(value);
-    setBandeiras([...bandeiras]);
-  };
-
-  const delBandeira = value => {
-    const key = bandeiras.indexOf(value);
-    if (key) {
-      bandeiras.splice(key, 1);
-      setBandeiras(bandeiras);
-    }
   };
 
   const contadorLoja = useMemo(() => loja.length, [loja]);
@@ -99,6 +210,14 @@ export let CadastroEmpresa = props => {
       setAlerta(false);
       setMensagem("");
     }, 10000);
+  };
+
+  const get_edital_link = async () => {
+    let url = "";
+    try {
+      url = await busca_url_edital();
+    } catch (e) {}
+    setEdital({ ...edital, url });
   };
 
   const onSubmit = async payload => {
@@ -118,38 +237,63 @@ export let CadastroEmpresa = props => {
       return;
     }
 
+    let emailStatus = await verificaEmail(payload.email);
+    if (emailStatus && emailStatus.email_cadastrado === "Sim") {
+      window.scrollTo(0, 0);
+      showMessage(
+        "Esse E-mail já está inscrito no programa de fornecimento de uniformes."
+      );
+      return;
+    }
+
+    if (limite) {
+      window.scrollTo(0, 0);
+      showMessage(
+        "O seu valor está acima do permitido, por este motivo seu cadastro não será registrado."
+      );
+      return;
+    }
+
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
-    if (validaMeiosRecebimentos(bandeiras)) {
-      if (validaUniformes(novoFornecimento)) {
-        payload["lojas"] = loja;
-        payload["meios_de_recebimento"] = bandeiras;
-        payload["ofertas_de_uniformes"] = novoFornecimento;
-
-        try {
-          const response = await cadastrarEmpresa(payload);
-
-          if (response.status === 201) {
-            props.reset();
-            limparListaLojas();
-            showSucess();
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
-          }
-        } catch (error) {
-          if (error.response.data.email) {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
-            );
-          } else {
-            window.scrollTo(0, 0);
-            showMessage(
-              "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
-            );
+    if (validaUniformes(novoFornecimento)) {
+      payload["lojas"] = loja;
+      payload["meios_de_recebimento"] = bandeiras;
+      payload["ofertas_de_uniformes"] = novoFornecimento;
+      payload["arquivos_anexos"] = arquivosAnexos;
+      payload["telefone"] = payload["telefone"].replace("_", "");
+      delete payload["foto_fachada"];
+      delete payload["arqs_anexos"];
+      const erro = validaFormulario(payload);
+      if (erro) {
+        toastError(erro);
+      } else {
+        if (
+          window.confirm(
+            "Deseja mesmo enviar essas informações? Após o envio essas informações não poderão ser alteradas. Certifique-se que tudo foi informado corretamente e que você adicionou todas as suas lojas."
+          )
+        ) {
+          try {
+            const response = await cadastrarEmpresa(payload);
+            if (response.status === HTTP_STATUS.CREATED) {
+              props.reset();
+              limparListaLojas();
+              window.location.search += `?uuid=${response.data.uuid}`;
+            } else {
+              toastError(getError(response.data));
+            }
+          } catch (error) {
+            if (error.response.data.email) {
+              window.scrollTo(0, 0);
+              showMessage(
+                "Esse e-mail já está inscrito no programa de fornecimento de uniformes."
+              );
+            } else {
+              window.scrollTo(0, 0);
+              showMessage(
+                "Houve um erro ao efetuar a sua inscrição. Tente novamente mais tarde."
+              );
+            }
           }
         }
       }
@@ -157,18 +301,9 @@ export let CadastroEmpresa = props => {
   };
 
   const filtrarFornecimento = payload => {
-    const novoPayload = payload.filter((value, key) => {
-      if (value !== undefined) {
-        if (Object.keys(value).length > 0) {
-          return value;
-        }
-      }
-    });
-    return novoPayload;
-  };
-
-  const showSucess = () => {
-    window.location.href = "/confirmacao-cadastro";
+    return payload.filter(
+      value => value !== undefined && Object.keys(value).length > 0
+    );
   };
 
   const validaUniformes = payload => {
@@ -191,224 +326,491 @@ export let CadastroEmpresa = props => {
     return true;
   };
 
-  const validaMeiosRecebimentos = payload => {
-    if (payload.length === 0) {
-      window.scrollTo(0, 0);
-      showMessage("Por favor, selecione um Meio de Recebimento");
-      return false;
+  const uploadAnexo = async (e, tipo, key) => {
+    const arquivoAnexo = {
+      ...e[0],
+      tipo_documento: tipo.id,
+      proponente: uuid
+    };
+    let tiposDocumentos_ = tiposDocumentos;
+    tiposDocumentos_[key].uploadEmAndamento = true;
+    setTiposDocumentos(tiposDocumentos_);
+    setAlgumUploadEmAndamento(true);
+    forceUpdate();
+    setAnexo(arquivoAnexo).then(response => {
+      if (response.status === HTTP_STATUS.CREATED) {
+        toastSuccess("Arquivo salvo com sucesso!");
+        let tiposDocumentos_ = tiposDocumentos;
+        tiposDocumentos_[key].uploadEmAndamento = false;
+        setTiposDocumentos(tiposDocumentos_);
+        setAlgumUploadEmAndamento(false);
+        getEmpresa(uuid).then(empresa => {
+          setEmpresaEFaltaArquivos(empresa.data);
+        });
+      } else {
+        toastError("Erro ao dar upload no arquivo");
+        let tiposDocumentos_ = tiposDocumentos;
+        tiposDocumentos_[key].uploadEmAndamento = false;
+        setTiposDocumentos(tiposDocumentos_);
+        setAlgumUploadEmAndamento(false);
+      }
+    });
+  };
+
+  const uploadFachadaLoja = async (e, uuidLoja, key) => {
+    if (!e[0].arquivo.includes("image/")) {
+      toastError("Formato de arquivo inválido");
+    } else {
+      const arquivoAnexo = {
+        foto_fachada: e[0].arquivo
+      };
+      let empresa_ = empresa;
+      empresa_.lojas[key].uploadEmAndamento = true;
+      setEmpresa(empresa_);
+      setAlgumUploadEmAndamento(true);
+      forceUpdate();
+      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo salvo com sucesso!");
+          let empresa_ = empresa;
+          empresa_.lojas[key].uploadEmAndamento = false;
+          setEmpresa(empresa_);
+          setAlgumUploadEmAndamento(false);
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao dar upload no arquivo");
+          let empresa_ = empresa;
+          empresa_.lojas[key].uploadEmAndamento = false;
+          setEmpresa(empresa_);
+          setAlgumUploadEmAndamento(false);
+        }
+      });
     }
-    return true;
+  };
+
+  const deleteFachadaLoja = async uuidLoja => {
+    if (window.confirm("Deseja remover este anexo?")) {
+      const arquivoAnexo = {
+        foto_fachada: null
+      };
+      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo excluído com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao dar excluir no arquivo");
+        }
+      });
+    }
+  };
+
+  const removeAnexo = async uuidAnexo => {
+    if (window.confirm("Deseja remover este anexo?")) {
+      deleteAnexo(uuidAnexo).then(response => {
+        if (response.status === HTTP_STATUS.NO_CONTENT) {
+          toastSuccess("Arquivo removido com sucesso!");
+          getEmpresa(uuid).then(empresa => {
+            setEmpresaEFaltaArquivos(empresa.data);
+          });
+        } else {
+          toastError("Erro ao remover arquivo");
+        }
+      });
+    }
+  };
+
+  const finalizarCadastro = () => {
+    if (faltaArquivos) {
+      toastError(
+        "É preciso anexar todos os arquivos obrigatórios para finalizar seu cadastro"
+      );
+    } else {
+      concluirCadastro(uuid).then(response => {
+        if (response.status === HTTP_STATUS.OK) {
+          window.location.href = "/confirmacao-cadastro";
+        } else {
+          toastError("Erro ao finalizar cadastro");
+        }
+      });
+    }
+  };
+
+  const labelTemplate = tipo => {
+    return <div dangerouslySetInnerHTML={{ __html: tipo.nome }} />;
   };
 
   const { handleSubmit, pristine, submitting, reset } = props;
 
   return (
     <Fragment>
-      <div id="conteudo" className="w-100 desenvolvimento-escolar">
-        <div className="container pt-5 pb-5">
-          {alerta ? (
-            <Alert key={1} variant={"danger"}>
-              <div className="text-weight-bold text-center">
-                <strong>{mensagem}</strong>
+      {erroGetEmpresa ? (
+        <div className="p-5 text-center">Erro ao carregar empresa.</div>
+      ) : window.document.documentMode ? (
+        <div className="p-5 text-center">
+          Página não suportada em Internet Explorer
+        </div>
+      ) : (
+        <div id="conteudo" className="desenvolvimento-escolar">
+          <div className="container pt-3 pb-5">
+            {alerta ? (
+              <Alert key={1} variant={"danger"}>
+                <div className="text-weight-bold text-center">
+                  <strong>{mensagem}</strong>
+                </div>
+              </Alert>
+            ) : null}
+
+            {sucesso ? (
+              <Alert key={1} variant={"success"}>
+                <div className="text-weight-bold text-center">
+                  <strong>Cadastro realizado com sucesso.</strong>
+                </div>
+              </Alert>
+            ) : null}
+            <div className="tabs pb-5">
+              <div className="row">
+                <div
+                  onClick={() => switchTab("cadastro")}
+                  className={`tab col-6 ${
+                    tab === "cadastro"
+                      ? "active"
+                      : uuid
+                      ? "enabled"
+                      : "inactive"
+                  }`}
+                >
+                  CADASTRO
+                </div>
+                <div
+                  onClick={() => switchTab("anexos")}
+                  className={`tab col-6 ml-2 ${
+                    tab === "anexos" ? "active" : uuid ? "enabled" : "inactive"
+                  }`}
+                >
+                  ANEXOS
+                </div>
               </div>
-            </Alert>
-          ) : null}
-
-          {sucesso ? (
-            <Alert key={1} variant={"success"}>
-              <div className="text-weight-bold text-center">
-                <strong>Cadastro realizado com sucesso.</strong>
-              </div>
-            </Alert>
-          ) : null}
-
-          <Row>
-            <Col>
-              <h1>Cadastro de Empresa</h1>
-            </Col>
-          </Row>
-
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Row className="mb-2">
-              <Col lg={6} xl={6}>
-                <Row>
-                  <Card className="w-100 mr-2">
-                    <Card.Body>
-                      <Card.Title>Dados da Empresa</Card.Title>
-                      <hr />
-                      <DadosEmpresa />
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mr-2 mt-2">
-                    <Card.Body>
-                      <Card.Title>
-                        Informações ponto de venda físico ou stand de vendas
-                      </Card.Title>
-                      <hr />
+            </div>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              {tab === "cadastro" && (
+                <Fragment>
+                  <div className="row mb-2">
+                    <div className="col-md-6 col-xs-12">
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="card-title">Dados da Empresa</div>
+                          <DadosEmpresa empresa={empresa} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-xs-12">
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="card-title">
+                            Preços (fornecimento)
+                          </div>
+                          <div className="pt-3 undertitle">
+                            Tipo de Fornecimento
+                          </div>
+                          <hr className="pb-3" />
+                          {tiposFornecimentos ? (
+                            tiposFornecimentos.map((tipo, key) => {
+                              return (
+                                <TiposFornecimentos
+                                  key={key}
+                                  empresa={empresa}
+                                  tipo={tipo}
+                                  onUpdate={onUpdateUniforme}
+                                  limites={limites}
+                                  maiorQueLimite={maiorQueLimite}
+                                />
+                              );
+                            })
+                          ) : (
+                            <div>Erro ao carregar tipos de fornecimentos</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card mt-2">
+                    <div className="card-body">
+                      <div className="card-title">
+                        Informações sobre ponto de venda físico ou stand de
+                        vendas
+                      </div>
                       {loja.map((value, key) => (
-                        <>
+                        <div key={key}>
                           <LojaFisica
+                            id={key}
+                            key={key}
+                            empresa={empresa}
                             chave={key}
-                            endereco={value.endereco}
-                            telefone={value.telefone}
+                            nome_fantasia={value.nome_fantasia}
+                            cep={empresa && value.cep}
+                            bairro={empresa && value.bairro}
+                            numero={empresa && value.numero}
+                            cidade={empresa && "São Paulo"}
+                            uf={empresa && "SP"}
+                            complemento={empresa && value.complemento}
+                            endereco={empresa && value.endereco}
+                            telefone={empresa && value.telefone}
                             onUpdate={onUpdateLoja}
                           />
-                          <Button
-                            disabled={contadorLoja <= 1 ? true : false}
-                            variant="outline-danger"
-                            block
-                            onClick={() => delLoja(key)}
-                            className="mb-1"
-                          >
-                            <i className="fas fa-trash" />
-                          </Button>
-                        </>
+                          {!empresa && (
+                            <Button
+                              disabled={contadorLoja <= 1 ? true : false}
+                              variant="outline-danger"
+                              block
+                              onClick={() => delLoja(key)}
+                              className="mb-1"
+                            >
+                              <i className="fas fa-trash" />
+                            </Button>
+                          )}
+                          {empresa && key !== loja.length - 1 && <hr />}
+                        </div>
                       ))}
-                      <Button block onClick={() => addLoja(contadorLoja)}>
-                        <i className="fas fa-plus-circle" /> Novo Endereço
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Row>
-              </Col>
-              <Col lg={6} xl={6}>
-                <Row>
-                  <Card className="w-100 ml-2">
-                    <Card.Body>
-                      <Card.Title>Tipo de Fornecimento</Card.Title>
-                      <hr />
-                      {produtos
-                        ? produtos.map((value, key) => {
-                            return (
-                              <TipoFornecimento
-                                produto={value.nome}
-                                index={value.id}
-                                chave={key}
-                                onUpdate={onUpdateUniforme}
-                                limpar={limparFornecimento}
-                                setLimpar={setLimparFornecimento}
+                      {!empresa && (
+                        <Button block onClick={() => addLoja(contadorLoja)}>
+                          <i className="fas fa-plus-circle" /> Novo Endereço
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  {!uuid && (
+                    <Fragment>
+                      <div className="form-group pt-3">
+                        <div className="form-check">
+                          <Field
+                            component={"input"}
+                            name="declaracao"
+                            className="form-check-input"
+                            required
+                            type="checkbox"
+                          />
+                          <label title="" className="form-check-label">
+                            Declaro que as informações acima prestadas são
+                            verdadeiras.
+                          </label>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="form-check">
+                          <Field
+                            component={"input"}
+                            name="condicoes"
+                            className="form-check-input"
+                            required
+                            type="checkbox"
+                          />
+                          <label title="" className="form-check-label">
+                            Li e concordo com os termos e condições apresentados
+                            no
+                            <a
+                              className="links-intrucoes"
+                              href={edital.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={editalClick}
+                            >
+                              <strong> {edital.label}.</strong>
+                            </a>
+                          </label>
+                        </div>
+                      </div>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
+              {tab === "anexos" && (
+                <Fragment>
+                  <div className="card w-100 mt-2">
+                    <div className="card-body">
+                      <div className="card-title">
+                        Fachadas das Lojas/dos Estandes
+                      </div>
+                      {empresa &&
+                        empresa.lojas.map((loja, key) => {
+                          return !loja.foto_fachada ? (
+                            <div
+                              className={`${
+                                algumUploadEmAndamento &&
+                                !loja.uploadEmAndamento
+                                  ? "set-opacity"
+                                  : undefined
+                              } `}
+                            >
+                              <Field
+                                component={FileUpload}
+                                name={`arqs_${key}`}
+                                disabled={algumUploadEmAndamento}
+                                id={`${key}`}
+                                key={key}
+                                accept="image/*"
+                                acceptCustom="image/png, image/jpg, image/jpeg"
+                                className="form-control-file"
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                required
+                                validate={valide(true)}
+                                multiple={false}
+                                onChange={e => {
+                                  if (e.length > 0) {
+                                    uploadFachadaLoja(e, loja.uuid, key);
+                                  }
+                                }}
                               />
-                            );
-                          })
-                        : null}
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Meios de Recebimentos</Card.Title>
-                      <hr />
-                      {pagamento
-                        ? pagamento.map((value, key) => {
-                            return (
-                              <BandeiraAnexo
-                                label={value.nome}
-                                chave={key}
-                                valor={value.id}
-                                onUpdate={addBandeira}
-                                onRemove={delBandeira}
+                              {loja.uploadEmAndamento && (
+                                <span className="font-weight-bold">
+                                  {`Upload de documento em andamento. `}
+                                  <span className="red-word">Aguarde</span>
+                                  <span className="blink">...</span>
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <div>
+                              <ArquivoExistente
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                arquivo={loja.foto_fachada}
+                                lojaUuid={loja.uuid}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={deleteFachadaLoja}
                               />
-                            );
-                          })
-                        : null}
-                    </Card.Body>
-                  </Card>
-                </Row>
-                <Row>
-                  <Card className="w-100 mt-2 ml-2">
-                    <Card.Body>
-                      <Card.Title>Documentos Anexos</Card.Title>
-                      <hr />
-                      <Field
-                        component={FileUpload}
-                        name="arquivos_anexos"
-                        id="anexos_loja"
-                        accept="file/pdf"
-                        className="form-control-file"
-                        label="Anexos / Documentos"
-                        required
-                        validate={required}
-                      />
-                    </Card.Body>
-                  </Card>
-                </Row>
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              <div className="form-group">
-                <div class="form-check">
-                  <Field
-                    component={"input"}
-                    name="declaracao"
-                    className="form-check-input"
-                    required
-                    type="checkbox"
-                    id={5}
-                  />
-                  <label title="" class="form-check-label">
-                    Declaro que as informações acima prestadas são verdadeiras.
-                  </label>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                  <div className="card w-100 mt-2">
+                    <div className="card-body">
+                      <div className="card-title">Documentos Anexos</div>
+                      {tiposDocumentos ? (
+                        tiposDocumentos.map((tipo, key) => {
+                          return empresa &&
+                            empresa.arquivos_anexos.find(
+                              arquivo => arquivo.tipo_documento === tipo.id
+                            ) ? (
+                            <div>
+                              <ArquivoExistente
+                                label={labelTemplate(tipo)}
+                                arquivo={empresa.arquivos_anexos.find(
+                                  arquivo => arquivo.tipo_documento === tipo.id
+                                )}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={removeAnexo}
+                              />
+                            </div>
+                          ) : empresa && empresa.status === "INSCRITO" ? (
+                            <div className="no-file-end-signup pt-3">
+                              <div className="label">{labelTemplate(tipo)}</div>
+                              <div>
+                                Seu cadastro foi finalizado e você não pode mais
+                                enviar este anexo.
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              className={`${
+                                algumUploadEmAndamento &&
+                                !tipo.uploadEmAndamento
+                                  ? "set-opacity"
+                                  : undefined
+                              } `}
+                            >
+                              <Field
+                                component={FileUpload}
+                                name={`arqs_${key}`}
+                                disabled={algumUploadEmAndamento}
+                                id={`${key}`}
+                                key={key}
+                                accept=".pdf, .png, .jpg, .jpeg, .zip"
+                                acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                                className="form-control-file"
+                                label={labelTemplate(tipo)}
+                                resetarFile={tipo.resetarFile}
+                                required={tipo.obrigatorio}
+                                validate={valide(tipo.obrigatorio)}
+                                multiple={false}
+                                onChange={e => {
+                                  if (e.length > 0) {
+                                    uploadAnexo(e, tipo, key);
+                                  }
+                                }}
+                              />
+                              {tipo.uploadEmAndamento && (
+                                <span className="font-weight-bold">
+                                  {`Upload de documento em andamento. `}
+                                  <span className="red-word">Aguarde</span>
+                                  <span className="blink">...</span>
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div>
+                          Erro ao carregar Tipos de Documentos para anexar.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Fragment>
+              )}
+              {tab === "cadastro" && !uuid && (
+                <div className="row">
+                  <div className="col-6 d-flex justify-content-start mt-4">
+                    <Button
+                      onClick={() => {
+                        reset();
+                        limparListaLojas();
+                        window.scrollTo(0, 0);
+                      }}
+                      type="reset"
+                      variant="outline-danger"
+                    >
+                      Limpar
+                    </Button>
+                  </div>
+                  <div className="col-6 d-flex justify-content-end mt-4">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      disabled={pristine || submitting}
+                    >
+                      Enviar
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Row>
-            <Row>
-              <div className="form-group">
-                <div class="form-check">
-                  <Field
-                    component={"input"}
-                    name="condicoes"
-                    className="form-check-input"
-                    required
-                    type="checkbox"
-                    id={5}
-                  />
-                  <label title="" class="form-check-label">
-                    Li e concordo com os termos e condições apresentados neste
-                    portal.
-                  </label>
+              )}
+              {tab === "anexos" && empresa && empresa.status !== "INSCRITO" && (
+                <div className="row">
+                  <div className="col-12 text-right mt-4">
+                    <Button
+                      onClick={() => finalizarCadastro()}
+                      type="reset"
+                      variant="primary"
+                    >
+                      Finalizar
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Row>
-            <Row></Row>
-            <Row>
-              <Col lg={6} xl={6} className="d-flex justify-content-start mt-4">
-                <Button
-                  onClick={() => {
-                    reset();
-                    limparListaLojas();
-                    setLimparFornecimento(true);
-                    window.scrollTo(0, 0);
-                  }}
-                  type="reset"
-                  variant="outline-danger"
-                >
-                  Limpar
-                </Button>
-              </Col>
-              <Col lg={6} xl={6} className="d-flex justify-content-end mt-4">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={pristine || submitting}
-                  type="submit"
-                >
-                  Enviar
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+              )}
+            </Form>
+          </div>
         </div>
-      </div>
+      )}
     </Fragment>
   );
 };
 
 CadastroEmpresa = reduxForm({
-  // a unique name for the form
-  form: "CadastroLojaForm"
+  form: "CadastroLojaForm",
+  enableReinitialize: true
 })(CadastroEmpresa);
 
 export default CadastroEmpresa;

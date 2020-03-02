@@ -1,29 +1,34 @@
+import * as Sentry from "@sentry/browser";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "primeflex/primeflex.css";
+import "primeicons/primeicons.css";
+import "primereact/resources/primereact.min.css";
+// Style Prime React
+import "primereact/resources/themes/nova-light/theme.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+//import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Redux
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import { reducer as formReducer } from "redux-form";
 // Middleware
 import promise from "redux-promise";
 import thunk from "redux-thunk";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
-//import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
-
+import "./include/bootstrap";
 // Style
 import "./index.css";
-import "./include/bootstrap";
-// Style Prime React
-import "primereact/resources/themes/nova-light/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
 import "./styles/styles.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
+
+if (process.env.NODE_ENV === "production") {
+  const SENTRY_URL = "SENTRY_URL_REPLACE_ME";
+  Sentry.init({ dsn: SENTRY_URL });
+}
 
 toast.configure();
 

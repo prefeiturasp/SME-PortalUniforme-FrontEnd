@@ -1,11 +1,13 @@
+import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import { Field } from "redux-form";
 import {
   InputLabelRequired,
   InputLabel
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
-import axios from "axios";
+import { required } from "helpers/fieldValidators";
 
 const LojaFisica = props => {
   const [endereco, setEndereco] = useState("");
@@ -18,6 +20,7 @@ const LojaFisica = props => {
   const [uf, setUf] = useState("");
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
+  const [nome_fantasia, setNomeFantasia] = useState("");
 
   useEffect(() => {
     setTelefone(props.telefone);
@@ -28,16 +31,18 @@ const LojaFisica = props => {
     setUf(props.uf);
     setNumero(props.numero);
     setComplemento(props.complemento);
+    setNomeFantasia(props.nome_fantasia);
   }, [props]);
 
   const buscaCep = async value => {
+    setErro(false);
     if (value) {
       let cep = value.replace("-", "").replace("_", "");
       if (cep.length === 8) {
         const data = await cepServico(cep);
         if (data !== null) {
           data["cep"] = value;
-          if (data.cidade !== "São Paulo" && data.uf !== "SP") {
+          if (data.cidade !== "São Paulo" || data.uf !== "SP") {
             setErro(true);
           } else {
             const payload = populaPayload(data);
@@ -53,8 +58,8 @@ const LojaFisica = props => {
     const response = await axios.get(
       `https://republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`
     );
-    
-    if (response.status === 200) {      
+
+    if (response.status === 200) {
       const data = response.data;
       if (data.resultado === "1") {
         return data;
@@ -75,16 +80,37 @@ const LojaFisica = props => {
       cidade: data.cidade,
       uf: data.uf,
       bairro: data.bairro,
-      cep: data.cep
+      cep: data.cep,
+      nome_fantasia: nome_fantasia
     };
   };
 
   return (
     <Fragment>
       <Row>
+        <Col>
+          <InputLabelRequired
+            autoComplete="off"
+            disabled={props.empresa}
+            label="Nome Fantasia"
+            placeholder="Nome fantasia da loja"
+            name={`loja.nome_fantasia_${props.chave}`}
+            id={`loja.nome_fantasia_${props.chave}`}
+            value={nome_fantasia}
+            onChange={e => {
+              const valor = e.target.value;
+              setNomeFantasia(valor);
+              setPayload({ ...payload, nome_fantasia: valor });
+              props.onUpdate({ ...payload, nome_fantasia: valor }, props.chave);
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
         <Col lg={6} xl={6}>
           <InputLabelRequiredMask
-            autocomplete="off"
+            autoComplete="off"
+            disabled={props.empresa}
             mask="99999-999"
             label="CEP"
             placeholder="xxxxx-xxx"
@@ -101,16 +127,18 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
             erro={erro}
-            mensagem="O CEP deve ser de São Paulo"
+            mensagem="A loja precisa estar em São Paulo-SP"
             required
           />
-          <div class="valid-feedback">Deve ser São Paulo</div>
+          <div className="valid-feedback">Deve ser São Paulo</div>
         </Col>
         <Col lg={6} xl={6}>
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
+            disabled={props.empresa}
             value={bairro}
             label="Bairro"
+            id={`bairro_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setBairro(valor);
@@ -120,13 +148,15 @@ const LojaFisica = props => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col>
+      <div className="row">
+        <div className="col-md-6 col-xs-5">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
+            disabled={props.empresa}
             label="Endereço"
-            placeholder="Linha única para logradouro, número e complemento"
+            placeholder="Digite o logradouro"
             name={`loja.endereco_${props.chave}`}
+            id={`loja.endereco_${props.chave}`}
             value={endereco}
             onChange={e => {
               const valor = e.target.value;
@@ -135,14 +165,14 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, endereco: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-md-2 col-xs-6">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
+            disabled={props.empresa}
             value={numero}
             label="Número"
+            id={`numero_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setNumero(valor);
@@ -150,11 +180,13 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
           />
-        </Col>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-md-4 col-xs-6">
           <InputLabel
             value={complemento}
             label="Complemento"
+            disabled={props.empresa}
+            id={`complemento_${props.chave}`}
             onChange={e => {
               const valor = e.target.value;
               setComplemento(valor);
@@ -162,14 +194,15 @@ const LojaFisica = props => {
               props.onUpdate(payload, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6} xl={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6 col-xs-4">
           <InputLabelRequired
-            autocomplete="off"
+            autoComplete="off"
             label="Cidade"
             value={cidade}
+            id={`cidade_${props.chave}`}
             placeholder="São Paulo"
             className="form-control mb-2"
             required
@@ -181,8 +214,8 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, cidade: valor }, props.chave);
             }}
           />
-        </Col>
-        <Col lg={6} xl={6}>
+        </div>
+        <div className="col-md-2 col-xs-3">
           <InputLabelRequired
             label="UF"
             name=""
@@ -199,15 +232,15 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, uf: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </div>
+        <div className="col-md-4 col-xs-3">
           <InputLabelRequiredMask
-            Autocomplete="off"
+            autoComplete="off"
             mask="(99) 9999-99999"
             label="Telefone"
+            disabled={props.empresa}
             value={telefone}
+            id={`telefone_${props.chave}`}
             placeholder="Fixo ou celular"
             className="form-control mb-2"
             required
@@ -219,9 +252,8 @@ const LojaFisica = props => {
               props.onUpdate({ ...payload, telefone: valor }, props.chave);
             }}
           />
-        </Col>
-      </Row>
-      <hr />
+        </div>
+      </div>
     </Fragment>
   );
 };

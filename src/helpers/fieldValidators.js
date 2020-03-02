@@ -3,6 +3,16 @@ import { validate } from "cnpj";
 export const required = value =>
   value !== undefined ? undefined : "Campo obrigatório";
 
+const undefinedFuncition = value => undefined;
+
+export const valide = obrigatorio => {
+  if (obrigatorio) {
+    return required;
+  } else {
+    return undefinedFuncition;
+  }
+};
+
 export const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "Email inválido"
@@ -57,7 +67,7 @@ export const validaUF = value => {
   ];
   return UF.find(UF => UF === value)
     ? undefined
-    : "UF Invalido. Necessário Letra Maiuscula.";
+    : "UF Inválido. Necessário letras maiúsculas.";
 };
 
 export const validaCNPJ = value =>
@@ -70,12 +80,10 @@ export const validaTelefone = value => {
     .replace(")", "")
     .replace(" ", "")
     .replace(/_/g, "");
-  return numero.length >= 10 ? undefined : "Necessário um telefone valido!";
+  return numero.length >= 10 ? undefined : "Necessário um telefone válido!";
 };
 
 export const validaCEP = value => {
-  let numero = value
-    .replace("-", "")
-    .replace(/_/g, "");
-  return numero.length === 8 ? undefined : "Necessário CEP Valido!";
+  let numero = value.replace("-", "").replace(/_/g, "");
+  return numero.length === 8 ? undefined : "Necessário CEP válido!";
 };

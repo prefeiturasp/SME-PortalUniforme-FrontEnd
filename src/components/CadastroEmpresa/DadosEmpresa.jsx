@@ -13,6 +13,7 @@ const DadosEmpresa = props => {
         component={InputText}
         label="CNPJ"
         name="cnpj"
+        disabled={props.empresa}
         required
         validate={[required, validaCNPJ]}
         autoFocus
@@ -21,6 +22,7 @@ const DadosEmpresa = props => {
       />
       <Field
         component={InputText}
+        disabled={props.empresa}
         label="Razão Social"
         name="razao_social"
         required
@@ -31,16 +33,19 @@ const DadosEmpresa = props => {
         <Col lg={6} xl={6}>
           <Field
             {...fieldCep}
+            disabled={props.empresa}
             component={InputText}
             label="CEP"
             name="end_cep"
             required
             validate={[required, validaCEP]}
+            placeholder="Digite o CEP"
           />
         </Col>
         <Col lg={6} xl={6}>
           <Field
             component={InputText}
+            disabled={props.empresa}
             label="UF"
             name="end_uf"
             required
@@ -52,6 +57,7 @@ const DadosEmpresa = props => {
       </Row>
       <Field
         component={InputText}
+        disabled={props.empresa}
         label="Endereço"
         name="end_logradouro"
         required
@@ -61,6 +67,7 @@ const DadosEmpresa = props => {
 
       <Field
         component={InputText}
+        disabled={props.empresa}
         label="Cidade"
         name="end_cidade"
         required
@@ -69,15 +76,17 @@ const DadosEmpresa = props => {
       />
       <Field
         component={InputText}
-        label="Nome Responsável"
+        disabled={props.empresa}
+        label="Nome do responsável"
         name="responsavel"
         required
         validate={required}
-        placeholder="Digite o nome do resposável da empresa"
+        placeholder="Digite o nome do responsável da empresa"
       />
       <Field
         {...fieldCel}
         component={InputText}
+        disabled={props.empresa}
         label="Telefone"
         name="telefone"
         required
@@ -86,8 +95,10 @@ const DadosEmpresa = props => {
       />
       <Field
         component={InputText}
+        disabled={props.empresa}
         label="E-mail"
         name="email"
+        type="email"
         required
         validate={required}
         placeholder="Digite o e-mail do responsável"

@@ -6,14 +6,14 @@ const InputLabelRequiredMask = props => {
   return (
     <Fragment>
       <div className="input">
-        <Form.Group controlId="1">
+        <Form.Group>
           <span className="required-asterisk">* </span>
           <Form.Label>{props.label}</Form.Label>
           <InputMask {...props} mask={props.mask} name={props.name} />
           {props.erro ? (
             <>
-              <div class="valid-feedback">Valid.</div>
-              <div class="invalid-feedback">{props.mensagem}</div>
+              <div className="valid-feedback">Valid.</div>
+              <div className="invalid-feedback">{props.mensagem}</div>
             </>
           ) : null}
         </Form.Group>
