@@ -6,9 +6,12 @@ Um sistema da Secretaria de Educação da Cidade de São Paulo.
 
 License: MIT
 
-Versão: 1.0.0
+Versão: 1.0.1
 
 ## Release Notes ##
+
+### 1.0.1 - 05/03/2019 - Sprint 3
+* Alteração no texto da área "O que é necessário para ser fornecedor"
 
 ### 1.0.0 - 02/03/2019 - Sprint 2
 * Reformulação do processo de inscrição de fornecedores. Cadastro dividido em duas fases: Pré-cadastro e Cadastro
