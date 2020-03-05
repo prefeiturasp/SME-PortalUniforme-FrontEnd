@@ -147,6 +147,12 @@ export default class Home extends Component {
                       Para ser credenciado, o comerciante deve:
                     </p>
                     <ul className="lista-home ml-0 pl-0 mb-2">
+                      <li>
+                        <strong className="fonte-17">Concordar com a taxa máxima de 0,8% a ser cobrada sobre o valor de cada transação realizada pela operadora do “meio de pagamento”;</strong>
+                      </li>
+                      <li>
+                      <strong className="fonte-17">Estar ciente que o prazo para recebimento do pagamento é de até 10 (dez) dias úteis;</strong>
+                      </li>
                       <li>Ser pessoa Jurídica;</li>
                       <li>
                         Possuir toda a documentação válida conforme as condições
@@ -186,9 +192,7 @@ export default class Home extends Component {
                       </li>
                       <li>Estar ciente das hipóteses de descredenciamento;</li>
                       <li>Estar ciente das penalidades previstas;</li>
-                      <li>
-                      Concordar com a taxa de 0,8% sobre o valor das transações a serem realizadas pela operadora do “meio de pagamento”.
-                      </li>
+
                     </ul>
                     <p className="mb-2">
                       Veja todas as condições necessárias abaixo:
