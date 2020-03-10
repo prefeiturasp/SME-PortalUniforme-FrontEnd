@@ -450,10 +450,13 @@ export default class Rodape extends Component {
         </div>
         <div className="endereco container">
           <div className="row">
-            <div className="col-lg-12 col-xs-12 text-center mt-2">
+            <div className="col-lg-10 col-xs-10 text-center mt-2">
               SECRETARIA MUNICIPAL DE EDUCAÇÃO — Rua Borges Lagoa, 1230 — Vila
               Clementino — CEP: 04038-003
             </div>
+            <div className="col-lg-2 col-xs-2 text-center mt-2">
+            {this.props['versao']}
+            </div>            
           </div>
         </div>
       </div>

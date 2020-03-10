@@ -145,3 +145,12 @@ export const verificaEmail = async email => {
       return error.response;
     });
 };
+
+export const getAPIVersion = async () => {
+  const response = await axios.get(
+    `${endPont.API_URL}/api-version/`,
+    authHeader
+  );
+  console.log(`API Version: ${response.data['API_Version']}`)
+  return response.data['API_Version'];
+};

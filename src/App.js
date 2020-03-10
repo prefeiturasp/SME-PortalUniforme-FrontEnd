@@ -4,6 +4,9 @@ import Rodape from "./components/Rodape/Rodape";
 import MenuAcessibilidade from "./components/MenuSuperior/MenuAcessibilidade";
 import MenuPrincipal from "./components/MenuSuperior/MenuPrincipal";
 
+import {getAPIVersion} from "./services/uniformes.service"
+
+
 // Style
 import "./styles/styles.scss";
 import "./App.scss";
@@ -24,12 +27,23 @@ export default class App extends React.Component {
         (localStorage.getItem("alterarContraste") &&
           localStorage.getItem("alterarContraste") === "true") ||
         false,
-      focusBuscaAtributo: false
+      focusBuscaAtributo: false,
+      apiVersion: '',
+      frontVersion: ''
     };
     this.alterarFonte = this.alterarFonte.bind(this);
     this.alterarContraste = this.alterarContraste.bind(this);
     this.focusBusca = this.focusBusca.bind(this);
   }
+
+  async componentDidMount() {
+    const apiVersion = await getAPIVersion()
+
+    const pjson = require('../package.json');
+    const frontVersion = pjson.version;
+
+    this.setState({apiVersion, frontVersion})
+}
 
   focusBusca() {
     this.setState({ focusBuscaAtributo: true });
@@ -60,7 +74,7 @@ export default class App extends React.Component {
           <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>
           <MenuPrincipal/>
           <Routes/>
-          <Rodape/>
+          <Rodape versao={`${this.state.frontVersion} (API:${this.state.apiVersion})`}/>
         </section>
 
         );
