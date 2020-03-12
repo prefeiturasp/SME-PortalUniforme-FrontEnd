@@ -133,12 +133,15 @@ export default class Home extends Component {
         <div id="conteudo" className="w-100 home">
           <div className="container">
             <div className="row mt-5">
-              <div className="col-lg-6 mb-lg-0">
+              <div className="col-lg-6 mb-lg-0 mt-5">
                 <img
                   src={imgFachadaLoja}
                   alt="Fachada de uma lojinha de roupas"
                   className="img-fluid rounded"
                 />
+                <div className="embed-responsive embed-responsive-16by9 container-video-home">
+                  <iframe title="Vídeo sobre o Portal do Uniforme" src="https://www.youtube.com/embed/R591jitkIOw" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                </div>
               </div>
               <div className="col-lg-6">
                 <BlocoTexto title="O que é necessário para ser fornecedor?">
@@ -268,6 +271,9 @@ export default class Home extends Component {
                 possibilidade de fornecimento dos uniformes escolares.
               </p>
             </BlocoTexto>
+            <div className="embed-responsive embed-responsive-16by9 container-video-home">
+              <iframe title="Vídeo complementar sobre o Portal do Uniforme" src="https://www.youtube.com/embed/fFUQRPnigfM" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
           </div>
         </div>
 
