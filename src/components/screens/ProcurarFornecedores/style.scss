@@ -1,3 +1,17 @@
 .busca-mapa {
-  background-image: url("/img/mapa-uniformes.png");
+  background: url("../../../img/mapa-uniformes.png");
+  height: 487px;
+  background-size: cover;
+  background-position: bottom center;
+  text-align: center;
+  color: #5c6f78;
+  div.title {
+    padding-top: 4em;
+    font-weight: bold;
+    font-size: 30px;
+  }
+  div.subtitle {
+    font-size: 16px;
+    padding-top: 1em;
+  }
 }

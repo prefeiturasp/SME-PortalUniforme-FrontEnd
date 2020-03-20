@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from "react";
+import { Field } from "redux-form";
+import { reduxForm } from "redux-form";
 import BlocoTexto from "components/BlocoTexto";
 import imgPecasUniforme from "img/pecas-uniforme.png";
-import imgMapaUniforme from "img/mapa-uniformes.png";
 import { getUniformes } from "services/uniformes.service";
 import {
   busca_url_edital,
   busca_url_instrucao_normativa
 } from "../../../services/uniformes.service";
+import { AutoComplete } from "components/Input/AutoComplete";
 import "./style.scss";
+import { required } from "helpers/fieldValidators";
 
-export default class ProcurarFornecedores extends Component {
+export class ProcurarFornecedores extends Component {
   constructor() {
     super();
     this.state = {
@@ -109,11 +112,25 @@ export default class ProcurarFornecedores extends Component {
     return (
       <Fragment>
         <div className="busca-mapa">
-          <img
-            src={imgMapaUniforme}
-            alt="Peças do uniforme escolar"
-            className="img-fluid"
-          />
+          <div className="title">
+            Encontre a loja credenciada mais próxima de você
+          </div>
+          <div className="subtitle">
+            Para encontrar as lojas fornecedoras dos uniformes mais próximas a
+            você, basta informar <br /> abaixo seu endereço e quais itens do
+            uniforme você procura.
+          </div>
+          <form>
+            <Field
+              component={AutoComplete}
+              label="Endereço"
+              name="endereco.endereco"
+              required
+              validate={required}
+              handleChange={this.handleAddressChange}
+              {...this.props}
+            />
+          </form>
         </div>
         <div id="conteudo" className="w-100 home">
           <div className="container">
@@ -253,3 +270,10 @@ export default class ProcurarFornecedores extends Component {
     );
   }
 }
+
+ProcurarFornecedores = reduxForm({
+  // a unique name for the form
+  form: "ProcurarFornecedoresForm"
+})(ProcurarFornecedores);
+
+export default ProcurarFornecedores;
