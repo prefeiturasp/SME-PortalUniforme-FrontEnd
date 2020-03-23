@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import StatefulMultiSelect from "@khanacademy/react-multi-select";
 import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
 import BlocoTexto from "components/BlocoTexto";
@@ -11,12 +12,14 @@ import {
 import { AutoComplete } from "components/Input/AutoComplete";
 import "./style.scss";
 import { required } from "helpers/fieldValidators";
+import { formatarParaMultiselect } from "./helper";
 
 export class ProcurarFornecedores extends Component {
   constructor() {
     super();
     this.state = {
       uniformes: [],
+      tipoUniformeSelecionados: [],
       edital: {
         url: "",
         label: ""
@@ -107,8 +110,14 @@ export class ProcurarFornecedores extends Component {
     this.props.history.push(path);
   }
 
+  onSelectedChanged = tipoUniformeSelecionados => {
+    this.setState({
+      tipoUniformeSelecionados
+    });
+  };
+
   render() {
-    const { uniformes } = this.state;
+    const { uniformes, tipoUniformeSelecionados } = this.state;
     return (
       <Fragment>
         <div className="busca-mapa">
@@ -121,15 +130,47 @@ export class ProcurarFornecedores extends Component {
             uniforme você procura.
           </div>
           <form>
-            <Field
-              component={AutoComplete}
-              label="Endereço"
-              name="endereco.endereco"
-              required
-              validate={required}
-              handleChange={this.handleAddressChange}
-              {...this.props}
-            />
+            <div className="row pt-5">
+              <div className="offset-3 col-3">
+                <Field
+                  component={AutoComplete}
+                  label="Escreva o logradouro e número que você quer consultar *"
+                  name="endereco.endereco"
+                  required
+                  validate={required}
+                  esconderAsterisco
+                  handleChange={this.handleAddressChange}
+                  {...this.props}
+                />
+              </div>
+              <div className="col-2">
+                <label htmlFor={"tipo_uniforme"} className={`multiselect`}>
+                  Selecione itens do uniforme *
+                </label>
+                <Field
+                  component={StatefulMultiSelect}
+                  name="tipo_uniforme"
+                  selected={tipoUniformeSelecionados}
+                  options={formatarParaMultiselect(uniformes)}
+                  onSelectedChanged={values => this.onSelectedChanged(values)}
+                  disableSearch={true}
+                  overrideStrings={{
+                    selectSomeItems: "Selecione",
+                    allItemsAreSelected: "Todos os itens estão selecionados",
+                    selectAll: "Todos"
+                  }}
+                />
+              </div>
+              <div className="btn-consultar col-2">
+                <button
+                  size="lg"
+                  className="btn btn-light pl-4 pr-4"
+                  onClick={this.irParaFormulario}
+                >
+                  <strong>Consultar</strong>
+                </button>
+              </div>
+            </div>
           </form>
         </div>
         <div id="conteudo" className="w-100 home">
