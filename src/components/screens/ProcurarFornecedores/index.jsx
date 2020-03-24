@@ -1,18 +1,15 @@
 import React, { Component, Fragment } from "react";
 import StatefulMultiSelect from "@khanacademy/react-multi-select";
+import { withRouter } from "react-router-dom";
 import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
 import BlocoTexto from "components/BlocoTexto";
 import imgPecasUniforme from "img/pecas-uniforme.png";
 import { getUniformes } from "services/uniformes.service";
-import {
-  busca_url_edital,
-  busca_url_instrucao_normativa
-} from "../../../services/uniformes.service";
 import { AutoComplete } from "components/Input/AutoComplete";
-import "./style.scss";
 import { required } from "helpers/fieldValidators";
 import { formatarParaMultiselect } from "./helper";
+import "./style.scss";
 
 export class ProcurarFornecedores extends Component {
   constructor() {
@@ -20,94 +17,14 @@ export class ProcurarFornecedores extends Component {
     this.state = {
       uniformes: [],
       tipoUniformeSelecionados: [],
-      edital: {
-        url: "",
-        label: ""
-      },
-      instrucaoNormativa: {
-        url: "",
-        label: ""
-      }
+      latitude: null,
+      longitude: null
     };
-
-    this.irParaFormulario = this.irParaFormulario.bind(this);
-    this.editalClick = !this.state.edital.url
-      ? e => {
-          this.downloadEdital(e);
-        }
-      : null;
-    this.get_edital_link();
-
-    this.instrucaoNormativaClick = !this.state.instrucaoNormativa.url
-      ? e => {
-          this.downloadInstrucaoNormativa(e);
-        }
-      : null;
-    this.get_instrucao_normativa_link();
   }
 
   async componentDidMount() {
     const uniformes = await getUniformes();
     this.setState({ uniformes });
-  }
-
-  get_edital_link = async () => {
-    let edital = {};
-    try {
-      const url = await busca_url_edital();
-      edital = {
-        url: url,
-        label: "[Link Edital]"
-      };
-    } catch (e) {
-      edital = {
-        url: "",
-        label: "[Link Edital] (Em Breve)"
-      };
-    }
-    this.setState({ edital: edital });
-  };
-
-  get_instrucao_normativa_link = async () => {
-    let instrucaoNormativa = {};
-    try {
-      const url = await busca_url_instrucao_normativa();
-      instrucaoNormativa = {
-        url: url,
-        label: "[Link Instrução Normativa]"
-      };
-    } catch (e) {
-      instrucaoNormativa = {
-        url: "",
-        label: "[Link Instrução Normativa] (Em Breve)"
-      };
-    }
-    this.setState({ instrucaoNormativa });
-  };
-
-  downloadEdital = e => {
-    e.preventDefault();
-    if (this.state.edital.url) {
-      const link = document.createElement("a");
-      link.href = this.state.edital.url;
-      link.target = "_blank";
-      link.click();
-    }
-  };
-
-  downloadInstrucaoNormativa = e => {
-    e.preventDefault();
-    if (this.state.instrucaoNormativa.url) {
-      const link = document.createElement("a");
-      link.href = this.state.instrucaoNormativa.url;
-      link.target = "_blank";
-      link.click();
-    }
-  };
-
-  irParaFormulario() {
-    let path = `/cadastro`;
-    this.props.history.push(path);
   }
 
   onSelectedChanged = tipoUniformeSelecionados => {
@@ -116,8 +33,20 @@ export class ProcurarFornecedores extends Component {
     });
   };
 
+  handleAddressChange = values => {
+    this.setState({
+      latitude: values.latitude,
+      longitude: values.longitude
+    });
+  };
+
   render() {
-    const { uniformes, tipoUniformeSelecionados } = this.state;
+    const {
+      latitude,
+      longitude,
+      uniformes,
+      tipoUniformeSelecionados
+    } = this.state;
     return (
       <Fragment>
         <div className="busca-mapa">
@@ -165,7 +94,16 @@ export class ProcurarFornecedores extends Component {
                 <button
                   size="lg"
                   className="btn btn-light pl-4 pr-4"
-                  onClick={this.irParaFormulario}
+                  onClick={() =>
+                    this.props.history.push({
+                      pathname: "/mapa-de-fornecedores",
+                      state: {
+                        latitude: latitude,
+                        longitude: longitude,
+                        tipoUniformeSelecionados: tipoUniformeSelecionados
+                      }
+                    })
+                  }
                 >
                   <strong>Consultar</strong>
                 </button>
@@ -299,7 +237,9 @@ export class ProcurarFornecedores extends Component {
                 <button
                   size="lg"
                   className="btn btn-light pl-4 pr-4"
-                  onClick={this.irParaFormulario}
+                  onClick={() =>
+                    this.props.history.push("/mapa-de-fornecedores")
+                  }
                 >
                   <strong>Solicite o uniforme</strong>
                 </button>
@@ -317,4 +257,4 @@ ProcurarFornecedores = reduxForm({
   form: "ProcurarFornecedoresForm"
 })(ProcurarFornecedores);
 
-export default ProcurarFornecedores;
+export default withRouter(ProcurarFornecedores);

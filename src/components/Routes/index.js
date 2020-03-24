@@ -4,6 +4,7 @@ import Home from "../Home/Home";
 import { CadastroEmpresa } from "components/CadastroEmpresa";
 import Confirmacao from "components/CadastroEmpresa/Confirmacao";
 import ProcurarFornecedores from "components/screens/ProcurarFornecedores";
+import MapaDeFornecedores from "components/screens/MapaDeFornecedores";
 
 export default props => (
   <div id="main">
@@ -16,6 +17,10 @@ export default props => (
       <Route
         path="/procurar-fornecedores"
         render={props => <ProcurarFornecedores {...props} />}
+      />
+      <Route
+        path="/mapa-de-fornecedores"
+        render={props => <MapaDeFornecedores {...props} />}
       />
       <Route
         path="/confirmacao-cadastro"
