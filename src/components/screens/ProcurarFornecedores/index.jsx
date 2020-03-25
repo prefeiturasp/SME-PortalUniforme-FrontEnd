@@ -18,7 +18,8 @@ export class ProcurarFornecedores extends Component {
       uniformes: [],
       tipoUniformeSelecionados: [],
       latitude: null,
-      longitude: null
+      longitude: null,
+      endereco: null
     };
   }
 
@@ -36,7 +37,8 @@ export class ProcurarFornecedores extends Component {
   handleAddressChange = values => {
     this.setState({
       latitude: values.latitude,
-      longitude: values.longitude
+      longitude: values.longitude,
+      endereco: values.endereco
     });
   };
 
@@ -45,6 +47,7 @@ export class ProcurarFornecedores extends Component {
       latitude,
       longitude,
       uniformes,
+      endereco,
       tipoUniformeSelecionados
     } = this.state;
     return (
@@ -100,7 +103,8 @@ export class ProcurarFornecedores extends Component {
                       state: {
                         latitude: latitude,
                         longitude: longitude,
-                        tipoUniformeSelecionados: tipoUniformeSelecionados
+                        tipoUniformeSelecionados: tipoUniformeSelecionados,
+                        endereco: endereco
                       }
                     })
                   }

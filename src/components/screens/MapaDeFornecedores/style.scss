@@ -1,5 +1,26 @@
 .lojas {
+  padding-top: 2em;
   @media (min-width: 992px) {
     min-height: 860px;
+  }
+  span {
+    font-weight: bold;
+  }
+  .tabela-lojas {
+    font-size: 14px;
+    div.row {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      &.tabela-header {
+        border-bottom: 1px solid black;
+        font-weight: bold;
+      }
+    }
+    .loja-collapse {
+      border-bottom: 1px solid #DBDBDB;
+      .clique-mensagem {
+        font-size: 11px;
+      }
+    }
   }
 }
