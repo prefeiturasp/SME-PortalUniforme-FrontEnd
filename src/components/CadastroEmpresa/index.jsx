@@ -511,7 +511,7 @@ export let CadastroEmpresa = props => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">
-                            Preços (fornecimento)
+                            Preços máximos por item (fornecimento)
                           </div>
                           <div className="pt-3 undertitle">
                             Tipo de Fornecimento
@@ -623,6 +623,22 @@ export let CadastroEmpresa = props => {
                           </label>
                         </div>
                       </div>
+
+                      <div className="form-group">
+                        <div className="form-check">
+                          <Field
+                              component={"input"}
+                              name="declaracao2"
+                              className="form-check-input"
+                              required
+                              type="checkbox"
+                          />
+                          <label title="" className="form-check-label">
+                            Declaro que fornecerei os itens pelos valores máximos indicados acima
+                          </label>
+                        </div>
+                      </div>
+
                     </Fragment>
                   )}
                 </Fragment>
