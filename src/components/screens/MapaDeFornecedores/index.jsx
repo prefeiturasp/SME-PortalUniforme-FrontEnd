@@ -4,6 +4,7 @@ import "./style.scss";
 import { getLojasCredenciadas } from "services/uniformes.service";
 import Select from "components/Select";
 import { ORDENAR_OPCOES } from "./constants";
+import { LoadingCircle } from "components/LoadingCircle";
 
 export class MapaDeFornecedores extends Component {
   constructor() {
@@ -29,15 +30,19 @@ export class MapaDeFornecedores extends Component {
     } = this.props.location.state;
     const { lojas } = this.state;
     return (
-      <Fragment>
-        <div className="w-100 sociedade-governo text-white mt-5">
+      <div>
+        <div
+          className={`w-100 sociedade-governo text-white mt-5 ${!lojas &&
+            "opaco"}`}
+        >
           <div className="container">
             <div className="col-lg-12 mb-lg-0">
               <h3>Lojas mais próximas</h3>
             </div>
           </div>
         </div>
-        <div className="w-100 bg-light h-100">
+        {!lojas && <LoadingCircle />}
+        <div className={`w-100 bg-light h-100 ${!lojas && "opaco"}`}>
           <div className="container">
             <div className="row">
               <div className="col-lg-6 col-sm-12 lojas">
@@ -88,7 +93,7 @@ export class MapaDeFornecedores extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </div>
     );
   }
 }

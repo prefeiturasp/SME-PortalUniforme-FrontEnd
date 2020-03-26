@@ -1,3 +1,7 @@
+.opaco {
+  opacity: 0.5;
+}
+
 .lojas {
   padding-top: 2em;
   @media (min-width: 992px) {
@@ -17,7 +21,7 @@
       }
     }
     .loja-collapse {
-      border-bottom: 1px solid #DBDBDB;
+      border-bottom: 1px solid #dbdbdb;
       .clique-mensagem {
         font-size: 11px;
       }
