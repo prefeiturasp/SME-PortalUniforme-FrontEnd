@@ -233,10 +233,10 @@ export class ProcurarFornecedores extends Component {
             </button>
           </div>
         </div>
-        <div className="w-100 sociedade-governo text-white text-center mt-5">
+        <div className="w-100 sociedade-governo text-center mt-5">
           <div className="container">
             <div className="col-lg-12 mb-4 mb-lg-0">
-              <h3 className="mb-4">Não perca tempo, solicite já o uniforme!</h3>
+              <h3 className="text-white mb-4">Não perca tempo, solicite já o uniforme!</h3>
               <p className="mb-0">
                 <button
                   size="lg"
