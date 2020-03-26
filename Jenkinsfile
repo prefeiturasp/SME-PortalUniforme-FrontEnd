@@ -17,6 +17,19 @@ pipeline {
           checkout scm	
         }
        }
+
+       stage('Analise codigo') {
+	     when {
+           branch 'homolog'
+         }
+            steps {
+                sh 'sonar-scanner \
+                   -Dsonar.projectKey=SME-PortalUniforme-FrontEnd \
+                   -Dsonar.sources=. \
+                   -Dsonar.host.url=http://sonar.sme.prefeitura.sp.gov.br \
+                   -Dsonar.login=4b1ed12576cf02a5e5dc76018be2e60a75a56e99'
+            }
+       }  
       
        stage('Deploy DEV') {
          when {
@@ -73,7 +86,7 @@ pipeline {
         steps {
           timeout(time: 24, unit: "HOURS") {
           // telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
-            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ebufaino, marcos_nastri, alessandro_fernandes'
+            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ebufaino, marcos_nastri, alessandro_fernandes, anderson_morais, calvin_rossinhole, ollyver_ottoboni, kelwy_oliveira'
           }
          sh 'echo Deploying ambiente homologacao'
                 
