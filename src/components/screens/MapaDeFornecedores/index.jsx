@@ -7,6 +7,7 @@ import { ORDENAR_OPCOES } from "./constants";
 import { LoadingCircle } from "components/LoadingCircle";
 import { QUANTIDADE_POR_PAGINA } from "components/Paginacao/constants";
 import { Paginacao } from "components/Paginacao";
+import { lojaForneceMalharia, lojaForneceCalcado } from "./helper";
 
 export class MapaDeFornecedores extends Component {
   constructor() {
@@ -34,10 +35,7 @@ export class MapaDeFornecedores extends Component {
     const { lojas, pagina } = this.state;
     return (
       <div>
-        <div
-          className={`w-100 sociedade-governo mt-5 ${!lojas &&
-            "opaco"}`}
-        >
+        <div className={`w-100 sociedade-governo mt-5 ${!lojas && "opaco"}`}>
           <div className="container">
             <div className="col-lg-12 mb-lg-0">
               <h3 className="text-white">Lojas mais próximas</h3>
@@ -82,14 +80,28 @@ export class MapaDeFornecedores extends Component {
                                   Clique no + para dados de contato e preço
                                 </div>
                               </div>
+                              <div className="col-5 text-right">
+                                {lojaForneceMalharia(loja) && (
+                                  <span className="badge-fornecimento">
+                                    Malharia
+                                  </span>
+                                )}
+                                {lojaForneceCalcado(loja) && (
+                                  <span className="badge-fornecimento">
+                                    Calçado
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         );
                       })}
-                  {lojas && <Paginacao
-                    onChange={pagina => this.setState({ pagina })}
-                    total={lojas.length}
-                  />}
+                  {lojas && (
+                    <Paginacao
+                      onChange={pagina => this.setState({ pagina })}
+                      total={lojas.length}
+                    />
+                  )}
                 </div>
               </div>
               <div className="col-lg-6 col-sm-12 mapa-completo">

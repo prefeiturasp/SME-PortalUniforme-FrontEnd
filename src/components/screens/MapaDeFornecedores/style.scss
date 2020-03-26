@@ -25,6 +25,17 @@
       .clique-mensagem {
         font-size: 11px;
       }
+      span.badge-fornecimento {
+        padding: 3px 10px;
+        font-weight: normal;
+        font-size: 12px;
+        background: #f5f6f8;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        &:nth-child(2) {
+          margin-left: 10px;
+        }
+      }
     }
   }
 }
