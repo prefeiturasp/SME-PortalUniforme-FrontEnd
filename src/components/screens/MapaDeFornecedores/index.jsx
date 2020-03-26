@@ -25,6 +25,17 @@ export class MapaDeFornecedores extends Component {
     });
   }
 
+  collapseLoja(id) {
+    let lojas = this.state.lojas;
+    lojas.forEach(loja => {
+      if (loja.id !== id) loja.ativo = false;
+    });
+    lojas.find(loja => loja.id === id).ativo = !lojas.find(
+      loja => loja.id === id
+    ).ativo;
+    this.setState({ lojas });
+  }
+
   render() {
     const {
       latitude,
@@ -43,7 +54,7 @@ export class MapaDeFornecedores extends Component {
           </div>
         </div>
         {!lojas && <LoadingCircle />}
-        <div className={`w-100 bg-light h-100 ${!lojas && "opaco"}`}>
+        <div className={`w-100 bg-white h-100 ${!lojas && "opaco"}`}>
           <div className="container">
             <div className="row">
               <div className="col-lg-6 col-sm-12 lojas">
@@ -73,11 +84,23 @@ export class MapaDeFornecedores extends Component {
                       .map((loja, key) => {
                         return (
                           <div key={key} className="loja-collapse">
-                            <div className="row">
+                            <div className="row td">
                               <div className="col-7 font-weight-bold">
-                                {loja.nome_fantasia.toUpperCase()}
-                                <div className="clique-mensagem">
-                                  Clique no + para dados de contato e preço
+                                <div className="row p-0">
+                                  <div className="col-1 my-auto">
+                                    <i
+                                      onClick={() => this.collapseLoja(loja.id)}
+                                      className={`fas fa-${
+                                        loja.ativo ? "minus" : "plus"
+                                      }`}
+                                    ></i>
+                                  </div>
+                                  <div className="col-10">
+                                    {loja.nome_fantasia.toUpperCase()}
+                                    <div className="clique-mensagem">
+                                      Clique no + para dados de contato e preço
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-5 text-right">
@@ -92,6 +115,28 @@ export class MapaDeFornecedores extends Component {
                                   </span>
                                 )}
                               </div>
+                              {loja.ativo && (
+                                <div className="row">
+                                  <div className="col-11 offset-1">
+                                    <div>
+                                      <strong>Endereço: </strong>
+                                      {loja.endereco}, {loja.numero} <br />
+                                      {loja.bairro} - CEP: {loja.cep}
+                                    </div>
+                                    <br />
+                                    <div className="row">
+                                      <div className="col-6">
+                                        <strong>Telefone: </strong>
+                                        {loja.telefone}
+                                      </div>
+                                      <div className="col-6">
+                                        <strong>E-mail: </strong>
+                                        {loja.email}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         );

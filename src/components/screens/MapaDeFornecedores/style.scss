@@ -21,7 +21,16 @@
       }
     }
     .loja-collapse {
-      border-bottom: 1px solid #dbdbdb;
+      .row.td {
+        border-bottom: 1px solid #dbdbdb;
+        &:hover {
+          background: #f6fbff;
+        }
+      }
+      i {
+        cursor: pointer;
+        color: #00a6e2;
+      }
       .clique-mensagem {
         font-size: 11px;
       }
