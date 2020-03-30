@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import * as Leaflet from "leaflet";
 import "./style.scss";
 
 export default class Mapa extends Component {
@@ -8,7 +9,9 @@ export default class Mapa extends Component {
     this.state = {
       loja: "",
       zoom: 12,
-      marcadores: null
+      marcadores: null,
+      redIcon: null,
+      blueIcon: null
     };
 
     this.criarMarcadores = this.criarMarcadores.bind(this);
@@ -17,6 +20,25 @@ export default class Mapa extends Component {
   componentDidMount() {
     const { lojas } = this.props;
     this.criarMarcadores(lojas);
+    const redIcon = new Leaflet.Icon({
+      iconUrl:
+        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    const blueIcon = new Leaflet.Icon({
+      iconUrl:
+        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    this.setState({ blueIcon, redIcon });
   }
 
   criarMarcadores(lojas) {
@@ -34,8 +56,8 @@ export default class Mapa extends Component {
   }
 
   render() {
-    const { latitude, longitude } = this.props;
-    const { marcadores } = this.state;
+    const { latitude, longitude, lojaHover } = this.props;
+    const { marcadores, redIcon, blueIcon } = this.state;
     return (
       <div className="mapa h-80 w-80">
         {!marcadores ? (
@@ -49,6 +71,10 @@ export default class Mapa extends Component {
             {marcadores.map((marcador, indice) => {
               return (
                 <Marker
+                  opacity={
+                    lojaHover === marcador.loja.id || !lojaHover ? 1 : 0.5
+                  }
+                  icon={lojaHover === marcador.loja.id ? blueIcon : redIcon}
                   key={indice}
                   position={[marcador.loja.latitude, marcador.loja.longitude]}
                 >
@@ -61,6 +87,8 @@ export default class Mapa extends Component {
                     />
                     <br />
                     <strong>{marcador.loja.nome_fantasia.toUpperCase()}</strong>
+                    <br />A {marcador.loja.distancia} KM de sua localização
+                    <br />
                     <br />
                     <div>
                       <strong>Endereço: </strong>

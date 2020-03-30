@@ -39,7 +39,7 @@ export const acrescentaTotalUniformes = (lojas, uniformesSelecionados) => {
 
 export const sortByParam = (lista, param) => {
   return lista.sort((a, b) => {
-    if (param === "distancia") {
+    if (param === "distancia" || param === "total_uniformes") {
       if (parseFloat(a[param]) < parseFloat(b[param])) return -1;
       else if (parseFloat(a[param]) > parseFloat(b[param])) return 1;
       return 0;

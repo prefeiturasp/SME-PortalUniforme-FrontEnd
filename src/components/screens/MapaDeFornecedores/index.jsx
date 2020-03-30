@@ -19,7 +19,8 @@ export class MapaDeFornecedores extends Component {
     super();
     this.state = {
       lojas: null,
-      pagina: 1
+      pagina: 1,
+      lojaHover: null
     };
   }
 
@@ -37,6 +38,11 @@ export class MapaDeFornecedores extends Component {
         )
       });
     });
+  }
+
+  setLojaHover(loja) {
+    if (loja) this.setState({ lojaHover: loja.id });
+    else this.setState({ lojaHover: null });
   }
 
   onSelectChanged(value) {
@@ -62,7 +68,7 @@ export class MapaDeFornecedores extends Component {
       tipoUniformeSelecionados,
       endereco
     } = this.props.location.state;
-    const { lojas, pagina } = this.state;
+    const { lojas, pagina, lojaHover } = this.state;
     return (
       <div>
         <div className={`w-100 sociedade-governo mt-5 ${!lojas && "opaco"}`}>
@@ -106,7 +112,11 @@ export class MapaDeFornecedores extends Component {
                       .map((loja, key) => {
                         return (
                           <div key={key} className="loja-collapse">
-                            <div className="row td">
+                            <div
+                              onMouseEnter={() => this.setLojaHover(loja)}
+                              onMouseLeave={() => this.setLojaHover(null)}
+                              className="row td"
+                            >
                               <div className="col-7 font-weight-bold">
                                 <div className="row p-0">
                                   <div className="col-1 my-auto">
@@ -217,6 +227,7 @@ export class MapaDeFornecedores extends Component {
               <div className="col-lg-6 col-sm-12 mapa-completo">
                 {lojas && (
                   <Mapa
+                    lojaHover={lojaHover}
                     lojas={lojas}
                     tipoUniformeSelecionados={tipoUniformeSelecionados}
                     latitude={latitude}
