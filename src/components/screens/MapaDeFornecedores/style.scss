@@ -45,6 +45,31 @@
           margin-left: 10px;
         }
       }
+      table.tabela-precos {
+        margin-left: 3.5em;
+        margin-right: 2.5em;
+        width: 100%;
+        thead {
+          tr {
+            background-color: #f5f6f8;
+            th {
+              padding: 10px;
+            }
+          }
+        }
+        tbody {
+          tr {
+            background-color: white;
+            td {
+              border: 1px solid #e0e0e0;
+              padding: 10px;
+            }
+          }
+          .valor-total {
+            font-weight: bold;
+          }
+        }
+      }
     }
   }
 }

@@ -1,14 +1,14 @@
 export const ORDENAR_OPCOES = [
-    {
-        uuid: "Menor distância",
-        nome: "Menor distância" 
-    },
-    {
-        uuid: "Menor preço",
-        nome: "Menor preço" 
-    },
-    {
-        uuid: "Ordem alfabética",
-        nome: "Ordem alfabética" 
-    }
-]
+  {
+    uuid: "distancia",
+    nome: "Menor distância"
+  },
+  {
+    uuid: "total_uniformes",
+    nome: "Menor preço"
+  },
+  {
+    uuid: "nome_fantasia",
+    nome: "Ordem alfabética"
+  }
+];

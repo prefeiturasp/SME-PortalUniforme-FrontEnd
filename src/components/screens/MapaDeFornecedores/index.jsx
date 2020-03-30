@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Mapa from "components/Mapa";
 import "./style.scss";
 import { getLojasCredenciadas } from "services/uniformes.service";
@@ -7,7 +7,12 @@ import { ORDENAR_OPCOES } from "./constants";
 import { LoadingCircle } from "components/LoadingCircle";
 import { QUANTIDADE_POR_PAGINA } from "components/Paginacao/constants";
 import { Paginacao } from "components/Paginacao";
-import { lojaForneceMalharia, lojaForneceCalcado } from "./helper";
+import {
+  lojaForneceMalharia,
+  lojaForneceCalcado,
+  sortByParam,
+  acrescentaTotalUniformes
+} from "./helper";
 
 export class MapaDeFornecedores extends Component {
   constructor() {
@@ -19,10 +24,24 @@ export class MapaDeFornecedores extends Component {
   }
 
   componentDidMount() {
-    const { latitude, longitude } = this.props.location.state;
+    const {
+      latitude,
+      longitude,
+      tipoUniformeSelecionados
+    } = this.props.location.state;
     getLojasCredenciadas(latitude, longitude).then(response => {
-      this.setState({ lojas: response.data });
+      this.setState({
+        lojas: sortByParam(
+          acrescentaTotalUniformes(response.data, tipoUniformeSelecionados),
+          "distancia"
+        )
+      });
     });
+  }
+
+  onSelectChanged(value) {
+    const { lojas } = this.state;
+    this.setState({ lojas: sortByParam(lojas, value) });
   }
 
   collapseLoja(id) {
@@ -67,6 +86,9 @@ export class MapaDeFornecedores extends Component {
                     <Select
                       options={ORDENAR_OPCOES}
                       naoDesabilitarPrimeiraOpcao
+                      onChange={event =>
+                        this.onSelectChanged(event.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -116,36 +138,79 @@ export class MapaDeFornecedores extends Component {
                                 )}
                               </div>
                               {loja.ativo && (
-                                <div className="row">
-                                  <div className="col-11 offset-1">
-                                    <div>
+                                <Fragment>
+                                  <div className="row">
+                                    <div className="col-11 offset-1">
                                       <strong>Endereço: </strong>
                                       {loja.endereco}, {loja.numero} <br />
                                       {loja.bairro} - CEP: {loja.cep}
-                                    </div>
-                                    <br />
-                                    <div className="row">
-                                      <div className="col-6">
-                                        <strong>Telefone: </strong>
-                                        {loja.telefone}
-                                      </div>
-                                      <div className="col-6">
-                                        <strong>E-mail: </strong>
-                                        {loja.email}
+                                      <br />
+                                      <div className="row">
+                                        <div className="col-6">
+                                          <strong>Telefone: </strong>
+                                          {loja.telefone}
+                                        </div>
+                                        <div className="col-6">
+                                          <strong>E-mail: </strong>
+                                          {loja.email}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                  <table className="tabela-precos">
+                                    <thead>
+                                      <tr className="row">
+                                        <th className="col-8">Item</th>
+                                        <th className="col-4">
+                                          Valor unidade (R$)
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {loja.proponente.ofertas_de_uniformes
+                                        .filter(uniforme =>
+                                          tipoUniformeSelecionados.includes(
+                                            uniforme.item.split(" ")[0]
+                                          )
+                                        )
+                                        .map((uniforme, key) => {
+                                          return (
+                                            <tr className="row" key={key}>
+                                              <td className="col-8">
+                                                {uniforme.item}
+                                              </td>
+                                              <td className="col-4">
+                                                {uniforme.preco.replace(
+                                                  ".",
+                                                  ","
+                                                )}
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      <tr className="row valor-total">
+                                        <td className="col-8">
+                                          Valor Total (R$)
+                                        </td>
+                                        <td className="col-4">
+                                          {loja.total_uniformes}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </Fragment>
                               )}
                             </div>
                           </div>
                         );
                       })}
                   {lojas && (
-                    <Paginacao
-                      onChange={pagina => this.setState({ pagina })}
-                      total={lojas.length}
-                    />
+                    <div className="pb-3">
+                      <Paginacao
+                        onChange={pagina => this.setState({ pagina })}
+                        total={lojas.length}
+                      />
+                    </div>
                   )}
                 </div>
               </div>
