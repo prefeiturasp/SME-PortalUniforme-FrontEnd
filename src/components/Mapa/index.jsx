@@ -71,9 +71,9 @@ export default class Mapa extends Component {
             {marcadores.map((marcador, indice) => {
               return (
                 <Marker
-                  opacity={
+                  /*opacity={
                     lojaHover === marcador.loja.id || !lojaHover ? 1 : 0.5
-                  }
+                  }*/
                   icon={lojaHover === marcador.loja.id ? blueIcon : redIcon}
                   key={indice}
                   position={[marcador.loja.latitude, marcador.loja.longitude]}

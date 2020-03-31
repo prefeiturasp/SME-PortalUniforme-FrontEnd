@@ -222,6 +222,19 @@ export class MapaDeFornecedores extends Component {
                       />
                     </div>
                   )}
+                  <div className="pt-3 text-center">
+                    <button
+                      size="lg"
+                      className="btn btn-outline-primary pl-4 pr-4"
+                      onClick={() =>
+                        this.props.history.push({
+                          pathname: "/procurar-fornecedores"
+                        })
+                      }
+                    >
+                      <strong>Consultar novamente</strong>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-6 col-sm-12 mapa-completo">
