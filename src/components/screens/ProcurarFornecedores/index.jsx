@@ -63,7 +63,7 @@ export class ProcurarFornecedores extends Component {
           </div>
           <form>
             <div className="row pt-5">
-              <div className="offset-3 col-3">
+              <div className="field-endereco col-sm-12 offset-md-3 col-md-3">
                 <Field
                   component={AutoComplete}
                   label="Escreva o logradouro e número que você quer consultar *"
@@ -75,7 +75,7 @@ export class ProcurarFornecedores extends Component {
                   {...this.props}
                 />
               </div>
-              <div className="col-2">
+              <div className="field-uniforme col-sm-12 col-md-2">
                 <label htmlFor={"tipo_uniforme"} className={`multiselect`}>
                   Selecione itens do uniforme *
                 </label>
@@ -93,7 +93,7 @@ export class ProcurarFornecedores extends Component {
                   }}
                 />
               </div>
-              <div className="btn-consultar col-2">
+              <div className="btn-consultar text-center col-md-2 col-sm-12">
                 <button
                   size="lg"
                   className="btn btn-light pl-4 pr-4"
@@ -152,13 +152,6 @@ export class ProcurarFornecedores extends Component {
         <div className="w-100 cidade-precisa">
           <div className="container">
             <div className="row mt-5">
-              <div className="col-lg-6 col-sm-12 d-flex justify-content-lg-end justify-content-center">
-                <img
-                  src={imgPecasUniforme}
-                  alt="Peças do uniforme escolar"
-                  className="img-fluid"
-                />
-              </div>
               <div className="col-lg-6 col-sm-12 mb-lg-0">
                 <BlocoTexto title="Quais foram as mudanças?">
                   As famílias terão mais liberdade de escolha! O kit padrão do
@@ -171,10 +164,17 @@ export class ProcurarFornecedores extends Component {
                   </ul>
                 </BlocoTexto>
               </div>
+              <div className="col-lg-6 col-sm-12 d-flex justify-content-lg-end float-right justify-content-center">
+                <img
+                  src={imgPecasUniforme}
+                  alt="Peças do uniforme escolar"
+                  className="img-fluid"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="container agora-cada-bloco">
           Agora, cada família poderá compor o kit da forma que for mais adequada
           a cada estudante, consideradas suas necessidades específicas e
           respeitado o padrão das peças aprovado pela Secretaria Municipal de
