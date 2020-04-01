@@ -88,7 +88,7 @@ export class MapaDeFornecedores extends Component {
                 (Bermuda, blusão de moletom, calça, camiseta, jaqueta, meia e
                 sapato) mais próximas da {endereco}.
                 <div className="row">
-                  <div className="col-4 offset-8 pt-3">
+                  <div className="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 pt-3">
                     <Select
                       options={ORDENAR_OPCOES}
                       naoDesabilitarPrimeiraOpcao
@@ -100,8 +100,10 @@ export class MapaDeFornecedores extends Component {
                 </div>
                 <div className="tabela-lojas">
                   <div className="tabela-header row">
-                    <div className="col-7">Nome</div>
-                    <div className="col-5">Itens de uniforme disponíveis</div>
+                    <div className="col-12 col-sm-7">Nome</div>
+                    <div className="d-none d-md-block col-sm-5">
+                      Itens de uniforme disponíveis
+                    </div>
                   </div>
                   {lojas &&
                     lojas
@@ -135,10 +137,10 @@ export class MapaDeFornecedores extends Component {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-5 text-right">
+                              <div className="badges col-sm-5 col-12">
                                 {lojaForneceMalharia(loja) && (
                                   <span className="badge-fornecimento">
-                                    Malharia
+                                    Vestuário
                                   </span>
                                 )}
                                 {lojaForneceCalcado(loja) && (
@@ -156,11 +158,11 @@ export class MapaDeFornecedores extends Component {
                                       {loja.bairro} - CEP: {loja.cep}
                                       <br />
                                       <div className="row">
-                                        <div className="col-6">
+                                        <div className="col-12 col-sm-6">
                                           <strong>Telefone: </strong>
                                           {loja.telefone}
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-12 col-sm-6">
                                           <strong>E-mail: </strong>
                                           {loja.email}
                                         </div>
@@ -225,6 +227,7 @@ export class MapaDeFornecedores extends Component {
                   <div className="pt-3 text-center">
                     <button
                       size="lg"
+                      disabled={!lojas}
                       className="btn btn-outline-primary pl-4 pr-4"
                       onClick={() =>
                         this.props.history.push({
