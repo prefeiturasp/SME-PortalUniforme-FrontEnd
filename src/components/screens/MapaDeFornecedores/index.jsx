@@ -71,10 +71,22 @@ export class MapaDeFornecedores extends Component {
     const { lojas, pagina, lojaHover } = this.state;
     return (
       <div>
-        <div className={`w-100 sociedade-governo mt-5 ${!lojas && "opaco"}`}>
+        <div className={`w-100 lojas-mais-proximas mt-5 ${!lojas && "opaco"}`}>
           <div className="container">
-            <div className="col-lg-12 mb-lg-0">
+            <div className="col-lg-12 d-flex mb-lg-0">
               <h3 className="text-white">Lojas mais próximas</h3>
+              <button
+                size="lg"
+                disabled={!lojas}
+                className="btn btn-outline-primary pl-4 pr-4"
+                onClick={() =>
+                  this.props.history.push({
+                    pathname: "/procurar-fornecedores"
+                  })
+                }
+              >
+                <strong>voltar</strong>
+              </button>
             </div>
           </div>
         </div>
@@ -127,7 +139,7 @@ export class MapaDeFornecedores extends Component {
                                       className={`fas fa-${
                                         loja.ativo ? "minus" : "plus"
                                       }`}
-                                    ></i>
+                                    />
                                   </div>
                                   <div className="col-10">
                                     {loja.nome_fantasia.toUpperCase()}
