@@ -6,7 +6,7 @@ import Confirmacao from "components/CadastroEmpresa/Confirmacao";
 import ProcurarFornecedores from "components/screens/ProcurarFornecedores";
 import MapaDeFornecedores from "components/screens/MapaDeFornecedores";
 
-export default props => (
+export default () => (
   <div id="main">
     <Switch>
       <Route path="/" exact render={props => <Home {...props} />} />

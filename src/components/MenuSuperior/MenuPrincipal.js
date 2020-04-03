@@ -1,12 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import logoEducacaoSP from '../../img/educacao_sp.png'
-import './menu-principal.scss'
+import React from "react";
+import { Link } from "react-router-dom";
+import logoEducacaoSP from "../../img/educacao_sp.png";
+import "./menu-principal.scss";
 
 class MenuPrincipal extends React.Component {
   constructor() {
-    super()
-    this.state = { mostraLinkHome: false }
+    super();
+    this.state = { mostraLinkHome: false };
   }
 
   render() {
@@ -28,34 +28,66 @@ class MenuPrincipal extends React.Component {
             id="menu-principal"
             className="col-lg-9 col-sm-12 d-flex links-menu align-items-end justify-content-lg-end justify-content-center pr-lg-0 mb-xs-4"
           >
-            <ul className="nav nav-tabs border-0">
-              <li className="nav-item">
-                <Link className="nav-link text-secondary mb-1 pb-0" to="/">
-                  Home
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link
-                  className="nav-link text-secondary mb-1 pb-0"
-                  to="/cadastro"
-                >
-                  Cadastre sua Loja
-                </Link>
-              </li>
-              {this.state.mostraLinkHome ? (
+            {!["/procurar-fornecedores", "/mapa-de-fornecedores"].includes(
+              window.location.pathname
+            ) ? (
+              <ul className="nav nav-tabs border-0">
                 <li className="nav-item">
                   <Link className="nav-link text-secondary mb-1 pb-0" to="/">
-                    Consulte demanda
+                    Home
                   </Link>
                 </li>
-              ) : null}
-            </ul>
+
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/cadastro"
+                  >
+                    Cadastre sua Loja
+                  </Link>
+                </li>
+                {this.state.mostraLinkHome ? (
+                  <li className="nav-item">
+                    <Link className="nav-link text-secondary mb-1 pb-0" to="/">
+                      Consulte demanda
+                    </Link>
+                  </li>
+                ) : null}
+              </ul>
+            ) : (
+              <ul className="nav nav-tabs border-0">
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href="https://pedido-uniforme.sme.prefeitura.sp.gov.br"
+                  >
+                    Solicite o uniforme
+                  </a>
+                </li>
+
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href="https://sp156.prefeitura.sp.gov.br/portal/servicos"
+                  >
+                    Avise sobre Problemas
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-sobre-o-uniforme-escolar/"
+                  >
+                    Dúvidas? Veja a lista com perguntas frequentes
+                  </a>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default MenuPrincipal
+export default MenuPrincipal;

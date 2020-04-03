@@ -11,7 +11,7 @@ export default class Mapa extends Component {
       zoom: 12,
       marcadores: null,
       redIcon: null,
-      blueIcon: null
+      blueIcon: null,
     };
 
     this.criarMarcadores = this.criarMarcadores.bind(this);
@@ -27,7 +27,7 @@ export default class Mapa extends Component {
         "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowSize: [41, 41]
+      shadowSize: [41, 41],
     });
     const blueIcon = new Leaflet.Icon({
       iconUrl:
@@ -36,7 +36,7 @@ export default class Mapa extends Component {
         "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowSize: [41, 41]
+      shadowSize: [41, 41],
     });
     this.setState({ blueIcon, redIcon });
   }
@@ -44,7 +44,7 @@ export default class Mapa extends Component {
   criarMarcadores(lojas) {
     if (lojas.length) {
       let marcadores = [];
-      lojas.forEach(loja => {
+      lojas.forEach((loja) => {
         let marcador = [];
         marcador.loja = loja;
         marcadores.push(marcador);
@@ -61,7 +61,9 @@ export default class Mapa extends Component {
     return (
       <div className="mapa h-80 w-80">
         {!marcadores ? (
-          <div>Carregando mapa...</div>
+          <div className="text-dark pt-3">
+            Não há lojas para mostrar no mapa.
+          </div>
         ) : (
           <Map ref="map" center={[latitude, longitude]} zoom={this.state.zoom}>
             <TileLayer

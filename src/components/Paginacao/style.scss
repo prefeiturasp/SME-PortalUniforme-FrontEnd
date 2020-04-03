@@ -21,6 +21,9 @@
     li.ant-pagination-item-active {
       background-color: $corAzulPortal !important;
       color: white;
+      a {
+        color: white;
+      }
     }
   }
 }

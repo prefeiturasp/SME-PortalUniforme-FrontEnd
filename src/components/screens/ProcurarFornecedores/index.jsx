@@ -19,7 +19,7 @@ export class ProcurarFornecedores extends Component {
       tipoUniformeSelecionados: [],
       latitude: null,
       longitude: null,
-      endereco: null
+      endereco: null,
     };
   }
 
@@ -28,17 +28,17 @@ export class ProcurarFornecedores extends Component {
     this.setState({ uniformes });
   }
 
-  onSelectedChanged = tipoUniformeSelecionados => {
+  onSelectedChanged = (tipoUniformeSelecionados) => {
     this.setState({
-      tipoUniformeSelecionados
+      tipoUniformeSelecionados,
     });
   };
 
-  handleAddressChange = values => {
+  handleAddressChange = (values) => {
     this.setState({
       latitude: values.latitude,
       longitude: values.longitude,
-      endereco: values.endereco
+      endereco: values.endereco,
     });
   };
 
@@ -48,7 +48,7 @@ export class ProcurarFornecedores extends Component {
       longitude,
       uniformes,
       endereco,
-      tipoUniformeSelecionados
+      tipoUniformeSelecionados,
     } = this.state;
     return (
       <Fragment>
@@ -84,12 +84,12 @@ export class ProcurarFornecedores extends Component {
                   name="tipo_uniforme"
                   selected={tipoUniformeSelecionados}
                   options={formatarParaMultiselect(uniformes)}
-                  onSelectedChanged={values => this.onSelectedChanged(values)}
+                  onSelectedChanged={(values) => this.onSelectedChanged(values)}
                   disableSearch={true}
                   overrideStrings={{
                     selectSomeItems: "Selecione",
                     allItemsAreSelected: "Todos os itens estão selecionados",
-                    selectAll: "Todos"
+                    selectAll: "Todos",
                   }}
                 />
               </div>
@@ -104,8 +104,8 @@ export class ProcurarFornecedores extends Component {
                         latitude: latitude,
                         longitude: longitude,
                         tipoUniformeSelecionados: tipoUniformeSelecionados,
-                        endereco: endereco.split(",")[0]
-                      }
+                        endereco: endereco.split(",")[0],
+                      },
                     })
                   }
                 >
@@ -139,7 +139,7 @@ export class ProcurarFornecedores extends Component {
                 <div className="embed-responsive embed-responsive-16by9">
                   <iframe
                     title="Vídeo sobre o Portal do Uniforme"
-                    src="https://www.youtube.com/embed/R591jitkIOw"
+                    src="https://www.youtube.com/embed/eggj-Pw2LHI"
                     frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -158,7 +158,7 @@ export class ProcurarFornecedores extends Component {
                   uniforme escolar é composto por:
                   <ul className="lista-home pt-2 ml-0 pl-0">
                     {uniformes &&
-                      uniformes.map(uniforme => {
+                      uniformes.map((uniforme) => {
                         return <li key={uniforme.id}>{uniforme.nome}</li>;
                       })}
                   </ul>
@@ -204,7 +204,7 @@ export class ProcurarFornecedores extends Component {
               <div className="embed-responsive embed-responsive-16by9">
                 <iframe
                   title="Vídeo sobre o Portal do Uniforme"
-                  src="https://www.youtube.com/embed/R591jitkIOw"
+                  src="https://www.youtube.com/embed/kjN_J1RRkq4"
                   frameBorder="0"
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -224,13 +224,15 @@ export class ProcurarFornecedores extends Component {
             </div>
           </BlocoTexto>
           <div className="text-center pt-3 pb-3">
-            <button
-              size="lg"
-              className="btn btn-primary pl-4 pr-4"
-              onClick={this.irParaFormulario}
-            >
-              <strong>Avise sobre problemas</strong>
-            </button>
+            <a href="https://sp156.prefeitura.sp.gov.br/portal/servicos">
+              <button
+                size="lg"
+                className="btn btn-primary pl-4 pr-4"
+                onClick={this.irParaFormulario}
+              >
+                <strong>Avise sobre problemas</strong>
+              </button>
+            </a>
           </div>
         </div>
         <div className="w-100 sociedade-governo text-center mt-5">
@@ -239,17 +241,14 @@ export class ProcurarFornecedores extends Component {
               <h3 className="text-white mb-4">
                 Não perca tempo, solicite já o uniforme!
               </h3>
-              <p className="mb-0">
-                <button
-                  size="lg"
-                  className="btn btn-light pl-4 pr-4"
-                  onClick={() =>
-                    this.props.history.push("/mapa-de-fornecedores")
-                  }
-                >
+              <a
+                className="mb-0"
+                href="https://pedido-uniforme.sme.prefeitura.sp.gov.br"
+              >
+                <button size="lg" className="btn btn-light pl-4 pr-4">
                   <strong>Solicite o uniforme</strong>
                 </button>
-              </p>
+              </a>
             </div>
           </div>
         </div>
@@ -260,7 +259,7 @@ export class ProcurarFornecedores extends Component {
 
 ProcurarFornecedores = reduxForm({
   // a unique name for the form
-  form: "ProcurarFornecedoresForm"
+  form: "ProcurarFornecedoresForm",
 })(ProcurarFornecedores);
 
 export default withRouter(ProcurarFornecedores);

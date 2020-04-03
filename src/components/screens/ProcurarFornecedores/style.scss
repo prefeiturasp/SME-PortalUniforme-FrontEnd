@@ -21,7 +21,8 @@
   }
   form {
     text-align: left;
-    .field-endereco, .field-uniforme {
+    .field-endereco,
+    .field-uniforme {
       @media (max-width: 767px) {
         padding-left: 3em;
         padding-right: 3em;
@@ -31,22 +32,24 @@
       color: $corAzulPortal;
       font-size: 11.5px;
     }
-    .dropdown-heading, .select-panel {
+    .dropdown-heading,
+    .select-panel {
       font-size: 14px;
-    }
-    div.btn-consultar {
-      margin-top: 30px;
-      button {
-        border-radius: 30px;
-        background-color: $corVerdeBotaoHome;
-        color: white;
-        &:hover {
-          background-color: $corVerdeEscuro;
-        }
-      }
     }
   }
 }
+div.btn-consultar {
+  margin-top: 30px;
+  button {
+    border-radius: 30px;
+    background-color: $corVerdeBotaoHome;
+    color: white;
+    &:hover {
+      background-color: $corVerdeEscuro;
+    }
+  }
+}
+
 .home {
   @media screen and (max-width: 371px) {
     margin-top: 15em;
