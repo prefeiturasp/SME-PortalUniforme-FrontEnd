@@ -61,6 +61,7 @@ export class MapaDeFornecedores extends Component {
 
   getLojasNovoEndereco = () => {
     const { latitude, longitude, tipoUniformeSelecionadosState } = this.state;
+    this.props.change("endereco.endereco", "");
     this.setState({ consultarNovamente: false, lojas: null, pagina: 1 });
     getLojasCredenciadas(latitude, longitude).then((response) => {
       this.setState({

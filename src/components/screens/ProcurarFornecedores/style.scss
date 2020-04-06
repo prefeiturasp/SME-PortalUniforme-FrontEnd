@@ -19,24 +19,6 @@
     font-size: 16px;
     padding-top: 1em;
   }
-  form {
-    text-align: left;
-    .field-endereco,
-    .field-uniforme {
-      @media (max-width: 767px) {
-        padding-left: 3em;
-        padding-right: 3em;
-      }
-    }
-    label.multiselect {
-      color: $corAzulPortal;
-      font-size: 11.5px;
-    }
-    .dropdown-heading,
-    .select-panel {
-      font-size: 14px;
-    }
-  }
 }
 div.btn-consultar {
   margin-top: 30px;
@@ -65,5 +47,25 @@ div.btn-consultar {
   }
   .agora-cada-bloco {
     margin-top: 2em;
+  }
+}
+
+form {
+  text-align: left;
+  .field-endereco,
+  .field-uniforme {
+    @media (max-width: 767px) {
+      padding-left: 3em;
+      padding-right: 3em;
+    }
+  }
+  label.multiselect {
+    color: $corAzulPortal;
+    font-size: 11.5px;
+  }
+  .dropdown-heading,
+  .select-panel {
+    font-size: 14px;
+    font-weight: normal;
   }
 }
