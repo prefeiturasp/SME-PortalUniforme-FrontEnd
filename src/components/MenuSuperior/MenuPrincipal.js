@@ -28,7 +28,7 @@ class MenuPrincipal extends React.Component {
             id="menu-principal"
             className="col-lg-9 col-sm-12 d-flex links-menu align-items-end justify-content-lg-end justify-content-center pr-lg-0 mb-xs-4"
           >
-            {!["/procurar-fornecedores", "/mapa-de-fornecedores"].includes(
+            {!["/familia", "/mapa-de-fornecedores"].includes(
               window.location.pathname
             ) ? (
               <ul className="nav nav-tabs border-0">

@@ -137,7 +137,7 @@ export class MapaDeFornecedores extends Component {
                 className="btn btn-outline-primary pl-4 pr-4"
                 onClick={() =>
                   this.props.history.push({
-                    pathname: "/procurar-fornecedores",
+                    pathname: "/familia",
                   })
                 }
               >
