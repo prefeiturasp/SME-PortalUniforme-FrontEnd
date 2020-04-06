@@ -1,6 +1,15 @@
 @import "styles/variaveis.scss";
 
 div.input {
+  &.autocomplete {
+    label {
+      font-size: 11.5px;
+      color: $corAzulPortal;
+    }
+    input {
+      border-radius: 30px;
+    }
+  }
   font-size: 14px;
   span.required-asterisk {
     color: $red;

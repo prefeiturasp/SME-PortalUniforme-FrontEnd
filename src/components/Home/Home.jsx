@@ -277,10 +277,10 @@ export default class Home extends Component {
           </div>
         </div>
 
-        <div className="w-100 sociedade-governo text-white text-center mt-5">
+        <div className="w-100 sociedade-governo text-center mt-5">
           <div className="container">
             <div className="col-lg-12 mb-4 mb-lg-0">
-              <h3 className="mb-4">
+              <h3 className="text-white mb-4">
                 Possui as condições necessárias? Então cadastre-se e se torne um
                 fornecedor.
               </h3>

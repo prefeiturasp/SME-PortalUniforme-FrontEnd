@@ -25,7 +25,7 @@ export class AutoComplete extends React.Component {
       input: { value, onChange }
     } = this.props;
     return (
-      <div className="input">
+      <div className="input autocomplete">
         {label && [
           required && !esconderAsterisco && (
             <span key={2} className="required-asterisk">
