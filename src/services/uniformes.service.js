@@ -151,6 +151,21 @@ export const getAPIVersion = async () => {
     `${endPont.API_URL}/api-version/`,
     authHeader
   );
-  console.log(`API Version: ${response.data['API_Version']}`)
-  return response.data['API_Version'];
+  console.log(`API Version: ${response.data["API_Version"]}`);
+  return response.data["API_Version"];
+};
+
+export const getLojasCredenciadas = async (latitude, longitude) => {
+  console.log(longitude)
+  return axios
+    .get(
+      `${endPont.API_URL}/lojas-credenciadas/?latitude=${latitude}&longitude=${longitude}`,
+      authHeader
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error.response;
+    });
 };
