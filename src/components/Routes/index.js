@@ -15,14 +15,6 @@ export default () => (
         render={props => <CadastroEmpresa {...props} />}
       />
       <Route
-        path="/procurar-fornecedores"
-        render={props => <ProcurarFornecedores {...props} />}
-      />
-      <Route
-        path="/mapa-de-fornecedores"
-        render={props => <MapaDeFornecedores {...props} />}
-      />
-      <Route
         path="/confirmacao-cadastro"
         render={props => <Confirmacao {...props} />}
       />
