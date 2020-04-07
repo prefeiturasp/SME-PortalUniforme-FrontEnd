@@ -2,6 +2,7 @@
 
 .fonte-maior {
   font-size: 20px !important;
+
   div,
   ul,
   table {
@@ -12,6 +13,7 @@
 .alto-contraste {
   background-color: #fefefe;
   filter: invert(100%);
+
   * {
     background-color: inherit;
   }
@@ -50,6 +52,7 @@ body {
   background-color: #9d9d9c;
   font-size: 12px;
   line-height: 12px;
+
   li {
     a {
       color: white;
@@ -77,14 +80,9 @@ body {
 // Home
 
 .oferta-imoveis {
-  background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.9) 33.83%,
-      rgba(255, 255, 255, 0.2) 64.77%,
-      rgba(255, 255, 255, 0.324) 92.11%
-    ),
-    url("../img/desenho-fornecedor.png"), #c4c4c4;
+  background:
+    url("../img/desenho-fornecedor-largo2.png"),
+    #f5dabf;
   color: $corPretoPortal;
   height: 490px;
   background-repeat: no-repeat;
@@ -97,12 +95,14 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+
     h1 {
       font-size: 40px;
       font-weight: bold;
     }
+
     p {
-      font-size: 20px;
+      font-size: 22px;
       line-height: 26px;
       font-style: normal;
       font-weight: bold;
@@ -142,10 +142,12 @@ body {
     font-size: 16px;
     background-color: #1a6eb8;
     border-color: #1a6eb8;
+
     &:hover {
       background-color: #004a99;
       border-color: #004a99;
     }
+
     &.hero {
       font-size: 18px;
     }
@@ -159,16 +161,20 @@ body {
 
 .sociedade-governo {
   background: $corAzulPortal;
+
   .container {
     padding: 4em 0;
   }
+
   h3 {
     font-weight: bold;
   }
+
   .btn {
     margin-top: 0;
     border: 1px solid #fff;
     font-size: 18px;
+
     &:hover {
       background-color: #ffffff;
       color: #196cbd;
@@ -178,22 +184,28 @@ body {
 
 .lojas-mais-proximas {
   background: $corAzulPortal;
+
   .container {
     padding: 2em 0;
+
     .col-lg-12 {
       justify-content: space-between;
+
       button {
         color: white;
       }
     }
   }
+
   h3 {
     font-weight: bold;
   }
+
   .btn {
     margin-top: 0;
     border: 1px solid #fff;
     font-size: 18px;
+
     &:hover {
       background-color: #ffffff;
       color: #196cbd;
@@ -205,6 +217,7 @@ body {
   .container {
     .row {
       align-items: center;
+
       .duvidas {
         padding-top: 50px;
       }
@@ -300,6 +313,7 @@ h2 {
       font-size: 0.8rem;
 
       tr {
+
         &.collapsing,
         &.collapse {
           background: $corCinzaEscuro;
@@ -326,6 +340,7 @@ h2 {
     right: 0;
     width: 100% !important;
   }
+
   @media (max-width: 991px) {
     margin-top: 40px;
     margin-bottom: 40px;
@@ -335,13 +350,16 @@ h2 {
     background: $corBranco;
     border: 0 none;
     box-sizing: border-box;
+
     .leaflet-container {
       height: 860px;
     }
+
     @media (max-width: 991px) {
       margin-left: 10%;
       width: 80%;
       height: 10%;
+
       .leaflet-container {
         height: 500px;
       }
@@ -423,6 +441,7 @@ h2 {
     justify-content: space-between;
     padding: 0.5em;
     margin-top: 1.5em;
+
     button {
       font-weight: bold;
       font-size: 16px;
@@ -433,6 +452,7 @@ h2 {
 .tipo-fornecimento {
   font-size: 14px;
   color: $gray;
+
   .tipo-fornecimento-valor {
     padding-right: 0px;
   }
