@@ -1,0 +1,54 @@
+@import "../../../styles/variaveis.scss";
+
+.uniforme-escolar {
+  @media screen and (min-width: 992px) {
+    background: url("../../../img/desenho-alunos.png"), #c4c4c4;
+    img.desenho-criancas {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    margin-top: 1em;
+    h1 {
+      position: relative;
+      font-size: 30px !important;
+    }
+    background: linear-gradient(
+      179.86deg,
+      #daeeff 60.58%,
+      rgba(26, 110, 184, 0) 99.93%
+    );
+  }
+  color: $corPretoPortal;
+  height: 490px;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: top right;
+
+  .conteudo {
+    margin: 0 auto;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 20px;
+      line-height: 26px;
+      font-style: normal;
+      font-weight: bold;
+    }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .area-fabricantes {
+    margin-top: 3em;
+  }
+  .conteudo {
+    top: 66% !important;
+  }
+}

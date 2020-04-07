@@ -110,32 +110,6 @@ body {
   }
 }
 
-.uniforme-escolar {
-  background: url("../img/desenho-alunos.png"), #c4c4c4;
-  color: $corPretoPortal;
-  height: 490px;
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: top right;
-
-  .conteudo {
-    margin: 0 auto;
-    z-index: 1;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    h1 {
-      font-size: 40px;
-      font-weight: bold;
-    }
-    p {
-      font-size: 20px;
-      line-height: 26px;
-      font-style: normal;
-      font-weight: bold;
-    }
-  }
-}
 .btn {
   &.btn-primary {
     font-weight: bold;

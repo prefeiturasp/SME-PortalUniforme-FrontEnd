@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { reduxForm } from "redux-form";
+import imgFamilia from "img/landing-familia.png";
+import imgLoja from "img/landing-loja.png";
+import imgDesenhoCriancas from "img/desenho-alunos-mobile.png";
 import BlocoTexto from "components/BlocoTexto";
+import "./style.scss";
 
 export class MegaPortal extends Component {
   render() {
@@ -10,7 +14,7 @@ export class MegaPortal extends Component {
         <div className="w-100 uniforme-escolar position-relative">
           <div className="container">
             <div className="conteudo">
-              <div className="col-lg-8 col-sm-12 col-xl-6">
+              <div className="div-banner col-lg-8 col-sm-12 col-xl-6">
                 <h1>
                   O uniforme escolar mudou para um modelo com padrão de
                   qualidade superior, respeitando aspectos como conforto,
@@ -21,118 +25,79 @@ export class MegaPortal extends Component {
                   composição, mas, com inovações na forma de fornecimento.
                 </p>
               </div>
+              <img
+                src={imgDesenhoCriancas}
+                width="100%"
+                alt="Familia"
+                className="desenho-criancas img-fluid rounded"
+              />
             </div>
           </div>
         </div>
-        <div id="conteudo" className="w-100 home">
+        <div id="conteudo" className="pt-5 w-100 home">
           <div className="container">
-            <div className="row mt-5">
-              <div className="col-lg-6">
-                <BlocoTexto title="Por que o modelo de compra de uniforme mudou?">
+            <BlocoTexto title="Para obter mais informações, acesse a seção que atenda seu perfil"></BlocoTexto>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row mt-5 mb-5">
+            <div className="col-12 col-sm-5">
+              <img
+                src={imgFamilia}
+                width="100%"
+                alt="Familia"
+                className="img-fluid rounded"
+              />
+              <div className="pt-5">
+                <BlocoTexto
+                  className="fs-29"
+                  title="Área de estudantes/famílias"
+                >
                   <div className="justify-content-lg-end justify-content-center">
-                    O uniforme escolar, em geral, era comprado de forma
-                    centralizada pela Prefeitura e distribuído aos estudantes
-                    nas escolas. Esse modelo de compra tinha como desvantagens
-                    dificuldades em encontrar fornecedores que oferecessem
-                    produtos de qualidade aliados a bom preço, seguindo as
-                    regras do processo de compra pública (chamado de licitação).
-                    Outro fator complicador era de os estudantes não poderem
-                    provar o uniforme antes da compra (causando problemas na
-                    escolha do tamanho adequado para cada peça) e a complexa
-                    logística de distribuição (que aumentava o risco de atraso
-                    na entrega).
+                    Obtenha informações sobre o kit de uniforme escolar para as
+                    crianças e estudantes da cidade de São Paulo
                   </div>
                 </BlocoTexto>
               </div>
-              <div className="col-lg-6 mb-lg-0">
-                <div className="embed-responsive embed-responsive-16by9">
-                  <iframe
-                    title="Vídeo sobre o Portal do Uniforme"
-                    src="https://www.youtube.com/embed/eggj-Pw2LHI"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+              <div className="pt-3">
+                <Link to="/familia">
+                  <button
+                    size="lg"
+                    className="btn btn-primary col-12 pl-4 pr-4"
+                  >
+                    <strong>Estudantes/famílias</strong>
+                  </button>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="container agora-cada-bloco">
-          Agora, cada família poderá compor o kit da forma que for mais adequada
-          a cada estudante, consideradas suas necessidades específicas e
-          respeitado o padrão das peças aprovado pela Secretaria Municipal de
-          Educação e o valor limite de R$ 215 disponibilizado. <br /> A compra
-          será feita diretamente pelas famílias nas lojas credenciadas, a partir
-          de um sistema de crédito. O(a) responsável legal pelo estudante não
-          receberá diretamente os R$ 215 do kit do uniforme escolar na sua
-          conta, mas sim terá direito a gastar esse valor adquirindo o uniforme
-          escolar nas lojas autorizadas (e são elas que farão a prestação de
-          contas à Prefeitura).
-        </div>
-        <div className="container">
-          <div className="row mt-5">
-            <div className="col-lg-6">
-              <BlocoTexto title="Ajude a Prefeitura a garantir a qualidade do uniforme">
-                <div className="justify-content-lg-end justify-content-center">
-                  As lojas credenciadas para a venda do uniforme escolar
-                  precisam seguir o padrão estabelecido pela Secretaria
-                  Municipal de Educação, tanto no que diz respeito aos modelos,
-                  cores, quanto à qualidade do material. Para saber como
-                  conferir se os produtos vendidos estão de fato cumprindo com
-                  todas as exigências, veja as dicas neste vídeo:
-                </div>
-              </BlocoTexto>
-            </div>
-            <div className="col-lg-6 mb-lg-0">
-              <div className="embed-responsive embed-responsive-16by9">
-                <iframe
-                  title="Vídeo sobre o Portal do Uniforme"
-                  src="https://www.youtube.com/embed/kjN_J1RRkq4"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            <div className="area-fabricantes col-12 offset-sm-1 col-sm-5">
+              <img
+                src={imgLoja}
+                width="100%"
+                alt="Loja de uniformes"
+                className="img-fluid rounded"
+              />
+              <div className="pt-5">
+                <BlocoTexto
+                  className="fs-29"
+                  title="Área de fabricantes/fornecedores"
+                >
+                  <div className="justify-content-lg-end justify-content-center">
+                    Venha contribuir com o fornecimento dos uniformes escolares
+                    para as crianças e estudantes da cidade de São Paulo
+                  </div>
+                </BlocoTexto>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="container mt-3">
-          <BlocoTexto title="Problemas na compra do uniforme">
-            <div className="justify-content-lg-end justify-content-center">
-              Em caso de problemas como possíveis falhas na confecção das peças,
-              entre em contato com a loja onde produto foi adquirido. Para
-              situações sem solução direta com o lojista, informe à Prefeitura
-              nos Canais de Atendimento do SP 156 ou recorra a qualquer órgão de
-              defesa do consumidor.
-            </div>
-          </BlocoTexto>
-          <div className="text-center pt-3 pb-3">
-            <a href="https://sp156.prefeitura.sp.gov.br/portal/servicos">
-              <button
-                size="lg"
-                className="btn btn-primary pl-4 pr-4"
-                onClick={this.irParaFormulario}
-              >
-                <strong>Avise sobre problemas</strong>
-              </button>
-            </a>
-          </div>
-        </div>
-        <div className="w-100 sociedade-governo text-center mt-5">
-          <div className="container">
-            <div className="col-lg-12 mb-4 mb-lg-0">
-              <h3 className="text-white mb-4">
-                Não perca tempo, solicite já o uniforme!
-              </h3>
-              <a
-                className="mb-0"
-                href="https://pedido-uniforme.sme.prefeitura.sp.gov.br"
-              >
-                <button size="lg" className="btn btn-light pl-4 pr-4">
-                  <strong>Solicite o uniforme</strong>
-                </button>
-              </a>
+              <div className="pt-3">
+                <Link to="/fornecedor">
+                  <button
+                    size="lg"
+                    className="btn btn-primary col-12 pl-4 pr-4"
+                  >
+                    <strong>Fabricantes/fornecedores</strong>
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
