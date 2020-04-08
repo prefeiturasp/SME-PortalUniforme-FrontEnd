@@ -4,11 +4,6 @@ import logoEducacaoSP from "../../img/educacao_sp.png";
 import "./menu-principal.scss";
 
 class MenuPrincipal extends React.Component {
-  constructor() {
-    super();
-    this.state = { mostraLinkHome: false };
-  }
-
   render() {
     return (
       <div className="container">
@@ -28,12 +23,36 @@ class MenuPrincipal extends React.Component {
             id="menu-principal"
             className="col-lg-9 col-sm-12 d-flex links-menu align-items-end justify-content-lg-end justify-content-center pr-lg-0 mb-xs-4"
           >
-            {!["/procurar-fornecedores", "/mapa-de-fornecedores"].includes(
-              window.location.pathname
-            ) ? (
+            {window.location.pathname === "/" && (
               <ul className="nav nav-tabs border-0">
                 <li className="nav-item">
-                  <Link className="nav-link text-secondary mb-1 pb-0" to="/">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/familia"
+                  >
+                    Área de estudantes/famílias
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/fornecedor"
+                  >
+                    Área de fabricantes/fornecedores
+                  </Link>
+                </li>
+              </ul>
+            )}
+            {["/fornecedor", "/cadastro"].includes(
+              window.location.pathname
+            ) && (
+              <ul className="nav nav-tabs border-0">
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/fornecedor"
+                  >
                     Home
                   </Link>
                 </li>
@@ -46,15 +65,11 @@ class MenuPrincipal extends React.Component {
                     Cadastre sua Loja
                   </Link>
                 </li>
-                {this.state.mostraLinkHome ? (
-                  <li className="nav-item">
-                    <Link className="nav-link text-secondary mb-1 pb-0" to="/">
-                      Consulte demanda
-                    </Link>
-                  </li>
-                ) : null}
               </ul>
-            ) : (
+            )}
+            {["/familia", "/mapa-de-fornecedores"].includes(
+              window.location.pathname
+            ) && (
               <ul className="nav nav-tabs border-0">
                 <li className="nav-item">
                   <a
