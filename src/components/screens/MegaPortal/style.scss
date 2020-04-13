@@ -3,12 +3,18 @@
 .uniforme-escolar {
   @media screen and (min-width: 992px) {
     background: url("../../../img/desenho-alunos.png"), #c4c4c4;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-color: #daeeff;
     img.desenho-criancas {
       display: none !important;
     }
   }
   @media screen and (max-width: 991px) {
     margin-top: 1em;
+    img.desenho-criancas {
+      padding-right: 15px;
+    }
     h1 {
       position: relative;
       font-size: 28px !important;
