@@ -50,10 +50,13 @@
   }
 }
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 575px) {
   .area-fabricantes {
     margin-top: 3em;
   }
+}
+
+@media screen and (max-width: 991px) {
   .conteudo {
     top: 66% !important;
   }

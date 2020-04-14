@@ -1,112 +1,113 @@
-import React, { Component, Fragment } from 'react'
-import BlocoTexto from 'components/BlocoTexto'
-import imgFachadaLoja from 'img/fachada-loja.png'
-import imgPecasUniforme from 'img/pecas-uniforme.png'
-import { getUniformes } from 'services/uniformes.service'
+import React, { Component, Fragment } from "react";
+import BlocoTexto from "components/BlocoTexto";
+import imgFachadaLoja from "img/fachada-loja.png";
+import imgPecasUniforme from "img/pecas-uniforme.png";
+import imgDesenhoFornecedor from "img/desenho-fornecedor.png";
+import { getUniformes } from "services/uniformes.service";
 import {
   busca_url_edital,
   busca_url_instrucao_normativa
-} from '../../services/uniformes.service'
+} from "../../services/uniformes.service";
 
-import './home.scss'
+import "./home.scss";
 
 export default class Home extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       uniformes: [],
       edital: {
-        url: '',
-        label: ''
+        url: "",
+        label: ""
       },
       instrucaoNormativa: {
-        url: '',
-        label: ''
+        url: "",
+        label: ""
       }
-    }
+    };
 
-    this.irParaFormulario = this.irParaFormulario.bind(this)
+    this.irParaFormulario = this.irParaFormulario.bind(this);
     this.editalClick = !this.state.edital.url
       ? e => {
-          this.downloadEdital(e)
+          this.downloadEdital(e);
         }
-      : null
-    this.get_edital_link()
+      : null;
+    this.get_edital_link();
 
     this.instrucaoNormativaClick = !this.state.instrucaoNormativa.url
       ? e => {
-          this.downloadInstrucaoNormativa(e)
+          this.downloadInstrucaoNormativa(e);
         }
-      : null
-    this.get_instrucao_normativa_link()
+      : null;
+    this.get_instrucao_normativa_link();
   }
 
   async componentDidMount() {
-    const uniformes = await getUniformes()
-    this.setState({ uniformes })
+    const uniformes = await getUniformes();
+    this.setState({ uniformes });
   }
 
   get_edital_link = async () => {
-    let edital = {}
+    let edital = {};
     try {
-      const url = await busca_url_edital()
+      const url = await busca_url_edital();
       edital = {
         url: url,
-        label: '[Link Edital]'
-      }
+        label: "[Link Edital]"
+      };
     } catch (e) {
       edital = {
-        url: '',
-        label: '[Link Edital] (Em Breve)'
-      }
+        url: "",
+        label: "[Link Edital] (Em Breve)"
+      };
     }
-    this.setState({ edital: edital })
-  }
+    this.setState({ edital: edital });
+  };
 
   get_instrucao_normativa_link = async () => {
-    let instrucaoNormativa = {}
+    let instrucaoNormativa = {};
     try {
-      const url = await busca_url_instrucao_normativa()
+      const url = await busca_url_instrucao_normativa();
       instrucaoNormativa = {
         url: url,
-        label: '[Link Instrução Normativa]'
-      }
+        label: "[Link Instrução Normativa]"
+      };
     } catch (e) {
       instrucaoNormativa = {
-        url: '',
-        label: '[Link Instrução Normativa] (Em Breve)'
-      }
+        url: "",
+        label: "[Link Instrução Normativa] (Em Breve)"
+      };
     }
-    this.setState({ instrucaoNormativa })
-  }
+    this.setState({ instrucaoNormativa });
+  };
 
   downloadEdital = e => {
-    e.preventDefault()
+    e.preventDefault();
     if (this.state.edital.url) {
-      const link = document.createElement('a')
-      link.href = this.state.edital.url
-      link.target="_blank"
-      link.click()
+      const link = document.createElement("a");
+      link.href = this.state.edital.url;
+      link.target = "_blank";
+      link.click();
     }
-  }
+  };
 
   downloadInstrucaoNormativa = e => {
-    e.preventDefault()
+    e.preventDefault();
     if (this.state.instrucaoNormativa.url) {
-      const link = document.createElement('a')
-      link.href = this.state.instrucaoNormativa.url
-      link.target="_blank"
-      link.click()
+      const link = document.createElement("a");
+      link.href = this.state.instrucaoNormativa.url;
+      link.target = "_blank";
+      link.click();
     }
-  }
+  };
 
   irParaFormulario() {
-    let path = `/cadastro`
-    this.props.history.push(path)
+    let path = `/cadastro`;
+    this.props.history.push(path);
   }
 
   render() {
-    const { uniformes } = this.state
+    const { uniformes } = this.state;
     return (
       <Fragment>
         <div className="w-100 oferta-imoveis position-relative">
@@ -122,7 +123,13 @@ export default class Home extends Component {
                   critérios necessários para o credenciamento e faça a diferença
                   na educação de nossos estudantes.
                 </p>
-                <a className="btn btn-primary pl-5 pr-5" href="#conteudo">
+                <img
+                  src={imgDesenhoFornecedor}
+                  width="100%"
+                  alt="Fornecedor"
+                  className="desenho-fornecedor img-fluid rounded"
+                />
+                <a className="saiba-mais btn btn-primary pl-5 pr-5" href="#conteudo">
                   Saiba Mais
                 </a>
               </div>
@@ -140,7 +147,13 @@ export default class Home extends Component {
                   className="img-fluid rounded"
                 />
                 <div className="embed-responsive embed-responsive-16by9 container-video-home">
-                  <iframe title="Vídeo sobre o Portal do Uniforme" src="https://www.youtube.com/embed/R591jitkIOw" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <iframe
+                    title="Vídeo sobre o Portal do Uniforme"
+                    src="https://www.youtube.com/embed/R591jitkIOw"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
               </div>
               <div className="col-lg-6">
@@ -151,10 +164,17 @@ export default class Home extends Component {
                     </p>
                     <ul className="lista-home ml-0 pl-0 mb-2">
                       <li>
-                        <strong className="fonte-17">Concordar com a taxa máxima de 0,8% a ser cobrada sobre o valor de cada transação realizada pela operadora do “meio de pagamento”;</strong>
+                        <strong className="fonte-17">
+                          Concordar com a taxa máxima de 0,8% a ser cobrada
+                          sobre o valor de cada transação realizada pela
+                          operadora do “meio de pagamento”;
+                        </strong>
                       </li>
                       <li>
-                      <strong className="fonte-17">Estar ciente que o prazo para recebimento do pagamento é de até 10 (dez) dias úteis;</strong>
+                        <strong className="fonte-17">
+                          Estar ciente que o prazo para recebimento do pagamento
+                          é de até 10 (dez) dias úteis;
+                        </strong>
                       </li>
                       <li>Ser pessoa Jurídica;</li>
                       <li>
@@ -170,7 +190,7 @@ export default class Home extends Component {
                         ;
                       </li>
                       <li>
-                        Conhecer e concordar com as regras previstas no{' '}
+                        Conhecer e concordar com as regras previstas no{" "}
                         <a
                           className="links-intrucoes"
                           href={this.state.edital.url}
@@ -195,7 +215,6 @@ export default class Home extends Component {
                       </li>
                       <li>Estar ciente das hipóteses de descredenciamento;</li>
                       <li>Estar ciente das penalidades previstas;</li>
-
                     </ul>
                     <p className="mb-2">
                       Veja todas as condições necessárias abaixo:
@@ -245,7 +264,7 @@ export default class Home extends Component {
                   <ul className="lista-home ml-0 pl-0">
                     {uniformes &&
                       uniformes.map(uniforme => {
-                        return <li key={uniforme.id}>{uniforme.nome}</li>
+                        return <li key={uniforme.id}>{uniforme.nome}</li>;
                       })}
                   </ul>
                 </BlocoTexto>
@@ -272,7 +291,13 @@ export default class Home extends Component {
               </p>
             </BlocoTexto>
             <div className="embed-responsive embed-responsive-16by9 container-video-home">
-              <iframe title="Vídeo complementar sobre o Portal do Uniforme" src="https://www.youtube.com/embed/fFUQRPnigfM" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+              <iframe
+                title="Vídeo complementar sobre o Portal do Uniforme"
+                src="https://www.youtube.com/embed/fFUQRPnigfM"
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </div>
@@ -297,6 +322,6 @@ export default class Home extends Component {
           </div>
         </div>
       </Fragment>
-    )
+    );
   }
 }
