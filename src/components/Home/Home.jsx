@@ -129,7 +129,10 @@ export default class Home extends Component {
                   alt="Fornecedor"
                   className="desenho-fornecedor img-fluid rounded"
                 />
-                <a className="saiba-mais btn btn-primary pl-5 pr-5" href="#conteudo">
+                <a
+                  className="saiba-mais btn btn-primary pl-5 pr-5"
+                  href="#conteudo"
+                >
                   Saiba Mais
                 </a>
               </div>
@@ -301,8 +304,24 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-
-        <div className="w-100 sociedade-governo text-center mt-5">
+        <div className="w-100 faq text-center mt-5">
+          <div className="container">
+            <div className="col-lg-12 mb-4 mb-lg-0">
+              <h3 className="text-white mb-4">
+                Ainda com dúvidas? Acesse o nosso FAQ
+              </h3>
+              <a
+                className="pb-0"
+                href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-dos-interessados-em-se-cadastrar-para-vender-uniforme-escolar-as-familias/"
+              >
+                <button size="lg" className="btn btn-light pl-4 pr-4">
+                  <strong>FAQ</strong>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="w-100 sociedade-governo text-center">
           <div className="container">
             <div className="col-lg-12 mb-4 mb-lg-0">
               <h3 className="text-white mb-4">
