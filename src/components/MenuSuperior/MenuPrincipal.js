@@ -56,7 +56,6 @@ class MenuPrincipal extends React.Component {
                     Home
                   </Link>
                 </li>
-
                 <li className="nav-item">
                   <Link
                     className="nav-link text-secondary mb-1 pb-0"
@@ -64,6 +63,14 @@ class MenuPrincipal extends React.Component {
                   >
                     Cadastre sua Loja
                   </Link>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-dos-interessados-em-se-cadastrar-para-vender-uniforme-escolar-as-familias/"
+                  >
+                    Ainda com dúvidas? Acesse o nosso FAQ
+                  </a>
                 </li>
               </ul>
             )}
@@ -83,7 +90,7 @@ class MenuPrincipal extends React.Component {
                 <li className="nav-item">
                   <a
                     className="nav-link text-secondary mb-1 pb-0"
-                    href="https://sp156.prefeitura.sp.gov.br/portal/servicos"
+                    href="https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=3616"
                   >
                     Avise sobre Problemas
                   </a>

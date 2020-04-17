@@ -70,7 +70,7 @@ export class MegaPortal extends Component {
                 </Link>
               </div>
             </div>
-            <div className="area-fabricantes col-12 offset-sm-1 col-sm-5">
+            <div className="area-fabricantes col-12 offset-sm-2 col-sm-5">
               <img
                 src={imgLoja}
                 width="100%"

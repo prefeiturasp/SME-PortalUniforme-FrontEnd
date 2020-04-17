@@ -10,6 +10,7 @@ import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
 import { formatarParaMultiselect } from "./helper";
 import "./style.scss";
+import { toastWarn } from "components/Toast/dialogs";
 
 export class ProcurarFornecedores extends Component {
   constructor() {
@@ -19,7 +20,7 @@ export class ProcurarFornecedores extends Component {
       tipoUniformeSelecionados: [],
       latitude: null,
       longitude: null,
-      endereco: null,
+      endereco: null
     };
   }
 
@@ -28,28 +29,46 @@ export class ProcurarFornecedores extends Component {
     this.setState({ uniformes });
   }
 
-  onSelectedChanged = (tipoUniformeSelecionados) => {
+  onSelectedChanged = tipoUniformeSelecionados => {
     this.setState({
-      tipoUniformeSelecionados,
+      tipoUniformeSelecionados
     });
   };
 
-  handleAddressChange = (values) => {
+  consultarEndereco = () => {
+    const {
+      endereco,
+      tipoUniformeSelecionados,
+      latitude,
+      longitude
+    } = this.state;
+    if (!latitude || !longitude) {
+      toastWarn("Selecione um dos resultados de endereço para buscar");
+    } else if (tipoUniformeSelecionados.length === 0) {
+      toastWarn("Selecione ao menos um tipo de uniforme");
+    } else {
+      this.props.history.push({
+        pathname: "/mapa-de-fornecedores",
+        state: {
+          latitude: latitude,
+          longitude: longitude,
+          tipoUniformeSelecionados: tipoUniformeSelecionados,
+          endereco: endereco.split(",")[0]
+        }
+      });
+    }
+  };
+
+  handleAddressChange = values => {
     this.setState({
       latitude: values.latitude,
       longitude: values.longitude,
-      endereco: values.endereco,
+      endereco: values.endereco
     });
   };
 
   render() {
-    const {
-      latitude,
-      longitude,
-      uniformes,
-      endereco,
-      tipoUniformeSelecionados,
-    } = this.state;
+    const { uniformes, tipoUniformeSelecionados } = this.state;
     return (
       <Fragment>
         <div className="busca-mapa">
@@ -84,30 +103,21 @@ export class ProcurarFornecedores extends Component {
                   name="tipo_uniforme"
                   selected={tipoUniformeSelecionados}
                   options={formatarParaMultiselect(uniformes)}
-                  onSelectedChanged={(values) => this.onSelectedChanged(values)}
+                  onSelectedChanged={values => this.onSelectedChanged(values)}
                   disableSearch={true}
                   overrideStrings={{
                     selectSomeItems: "Selecione",
                     allItemsAreSelected: "Todos os itens estão selecionados",
-                    selectAll: "Todos",
+                    selectAll: "Todos"
                   }}
                 />
               </div>
               <div className="btn-consultar text-center col-md-2 col-sm-12">
                 <button
                   size="lg"
+                  type="button"
                   className="btn btn-light pl-4 pr-4"
-                  onClick={() =>
-                    this.props.history.push({
-                      pathname: "/mapa-de-fornecedores",
-                      state: {
-                        latitude: latitude,
-                        longitude: longitude,
-                        tipoUniformeSelecionados: tipoUniformeSelecionados,
-                        endereco: endereco.split(",")[0],
-                      },
-                    })
-                  }
+                  onClick={() => this.consultarEndereco()}
                 >
                   <strong>Consultar</strong>
                 </button>
@@ -158,7 +168,7 @@ export class ProcurarFornecedores extends Component {
                   uniforme escolar é composto por:
                   <ul className="lista-home pt-2 ml-0 pl-0">
                     {uniformes &&
-                      uniformes.map((uniforme) => {
+                      uniformes.map(uniforme => {
                         return <li key={uniforme.id}>{uniforme.nome}</li>;
                       })}
                   </ul>
@@ -224,7 +234,7 @@ export class ProcurarFornecedores extends Component {
             </div>
           </BlocoTexto>
           <div className="text-center pt-3 pb-3">
-            <a href="https://sp156.prefeitura.sp.gov.br/portal/servicos">
+            <a href="https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=3616">
               <button
                 size="lg"
                 className="btn btn-primary pl-4 pr-4"
@@ -259,7 +269,7 @@ export class ProcurarFornecedores extends Component {
 
 ProcurarFornecedores = reduxForm({
   // a unique name for the form
-  form: "ProcurarFornecedoresForm",
+  form: "ProcurarFornecedoresForm"
 })(ProcurarFornecedores);
 
 export default withRouter(ProcurarFornecedores);
