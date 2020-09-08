@@ -559,6 +559,7 @@ export let CadastroEmpresa = props => {
                             complemento={empresa && value.complemento}
                             endereco={empresa && value.endereco}
                             telefone={empresa && value.telefone}
+                            site={empresa && value.site}
                             onUpdate={onUpdateLoja}
                           />
                           {!empresa && (
