@@ -1,15 +1,13 @@
 import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import { Field } from "redux-form";
 import {
   InputLabelRequired,
-  InputLabel
+  InputLabel,
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
-import { required } from "helpers/fieldValidators";
 
-const LojaFisica = props => {
+const LojaFisica = (props) => {
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
   const [complemento, setComplemento] = useState("");
@@ -18,6 +16,7 @@ const LojaFisica = props => {
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
+  const [site, setSite] = useState("");
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
@@ -32,9 +31,10 @@ const LojaFisica = props => {
     setNumero(props.numero);
     setComplemento(props.complemento);
     setNomeFantasia(props.nome_fantasia);
+    setSite(props.site);
   }, [props]);
 
-  const buscaCep = async value => {
+  const buscaCep = async (value) => {
     setErro(false);
     if (value) {
       let cep = value.replace("-", "").replace("_", "");
@@ -54,7 +54,7 @@ const LojaFisica = props => {
     }
   };
 
-  const cepServico = async cep => {
+  const cepServico = async (cep) => {
     const response = await axios.get(
       `https://republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`
     );
@@ -68,7 +68,7 @@ const LojaFisica = props => {
     return null;
   };
 
-  const populaPayload = data => {
+  const populaPayload = (data) => {
     setEndereco(`${data.tipo_logradouro} ${data.logradouro}`);
     setBairro(data.bairro);
     setCidade(data.cidade);
@@ -81,7 +81,7 @@ const LojaFisica = props => {
       uf: data.uf,
       bairro: data.bairro,
       cep: data.cep,
-      nome_fantasia: nome_fantasia
+      nome_fantasia: nome_fantasia,
     };
   };
 
@@ -97,7 +97,7 @@ const LojaFisica = props => {
             name={`loja.nome_fantasia_${props.chave}`}
             id={`loja.nome_fantasia_${props.chave}`}
             value={nome_fantasia}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value;
               setNomeFantasia(valor);
               setPayload({ ...payload, nome_fantasia: valor });
@@ -119,8 +119,8 @@ const LojaFisica = props => {
             }
             value={cep}
             key={props.chave}
-            onBlur={e => buscaCep(e.target.value)}
-            onChange={e => {
+            onBlur={(e) => buscaCep(e.target.value)}
+            onChange={(e) => {
               const valor = e.target.value;
               setCep(valor);
               setPayload({ ...payload, cep: valor });
@@ -139,7 +139,7 @@ const LojaFisica = props => {
             value={bairro}
             label="Bairro"
             id={`bairro_${props.chave}`}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value;
               setBairro(valor);
               setPayload({ ...payload, bairro: valor });
@@ -158,7 +158,7 @@ const LojaFisica = props => {
             name={`loja.endereco_${props.chave}`}
             id={`loja.endereco_${props.chave}`}
             value={endereco}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value;
               setEndereco(valor);
               setPayload({ ...payload, endereco: valor });
@@ -173,7 +173,7 @@ const LojaFisica = props => {
             value={numero}
             label="Número"
             id={`numero_${props.chave}`}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value;
               setNumero(valor);
               setPayload({ ...payload, numero: valor });
@@ -187,7 +187,7 @@ const LojaFisica = props => {
             label="Complemento"
             disabled={props.empresa}
             id={`complemento_${props.chave}`}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value;
               setComplemento(valor);
               setPayload({ ...payload, complemento: valor });
@@ -207,7 +207,7 @@ const LojaFisica = props => {
             className="form-control mb-2"
             required
             disabled
-            onChange={e => {
+            onChange={(e) => {
               const valor = "São Paulo";
               setCidade(valor);
               setPayload({ ...payload, cidade: valor });
@@ -225,7 +225,7 @@ const LojaFisica = props => {
             required
             maxLength={2}
             disabled
-            onChange={e => {
+            onChange={(e) => {
               const valor = "SP";
               setUf(valor);
               setPayload({ ...payload, uf: valor });
@@ -245,7 +245,7 @@ const LojaFisica = props => {
             className="form-control mb-2"
             required
             key={props.chave}
-            onChange={e => {
+            onChange={(e) => {
               const valor = e.target.value.replace("_", "");
               setTelefone(valor);
               setPayload({ ...payload, telefone: valor });
@@ -254,6 +254,19 @@ const LojaFisica = props => {
           />
         </div>
       </div>
+      <InputLabel
+        label="Site"
+        value={site}
+        disabled={props.empresa}
+        id={`site_${props.chave}`}
+        onChange={(e) => {
+          const valor = e.target.value;
+          console.log(valor);
+          setSite(valor);
+          setPayload({ ...payload, site: valor });
+          props.onUpdate({ ...payload, site: valor }, props.chave);
+        }}
+      />
     </Fragment>
   );
 };

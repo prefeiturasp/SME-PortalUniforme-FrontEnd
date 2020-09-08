@@ -302,70 +302,76 @@ export class MapaDeFornecedores extends Component {
                                     </span>
                                   )}
                                 </div>
-                                {loja.ativo && (
-                                  <Fragment>
-                                    <div className="row">
-                                      <div className="col-11 offset-1">
-                                        <strong>Endereço: </strong>
-                                        {loja.endereco}, {loja.numero} <br />
-                                        {loja.bairro} - CEP: {loja.cep}
-                                        <br />
-                                        <div className="row">
-                                          <div className="col-12 col-sm-6">
-                                            <strong>Telefone: </strong>
-                                            {loja.telefone}
-                                          </div>
-                                          <div className="col-12 col-sm-6">
-                                            <strong>E-mail: </strong>
-                                            {loja.email}
-                                          </div>
+                              </div>
+                              {loja.ativo && (
+                                <Fragment>
+                                  <div className="row">
+                                    <div className="col-12">
+                                      <strong>Endereço: </strong>
+                                      {loja.endereco}, {loja.numero} <br />
+                                      {loja.bairro} - CEP: {loja.cep}
+                                      <br />
+                                      <div className="row">
+                                        <div className="col-12 col-sm-6">
+                                          <strong>Telefone: </strong>
+                                          {loja.telefone}
                                         </div>
+                                        <div className="col-12 col-sm-6">
+                                          <strong>E-mail: </strong>
+                                          {loja.email}
+                                        </div>
+                                        {loja.site && (
+                                          <div className="col-12">
+                                            <strong>Site: </strong>
+                                            <a href={loja.site}>{loja.site}</a>
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
-                                    <table className="tabela-precos">
-                                      <thead>
-                                        <tr className="row">
-                                          <th className="col-8">Item</th>
-                                          <th className="col-4">
-                                            Valor unidade (R$)
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {loja.proponente.ofertas_de_uniformes
-                                          .filter((uniforme) =>
-                                            tipoUniformeSelecionadosState.includes(
-                                              uniforme.item.split(" ")[0]
-                                            )
+                                  </div>
+                                  <table className="tabela-precos">
+                                    <thead>
+                                      <tr className="row">
+                                        <th className="col-8">Item</th>
+                                        <th className="col-4">
+                                          Valor unidade (R$)
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {loja.proponente.ofertas_de_uniformes
+                                        .filter((uniforme) =>
+                                          tipoUniformeSelecionadosState.includes(
+                                            uniforme.item.split(" ")[0]
                                           )
-                                          .map((uniforme, key) => {
-                                            return (
-                                              <tr className="row" key={key}>
-                                                <td className="col-8">
-                                                  {uniforme.item}
-                                                </td>
-                                                <td className="col-4">
-                                                  {uniforme.preco.replace(
-                                                    ".",
-                                                    ","
-                                                  )}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                        <tr className="row valor-total">
-                                          <td className="col-8">
-                                            Valor Total (R$)
-                                          </td>
-                                          <td className="col-4">
-                                            {loja.total_uniformes}
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </Fragment>
-                                )}
-                              </div>
+                                        )
+                                        .map((uniforme, key) => {
+                                          return (
+                                            <tr className="row" key={key}>
+                                              <td className="col-8">
+                                                {uniforme.item}
+                                              </td>
+                                              <td className="col-4">
+                                                {uniforme.preco.replace(
+                                                  ".",
+                                                  ","
+                                                )}
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      <tr className="row valor-total">
+                                        <td className="col-8">
+                                          Valor Total (R$)
+                                        </td>
+                                        <td className="col-4">
+                                          {loja.total_uniformes}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </Fragment>
+                              )}
                             </div>
                           );
                         })}
