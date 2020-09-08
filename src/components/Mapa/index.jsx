@@ -106,6 +106,12 @@ export default class Mapa extends Component {
                       <strong>E-mail: </strong>
                       {marcador.loja.email}
                     </div>
+                    {marcador.loja.site && (
+                      <div>
+                        <strong>Site: </strong>
+                        <a href={marcador.loja.site}>{marcador.loja.site}</a>
+                      </div>
+                    )}
                   </Popup>
                 </Marker>
               );
