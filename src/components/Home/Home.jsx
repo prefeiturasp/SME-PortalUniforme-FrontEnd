@@ -121,10 +121,10 @@ export default class Home extends Component {
                 <p>
                   Leia o regulamento, veja se sua loja está de acordo com os
                   critérios necessários para o credenciamento e faça a diferença
-                  na educação de nossos estudantes. Além disso, você poderá
-                  comercializar os uniformes sem pagar nenhuma taxa para a
-                  empresa MercadoPago, que irá gerir todas as transações
-                  financeiras!
+                  na educação de nossos estudantes. <br />
+                  Além disso, você poderá comercializar os uniformes sem pagar
+                  nenhuma taxa para a empresa MercadoPago, que irá gerir todas
+                  as transações financeiras!
                 </p>
                 <img
                   src={imgDesenhoFornecedor}
