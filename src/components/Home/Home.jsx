@@ -10,6 +10,7 @@ import {
 } from "../../services/uniformes.service";
 
 import "./home.scss";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
 
 export default class Home extends Component {
   constructor() {
@@ -109,7 +110,7 @@ export default class Home extends Component {
   render() {
     const { uniformes } = this.state;
     return (
-      <Fragment>
+      <PaginaComCabecalhoRodape>
         <div className="w-100 oferta-imoveis position-relative">
           <div className="container">
             <div className="conteudo">
@@ -337,7 +338,7 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </PaginaComCabecalhoRodape>
     );
   }
 }

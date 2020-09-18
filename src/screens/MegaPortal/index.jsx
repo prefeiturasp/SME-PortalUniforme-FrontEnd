@@ -1,16 +1,17 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { reduxForm } from "redux-form";
 import imgFamilia from "img/landing-familia.png";
 import imgLoja from "img/landing-loja.png";
 import imgDesenhoCriancas from "img/desenho-alunos-mobile.png";
 import BlocoTexto from "components/BlocoTexto";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
 import "./style.scss";
 
 export class MegaPortal extends Component {
   render() {
     return (
-      <Fragment>
+      <PaginaComCabecalhoRodape>
         <div className="w-100 uniforme-escolar position-relative">
           <div className="container">
             <div className="conteudo">
@@ -101,7 +102,7 @@ export class MegaPortal extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </PaginaComCabecalhoRodape>
     );
   }
 }
