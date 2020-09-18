@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import { Link } from "react-router-dom";
 
 class NotFoundPage extends Component {
   render() {

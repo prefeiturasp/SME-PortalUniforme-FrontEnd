@@ -14,7 +14,7 @@ import TiposFornecimentos from "./TiposFornecimentos";
 import "./style.scss";
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme, validaFormulario, getError } from "./helper";
-import { toastSuccess, toastError } from "../Toast/dialogs";
+import { toastSuccess, toastError } from "components/Toast/dialogs";
 import {
   cadastrarEmpresa,
   getTiposDocumentos,

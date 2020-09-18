@@ -10,7 +10,7 @@ import logoSME from "img/logo-sme.svg";
 import authService from "services/auth.service";
 import { atualizarSenha } from "services/perfil.service";
 import { toastSuccess, toastError } from "components/Toast/dialogs";
-import { getError } from "components/CadastroEmpresa/helper";
+import { getError } from "helpers/utils";
 import "./style.scss";
 
 export const Login = () => {

@@ -1,10 +1,10 @@
-import { CadastroEmpresa } from "components/CadastroEmpresa";
-import Confirmacao from "components/CadastroEmpresa/Confirmacao";
-import Home from "components/Home/Home";
+import { CadastroEmpresa } from "screens/CadastroEmpresa";
+import { ConfirmacaoCadastro } from "screens/ConfirmacaoCadastro";
 import { Login } from "screens/Login";
 import MapaDeFornecedores from "screens/MapaDeFornecedores";
 import { MegaPortal } from "screens/MegaPortal";
 import { ProcurarFornecedores } from "screens/ProcurarFornecedores";
+import PortalFornecedores from "screens/PortalFornecedores";
 
 export const routes = [
   {
@@ -24,7 +24,7 @@ export const routes = [
   },
   {
     path: "/fornecedor",
-    component: Home,
+    component: PortalFornecedores,
     exact: true,
   },
   {
@@ -34,7 +34,7 @@ export const routes = [
   },
   {
     path: "/confirmacao-cadastro",
-    component: Confirmacao,
+    component: ConfirmacaoCadastro,
     exact: true,
   },
   {

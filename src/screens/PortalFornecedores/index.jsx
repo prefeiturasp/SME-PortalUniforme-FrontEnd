@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import BlocoTexto from "components/BlocoTexto";
 import imgFachadaLoja from "img/fachada-loja.png";
 import imgPecasUniforme from "img/pecas-uniforme.png";
@@ -8,11 +8,10 @@ import {
   busca_url_edital,
   busca_url_instrucao_normativa,
 } from "../../services/uniformes.service";
-
-import "./home.scss";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import "./style.scss";
 
-export default class Home extends Component {
+export default class PortalFornecedores extends Component {
   constructor() {
     super();
     this.state = {

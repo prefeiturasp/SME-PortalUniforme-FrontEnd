@@ -1,8 +1,8 @@
+import React from "react";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
-import React, { Fragment } from "react";
 import { Row, Alert, Col } from "react-bootstrap";
 
-const Confirmacao = (props) => {
+export const ConfirmacaoCadastro = () => {
   return (
     <PaginaComCabecalhoRodape>
       <Row>
@@ -24,5 +24,3 @@ const Confirmacao = (props) => {
     </PaginaComCabecalhoRodape>
   );
 };
-
-export default Confirmacao;
