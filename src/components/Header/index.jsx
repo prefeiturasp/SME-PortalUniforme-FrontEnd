@@ -12,7 +12,7 @@ export class Header extends Component {
         <nav className="navbar navbar-expand-lg navbar-light bg-white static-top navbar-sme fixed-top">
           <div className="container-fluid">
             <div className={`nav-bar ${toggled && "toggled"}`}>
-              Administrativo - Fornecedor de Materiais Escolares
+              Administrativo - Fornecedor de Uniformes Escolares
             </div>
             <button
               className="navbar-toggler"
