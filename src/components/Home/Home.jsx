@@ -6,7 +6,7 @@ import imgDesenhoFornecedor from "img/desenho-fornecedor.png";
 import { getUniformes } from "services/uniformes.service";
 import {
   busca_url_edital,
-  busca_url_instrucao_normativa
+  busca_url_instrucao_normativa,
 } from "../../services/uniformes.service";
 
 import "./home.scss";
@@ -18,24 +18,24 @@ export default class Home extends Component {
       uniformes: [],
       edital: {
         url: "",
-        label: ""
+        label: "",
       },
       instrucaoNormativa: {
         url: "",
-        label: ""
-      }
+        label: "",
+      },
     };
 
     this.irParaFormulario = this.irParaFormulario.bind(this);
     this.editalClick = !this.state.edital.url
-      ? e => {
+      ? (e) => {
           this.downloadEdital(e);
         }
       : null;
     this.get_edital_link();
 
     this.instrucaoNormativaClick = !this.state.instrucaoNormativa.url
-      ? e => {
+      ? (e) => {
           this.downloadInstrucaoNormativa(e);
         }
       : null;
@@ -53,12 +53,12 @@ export default class Home extends Component {
       const url = await busca_url_edital();
       edital = {
         url: url,
-        label: "[Link Edital]"
+        label: "[Link Edital]",
       };
     } catch (e) {
       edital = {
         url: "",
-        label: "[Link Edital] (Em Breve)"
+        label: "[Link Edital] (Em Breve)",
       };
     }
     this.setState({ edital: edital });
@@ -70,18 +70,18 @@ export default class Home extends Component {
       const url = await busca_url_instrucao_normativa();
       instrucaoNormativa = {
         url: url,
-        label: "[Link Instrução Normativa]"
+        label: "[Link Instrução Normativa]",
       };
     } catch (e) {
       instrucaoNormativa = {
         url: "",
-        label: "[Link Instrução Normativa] (Em Breve)"
+        label: "[Link Instrução Normativa] (Em Breve)",
       };
     }
     this.setState({ instrucaoNormativa });
   };
 
-  downloadEdital = e => {
+  downloadEdital = (e) => {
     e.preventDefault();
     if (this.state.edital.url) {
       const link = document.createElement("a");
@@ -91,7 +91,7 @@ export default class Home extends Component {
     }
   };
 
-  downloadInstrucaoNormativa = e => {
+  downloadInstrucaoNormativa = (e) => {
     e.preventDefault();
     if (this.state.instrucaoNormativa.url) {
       const link = document.createElement("a");
@@ -121,7 +121,10 @@ export default class Home extends Component {
                 <p>
                   Leia o regulamento, veja se sua loja está de acordo com os
                   critérios necessários para o credenciamento e faça a diferença
-                  na educação de nossos estudantes.
+                  na educação de nossos estudantes. <br />
+                  Além disso, você poderá comercializar os uniformes sem pagar
+                  nenhuma taxa para a empresa MercadoPago, que irá gerir todas
+                  as transações financeiras!
                 </p>
                 <img
                   src={imgDesenhoFornecedor}
@@ -168,15 +171,9 @@ export default class Home extends Component {
                     <ul className="lista-home ml-0 pl-0 mb-2">
                       <li>
                         <strong className="fonte-17">
-                          Concordar com a taxa máxima de 0,8% a ser cobrada
-                          sobre o valor de cada transação realizada pela
-                          operadora do “meio de pagamento”;
-                        </strong>
-                      </li>
-                      <li>
-                        <strong className="fonte-17">
                           Estar ciente que o prazo para recebimento do pagamento
-                          é de até 10 (dez) dias úteis;
+                          é de até 10 (dez) dias úteis a partir da validação da
+                          NF.
                         </strong>
                       </li>
                       <li>Ser pessoa Jurídica;</li>
@@ -266,7 +263,7 @@ export default class Home extends Component {
                 <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
                   <ul className="lista-home ml-0 pl-0">
                     {uniformes &&
-                      uniformes.map(uniforme => {
+                      uniformes.map((uniforme) => {
                         return <li key={uniforme.id}>{uniforme.nome}</li>;
                       })}
                   </ul>
