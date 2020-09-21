@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import BlocoTexto from "components/BlocoTexto";
 import imgFachadaLoja from "img/fachada-loja.png";
 import imgPecasUniforme from "img/pecas-uniforme.png";
@@ -8,10 +8,10 @@ import {
   busca_url_edital,
   busca_url_instrucao_normativa,
 } from "../../services/uniformes.service";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import "./style.scss";
 
-import "./home.scss";
-
-export default class Home extends Component {
+export default class PortalFornecedores extends Component {
   constructor() {
     super();
     this.state = {
@@ -109,7 +109,7 @@ export default class Home extends Component {
   render() {
     const { uniformes } = this.state;
     return (
-      <Fragment>
+      <PaginaComCabecalhoRodape>
         <div className="w-100 oferta-imoveis position-relative">
           <div className="container">
             <div className="conteudo">
@@ -337,7 +337,7 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </PaginaComCabecalhoRodape>
     );
   }
 }

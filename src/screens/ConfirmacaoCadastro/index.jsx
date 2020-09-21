@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
 import { Row, Alert, Col } from "react-bootstrap";
 
-const Confirmacao = props => {
+export const ConfirmacaoCadastro = () => {
   return (
-    <Fragment>
+    <PaginaComCabecalhoRodape>
       <Row>
         <Col className="d-flex justify-content-center p-5">
           <Alert key={1} variant={"success"} className="w-50">
@@ -20,8 +21,6 @@ const Confirmacao = props => {
           </Alert>
         </Col>
       </Row>
-    </Fragment>
+    </PaginaComCabecalhoRodape>
   );
 };
-
-export default Confirmacao;

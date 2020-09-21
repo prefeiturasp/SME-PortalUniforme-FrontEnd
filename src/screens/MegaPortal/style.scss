@@ -1,8 +1,8 @@
-@import "../../../styles/variaveis.scss";
+@import "styles/variaveis.scss";
 
 .uniforme-escolar {
   @media screen and (min-width: 992px) {
-    background: url("../../../img/desenho-alunos.png"), #c4c4c4;
+    background: url("../../img/desenho-alunos.png"), #c4c4c4;
     background-position: right;
     background-repeat: no-repeat;
     background-color: #daeeff;

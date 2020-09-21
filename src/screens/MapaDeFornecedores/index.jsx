@@ -19,6 +19,7 @@ import {
 import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
 import { formatarParaMultiselect } from "../ProcurarFornecedores/helper";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
 
 export class MapaDeFornecedores extends Component {
   constructor() {
@@ -126,7 +127,7 @@ export class MapaDeFornecedores extends Component {
       uniformes,
     } = this.state;
     return (
-      <div>
+      <PaginaComCabecalhoRodape>
         <div className={`w-100 lojas-mais-proximas mt-5 ${!lojas && "opaco"}`}>
           <div className="container">
             <div className="col-lg-12 d-flex mb-lg-0">
@@ -414,7 +415,7 @@ export class MapaDeFornecedores extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </PaginaComCabecalhoRodape>
     );
   }
 }

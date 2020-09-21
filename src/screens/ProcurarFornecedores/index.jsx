@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import StatefulMultiSelect from "@khanacademy/react-multi-select";
 import { withRouter } from "react-router-dom";
 import { Field } from "redux-form";
@@ -11,6 +11,7 @@ import { required } from "helpers/fieldValidators";
 import { formatarParaMultiselect } from "./helper";
 import "./style.scss";
 import { toastWarn } from "components/Toast/dialogs";
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
 
 export class ProcurarFornecedores extends Component {
   constructor() {
@@ -70,7 +71,7 @@ export class ProcurarFornecedores extends Component {
   render() {
     const { uniformes, tipoUniformeSelecionados } = this.state;
     return (
-      <Fragment>
+      <PaginaComCabecalhoRodape>
         <div className="busca-mapa">
           <div className="title">
             Encontre a loja credenciada mais próxima de você
@@ -262,7 +263,7 @@ export class ProcurarFornecedores extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </PaginaComCabecalhoRodape>
     );
   }
 }

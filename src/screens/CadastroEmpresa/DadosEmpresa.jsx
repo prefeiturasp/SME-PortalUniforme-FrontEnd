@@ -1,11 +1,17 @@
-import React, { Fragment } from 'react'
-import { InputText } from 'components/Input/InputText'
-import { required, validaUF, validaCNPJ, validaTelefone, validaCEP } from 'helpers/fieldValidators'
-import { Field } from 'redux-form'
-import { fieldCNPJ, fieldCep, fieldCel } from 'helpers/textMask'
-import { Row, Col } from 'react-bootstrap'
+import React, { Fragment } from "react";
+import { InputText } from "components/Input/InputText";
+import {
+  required,
+  validaUF,
+  validaCNPJ,
+  validaTelefone,
+  validaCEP,
+} from "helpers/fieldValidators";
+import { Field } from "redux-form";
+import { fieldCNPJ, fieldCep, fieldCel } from "helpers/textMask";
+import { Row, Col } from "react-bootstrap";
 
-const DadosEmpresa = props => {
+const DadosEmpresa = (props) => {
   return (
     <Fragment>
       <Field
@@ -104,7 +110,7 @@ const DadosEmpresa = props => {
         placeholder="Digite o e-mail do responsável"
       />
     </Fragment>
-  )
-}
+  );
+};
 
-export default DadosEmpresa
+export default DadosEmpresa;

@@ -3,7 +3,7 @@ import React, {
   useState,
   useMemo,
   useEffect,
-  useCallback
+  useCallback,
 } from "react";
 import HTTP_STATUS from "http-status-codes";
 import { Button, Alert } from "react-bootstrap";
@@ -14,7 +14,7 @@ import TiposFornecimentos from "./TiposFornecimentos";
 import "./style.scss";
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme, validaFormulario, getError } from "./helper";
-import { toastSuccess, toastError } from "../Toast/dialogs";
+import { toastSuccess, toastError } from "components/Toast/dialogs";
 import {
   cadastrarEmpresa,
   getTiposDocumentos,
@@ -27,11 +27,12 @@ import {
   setFachadaLoja,
   concluirCadastro,
   getLimites,
-  verificaEmail
+  verificaEmail,
 } from "services/uniformes.service";
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
-export let CadastroEmpresa = props => {
+import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+export let CadastroEmpresa = (props) => {
   const initialValue = {
     nome_fantasia: undefined,
     endereco: undefined,
@@ -41,7 +42,7 @@ export let CadastroEmpresa = props => {
     cidade: undefined,
     uf: undefined,
     bairro: undefined,
-    cep: undefined
+    cep: undefined,
   };
 
   const [empresa, setEmpresa] = useState(null);
@@ -78,7 +79,7 @@ export let CadastroEmpresa = props => {
       const uuid = urlParams.get("uuid");
       if (uuid) {
         setTab("anexos");
-        getEmpresa(uuid).then(response => {
+        getEmpresa(uuid).then((response) => {
           if (response.status === HTTP_STATUS.OK) {
             setEmpresaEFaltaArquivos(response.data);
             setUuid(uuid);
@@ -92,7 +93,7 @@ export let CadastroEmpresa = props => {
       const fornecimentos = await getTiposFornecimentos();
       setTiposFornecimentos(fornecimentos);
     };
-    carregaTiposDocumentos().then(_ => {
+    carregaTiposDocumentos().then((_) => {
       carregaEmpresa();
     });
 
@@ -104,7 +105,7 @@ export let CadastroEmpresa = props => {
     carregaTiposFornecimentos();
     setEditalClick(
       !edital.url
-        ? e => {
+        ? (e) => {
             downloadEdital(e);
           }
         : null
@@ -113,7 +114,7 @@ export let CadastroEmpresa = props => {
     get_edital_link();
   }, [limparFornecimento]);
 
-  const setEmpresaEFaltaArquivos = empresa => {
+  const setEmpresaEFaltaArquivos = (empresa) => {
     setEmpresa(empresa);
     props.change("cnpj", empresa.cnpj);
     props.change("razao_social", empresa.razao_social);
@@ -131,26 +132,26 @@ export let CadastroEmpresa = props => {
   const useForceUpdate = () => {
     const [, setTick] = useState(0);
     const update = useCallback(() => {
-      setTick(tick => tick + 1);
+      setTick((tick) => tick + 1);
     }, []);
     return update;
   };
 
   const forceUpdate = useForceUpdate();
 
-  const verificarSeFaltamArquivos = empresa => {
+  const verificarSeFaltamArquivos = (empresa) => {
     let aindaFaltaDocumentoObrigatorio = false;
-    tiposDocumentos.forEach(tipoDocumento => {
+    tiposDocumentos.forEach((tipoDocumento) => {
       if (
         tipoDocumento.obrigatorio &&
         !empresa.arquivos_anexos.find(
-          arquivo => arquivo.tipo_documento === tipoDocumento.id
+          (arquivo) => arquivo.tipo_documento === tipoDocumento.id
         )
       )
         aindaFaltaDocumentoObrigatorio = true;
     });
     let aindaFaltamArquivos =
-      empresa.lojas.find(loja => loja.foto_fachada === null) ||
+      empresa.lojas.find((loja) => loja.foto_fachada === null) ||
       empresa.arquivos_anexos.length === 0 ||
       aindaFaltaDocumentoObrigatorio;
     setFaltaArquivos(aindaFaltamArquivos);
@@ -161,7 +162,7 @@ export let CadastroEmpresa = props => {
     setLoja([...loja]);
   };
 
-  const downloadEdital = e => {
+  const downloadEdital = (e) => {
     //e.preventDefault()
     if (edital.url) {
       const link = document.createElement("a");
@@ -171,13 +172,13 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const switchTab = tab => {
+  const switchTab = (tab) => {
     if (uuid) {
       setTab(tab);
     }
   };
 
-  const delLoja = index => {
+  const delLoja = (index) => {
     let lista = [];
     loja.forEach((value, key) => {
       if (key !== index) {
@@ -192,7 +193,7 @@ export let CadastroEmpresa = props => {
     setLoja([...loja]);
   };
 
-  const maiorQueLimite = eMaior => {
+  const maiorQueLimite = (eMaior) => {
     setLimite(eMaior);
   };
 
@@ -203,7 +204,7 @@ export let CadastroEmpresa = props => {
 
   const contadorLoja = useMemo(() => loja.length, [loja]);
 
-  const showMessage = mensagem => {
+  const showMessage = (mensagem) => {
     setMensagem(mensagem);
     setAlerta(true);
     setTimeout(() => {
@@ -220,7 +221,7 @@ export let CadastroEmpresa = props => {
     setEdital({ ...edital, url });
   };
 
-  const onSubmit = async payload => {
+  const onSubmit = async (payload) => {
     let cnpjStatus = await verificaCnpj(payload.cnpj);
 
     if (cnpjStatus && cnpjStatus.cnpj_cadastrado === "Sim") {
@@ -300,13 +301,13 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const filtrarFornecimento = payload => {
+  const filtrarFornecimento = (payload) => {
     return payload.filter(
-      value => value !== undefined && Object.keys(value).length > 0
+      (value) => value !== undefined && Object.keys(value).length > 0
     );
   };
 
-  const validaUniformes = payload => {
+  const validaUniformes = (payload) => {
     if (payload.length > 0) {
       if (validaOfertaUniforme(payload)) {
         window.scrollTo(0, 0);
@@ -330,21 +331,21 @@ export let CadastroEmpresa = props => {
     const arquivoAnexo = {
       ...e[0],
       tipo_documento: tipo.id,
-      proponente: uuid
+      proponente: uuid,
     };
     let tiposDocumentos_ = tiposDocumentos;
     tiposDocumentos_[key].uploadEmAndamento = true;
     setTiposDocumentos(tiposDocumentos_);
     setAlgumUploadEmAndamento(true);
     forceUpdate();
-    setAnexo(arquivoAnexo).then(response => {
+    setAnexo(arquivoAnexo).then((response) => {
       if (response.status === HTTP_STATUS.CREATED) {
         toastSuccess("Arquivo salvo com sucesso!");
         let tiposDocumentos_ = tiposDocumentos;
         tiposDocumentos_[key].uploadEmAndamento = false;
         setTiposDocumentos(tiposDocumentos_);
         setAlgumUploadEmAndamento(false);
-        getEmpresa(uuid).then(empresa => {
+        getEmpresa(uuid).then((empresa) => {
           setEmpresaEFaltaArquivos(empresa.data);
         });
       } else {
@@ -362,21 +363,21 @@ export let CadastroEmpresa = props => {
       toastError("Formato de arquivo inválido");
     } else {
       const arquivoAnexo = {
-        foto_fachada: e[0].arquivo
+        foto_fachada: e[0].arquivo,
       };
       let empresa_ = empresa;
       empresa_.lojas[key].uploadEmAndamento = true;
       setEmpresa(empresa_);
       setAlgumUploadEmAndamento(true);
       forceUpdate();
-      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+      setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
         if (response.status === HTTP_STATUS.OK) {
           toastSuccess("Arquivo salvo com sucesso!");
           let empresa_ = empresa;
           empresa_.lojas[key].uploadEmAndamento = false;
           setEmpresa(empresa_);
           setAlgumUploadEmAndamento(false);
-          getEmpresa(uuid).then(empresa => {
+          getEmpresa(uuid).then((empresa) => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
         } else {
@@ -390,15 +391,15 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const deleteFachadaLoja = async uuidLoja => {
+  const deleteFachadaLoja = async (uuidLoja) => {
     if (window.confirm("Deseja remover este anexo?")) {
       const arquivoAnexo = {
-        foto_fachada: null
+        foto_fachada: null,
       };
-      setFachadaLoja(arquivoAnexo, uuidLoja).then(response => {
+      setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
         if (response.status === HTTP_STATUS.OK) {
           toastSuccess("Arquivo excluído com sucesso!");
-          getEmpresa(uuid).then(empresa => {
+          getEmpresa(uuid).then((empresa) => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
         } else {
@@ -408,12 +409,12 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const removeAnexo = async uuidAnexo => {
+  const removeAnexo = async (uuidAnexo) => {
     if (window.confirm("Deseja remover este anexo?")) {
-      deleteAnexo(uuidAnexo).then(response => {
+      deleteAnexo(uuidAnexo).then((response) => {
         if (response.status === HTTP_STATUS.NO_CONTENT) {
           toastSuccess("Arquivo removido com sucesso!");
-          getEmpresa(uuid).then(empresa => {
+          getEmpresa(uuid).then((empresa) => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
         } else {
@@ -429,7 +430,7 @@ export let CadastroEmpresa = props => {
         "É preciso anexar todos os arquivos obrigatórios para finalizar seu cadastro"
       );
     } else {
-      concluirCadastro(uuid).then(response => {
+      concluirCadastro(uuid).then((response) => {
         if (response.status === HTTP_STATUS.OK) {
           window.location.href = "/confirmacao-cadastro";
         } else {
@@ -439,14 +440,14 @@ export let CadastroEmpresa = props => {
     }
   };
 
-  const labelTemplate = tipo => {
+  const labelTemplate = (tipo) => {
     return <div dangerouslySetInnerHTML={{ __html: tipo.nome }} />;
   };
 
   const { handleSubmit, pristine, submitting, reset } = props;
 
   return (
-    <Fragment>
+    <PaginaComCabecalhoRodape>
       {erroGetEmpresa ? (
         <div className="p-5 text-center">Erro ao carregar empresa.</div>
       ) : window.document.documentMode ? (
@@ -628,18 +629,18 @@ export let CadastroEmpresa = props => {
                       <div className="form-group">
                         <div className="form-check">
                           <Field
-                              component={"input"}
-                              name="declaracao2"
-                              className="form-check-input"
-                              required
-                              type="checkbox"
+                            component={"input"}
+                            name="declaracao2"
+                            className="form-check-input"
+                            required
+                            type="checkbox"
                           />
                           <label title="" className="form-check-label">
-                            Declaro que fornecerei os itens pelos valores máximos indicados acima
+                            Declaro que fornecerei os itens pelos valores
+                            máximos indicados acima
                           </label>
                         </div>
                       </div>
-
                     </Fragment>
                   )}
                 </Fragment>
@@ -675,7 +676,7 @@ export let CadastroEmpresa = props => {
                                 required
                                 validate={valide(true)}
                                 multiple={false}
-                                onChange={e => {
+                                onChange={(e) => {
                                   if (e.length > 0) {
                                     uploadFachadaLoja(e, loja.uuid, key);
                                   }
@@ -710,13 +711,14 @@ export let CadastroEmpresa = props => {
                         tiposDocumentos.map((tipo, key) => {
                           return empresa &&
                             empresa.arquivos_anexos.find(
-                              arquivo => arquivo.tipo_documento === tipo.id
+                              (arquivo) => arquivo.tipo_documento === tipo.id
                             ) ? (
                             <div>
                               <ArquivoExistente
                                 label={labelTemplate(tipo)}
                                 arquivo={empresa.arquivos_anexos.find(
-                                  arquivo => arquivo.tipo_documento === tipo.id
+                                  (arquivo) =>
+                                    arquivo.tipo_documento === tipo.id
                                 )}
                                 proponenteStatus={empresa && empresa.status}
                                 removeAnexo={removeAnexo}
@@ -753,7 +755,7 @@ export let CadastroEmpresa = props => {
                                 required={tipo.obrigatorio}
                                 validate={valide(tipo.obrigatorio)}
                                 multiple={false}
-                                onChange={e => {
+                                onChange={(e) => {
                                   if (e.length > 0) {
                                     uploadAnexo(e, tipo, key);
                                   }
@@ -821,13 +823,13 @@ export let CadastroEmpresa = props => {
           </div>
         </div>
       )}
-    </Fragment>
+    </PaginaComCabecalhoRodape>
   );
 };
 
 CadastroEmpresa = reduxForm({
   form: "CadastroLojaForm",
-  enableReinitialize: true
+  enableReinitialize: true,
 })(CadastroEmpresa);
 
 export default CadastroEmpresa;
