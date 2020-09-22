@@ -65,6 +65,14 @@ class MenuPrincipal extends React.Component {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/login"
+                  >
+                    Área restrita
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <a
                     className="nav-link text-secondary mb-1 pb-0"
                     href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-dos-interessados-em-se-cadastrar-para-vender-uniforme-escolar-as-familias/"
