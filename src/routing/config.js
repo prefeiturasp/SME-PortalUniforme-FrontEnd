@@ -20,7 +20,7 @@ const PrivateRouter = (
       ) : (
         <Redirect
           to={{
-            pathname: "/fornecedor/login",
+            pathname: "/login",
             state: { from: props.location },
           }} // eslint-disable-line
         />

@@ -2,14 +2,14 @@ import React from "react";
 import HTTP_STATUS from "http-status-codes";
 import PaginaHeaderSidebar from "components/PaginaHeaderSidebar";
 import { Field, Form } from "react-final-form";
-import { required } from "helpers/validators";
 import Botao from "components/Botao";
-import InputText from "components/Input/InputText";
+import { InputText } from "components/Input/InputText";
 import { BUTTON_STYLE, BUTTON_TYPE } from "components/Botao/constants";
-import "./style.scss";
 import { atualizarSenhaLogado } from "services/perfil.service";
 import { toastSuccess, toastError } from "components/Toast/dialogs";
 import { getError } from "helpers/helpers";
+import "./style.scss";
+import { required } from "helpers/fieldValidators";
 
 export const AlterarSenha = () => {
   const onSubmit = (values) => {
