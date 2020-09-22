@@ -57,7 +57,7 @@ export const Cadastro = ({ values, empresa, form, edital, logado }) => {
           <DadosEmpresa values={values} empresa={empresa} form={form} />
         </div>
       </div>
-      <TabelaPrecos />
+      <TabelaPrecos values={values} empresa={empresa} form={form} />
       <FieldArray name="lojas">
         {({ fields }) => (
           <div className="card mt-3 mb-3">
