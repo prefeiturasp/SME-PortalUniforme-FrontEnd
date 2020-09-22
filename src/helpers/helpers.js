@@ -1,3 +1,5 @@
+import React from "react";
+
 const STATUS_DICT = {
   INSCRITO: "Inscrição finalizada, em processo de credenciamento",
   CREDENCIADO: "Credenciado",
@@ -41,4 +43,8 @@ export const getError = (obj) => {
 
 export const between = (x, min, max) => {
   return x >= min && x <= max;
+};
+
+export const htmlTextToDiv = (tipo) => {
+  return <div dangerouslySetInnerHTML={{ __html: tipo.nome }} />;
 };
