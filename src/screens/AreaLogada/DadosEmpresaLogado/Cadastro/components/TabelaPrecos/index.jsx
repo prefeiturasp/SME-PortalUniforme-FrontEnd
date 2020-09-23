@@ -1,17 +1,20 @@
 import { InputText } from "components/Input/InputText";
 import React, { useEffect, useState } from "react";
 import { Field } from "react-final-form";
-import { getTiposFornecimentos } from "services/uniformes.service";
-import { getPrecoVezesQuantidade, getTotal } from "./helpers";
+import { getLimites, getTiposFornecimentos } from "services/uniformes.service";
+import { getPrecoVezesQuantidade, getTotal, maiorQueLimite } from "./helpers";
 import "./style.scss";
 
 export const TabelaPrecos = ({ form, values }) => {
   const [tiposDeUniforme, setTiposDeUniforme] = useState(null);
+  const [limites, setLimites] = useState(null);
 
   useEffect(() => {
     getTiposFornecimentos().then((response) => {
-      console.log(response);
       setTiposDeUniforme(response);
+    });
+    getLimites().then((response) => {
+      setLimites(response);
     });
   }, []);
 
@@ -71,6 +74,14 @@ export const TabelaPrecos = ({ form, values }) => {
                     <div className="col-3">
                       R$ {getTotal(tipoDeUniforme, values)}
                     </div>
+                  </div>
+                  <div className="text-danger">
+                    {maiorQueLimite(tipoDeUniforme, values, limites) &&
+                      `Valor maior que limite: ${maiorQueLimite(
+                        tipoDeUniforme,
+                        values,
+                        limites
+                      )}`}
                   </div>
                 </div>
               );

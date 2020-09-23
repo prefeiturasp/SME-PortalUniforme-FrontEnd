@@ -25,3 +25,20 @@ export const getTotal = (tipoDeUniforme, values) => {
     .toString()
     .replace(".", ",");
 };
+
+export const maiorQueLimite = (tipoDeUniforme, values, limites) => {
+  let total = 0;
+  tipoDeUniforme.uniformes.forEach((uniforme) => {
+    if (values[uniforme.nome]) {
+      total +=
+        parseFloat(values[uniforme.nome].replace(",", ".")) *
+        uniforme.quantidade;
+    }
+  });
+  const preco_maximo = limites.find(
+    (limite) => limite.categoria_uniforme === tipoDeUniforme.id
+  ).preco_maximo;
+  if (total > parseFloat(preco_maximo)) {
+    return preco_maximo.replace(".", ",");
+  } else return false;
+};
