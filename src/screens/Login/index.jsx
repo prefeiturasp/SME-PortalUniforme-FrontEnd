@@ -144,7 +144,7 @@ export const Login = () => {
                       to="#"
                       data-cy="esqueci-senha"
                       onClick={() =>
-                        history.push("/fornecedor/esqueci-minha-senha")
+                        history.push("/esqueci-minha-senha")
                       }
                     >
                       Esqueci minha senha

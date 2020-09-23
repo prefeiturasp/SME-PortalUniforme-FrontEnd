@@ -23,5 +23,5 @@ export const privateRoutes = [
     path: "/adm-fornecedor/anexos",
     component: AnexosLogado,
     exact: true,
-  },
+  }
 ];
