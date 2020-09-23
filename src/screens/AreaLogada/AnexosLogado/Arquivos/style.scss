@@ -1,0 +1,65 @@
+@import "styles/variaveis.scss";
+
+div.arquivos {
+  .set-opacity {
+    opacity: 0.5;
+  }
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .red-word {
+    color: $red;
+  }
+
+  .blink {
+    color: $red;
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  }
+  @keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  .set-opacity {
+    opacity: 0.5;
+  }
+  .card {
+    .card-body {
+      .card-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .undertitle {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+div.campos-permitidos {
+  font-size: 12px;
+  color: $gray;
+}
+
+div.data-validade {
+  label {
+    span {
+      color: $red;
+    }
+  }
+}
+
+.p-fileupload-choose {
+  input:disabled {
+    opacity: 0.5;
+  }
+}

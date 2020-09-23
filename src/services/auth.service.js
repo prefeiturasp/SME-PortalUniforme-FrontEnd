@@ -51,8 +51,8 @@ const logout = () => {
   localStorage.removeItem("razao_social");
   localStorage.removeItem("cnpj");
   window.location.href = process.env.PUBLIC_URL
-    ? `/${process.env.PUBLIC_URL}/fornecedor/login`
-    : "/fornecedor/login";
+    ? `/${process.env.PUBLIC_URL}/login`
+    : "/login";
 };
 
 export const getToken = () => {
