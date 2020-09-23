@@ -1,23 +1,15 @@
 import { InputText } from "components/Input/InputText";
-import React, { useEffect, useState } from "react";
+import {
+  somenteNumeros,
+  somenteValoresPositivos,
+  composeValidators,
+} from "helpers/fieldValidators";
+import React from "react";
 import { Field } from "react-final-form";
-import { getLimites, getTiposFornecimentos } from "services/uniformes.service";
 import { getPrecoVezesQuantidade, getTotal, maiorQueLimite } from "./helpers";
 import "./style.scss";
 
-export const TabelaPrecos = ({ form, values }) => {
-  const [tiposDeUniforme, setTiposDeUniforme] = useState(null);
-  const [limites, setLimites] = useState(null);
-
-  useEffect(() => {
-    getTiposFornecimentos().then((response) => {
-      setTiposDeUniforme(response);
-    });
-    getLimites().then((response) => {
-      setLimites(response);
-    });
-  }, []);
-
+export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
   return (
     <div className="card mt-3 tabela-precos">
       <div className="card-body">
@@ -56,6 +48,11 @@ export const TabelaPrecos = ({ form, values }) => {
                                 name={uniforme.nome}
                                 component={InputText}
                                 disabled={!values[tipoDeUniforme.id]}
+                                required={values[tipoDeUniforme.id] === true}
+                                validate={composeValidators(
+                                  somenteNumeros,
+                                  somenteValoresPositivos
+                                )}
                               />
                             </div>
                             <div className="col-3">x {uniforme.quantidade}</div>

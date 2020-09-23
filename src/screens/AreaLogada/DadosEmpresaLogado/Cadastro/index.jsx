@@ -13,7 +13,15 @@ import { toastError } from "components/Toast/dialogs";
 import "./style.scss";
 import { TabelaPrecos } from "./components/TabelaPrecos";
 
-export const Cadastro = ({ values, empresa, form, edital, logado }) => {
+export const Cadastro = ({
+  values,
+  empresa,
+  form,
+  edital,
+  logado,
+  tiposDeUniforme,
+  limites,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const copiarEndereco = (fields) => {
@@ -57,7 +65,13 @@ export const Cadastro = ({ values, empresa, form, edital, logado }) => {
           <DadosEmpresa values={values} empresa={empresa} form={form} />
         </div>
       </div>
-      <TabelaPrecos values={values} empresa={empresa} form={form} />
+      <TabelaPrecos
+        values={values}
+        empresa={empresa}
+        form={form}
+        tiposDeUniforme={tiposDeUniforme}
+        limites={limites}
+      />
       <FieldArray name="lojas">
         {({ fields }) => (
           <div className="card mt-3 mb-3">

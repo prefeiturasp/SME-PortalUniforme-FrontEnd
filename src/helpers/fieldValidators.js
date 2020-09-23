@@ -119,3 +119,11 @@ export const validaEmail = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "Email inválido"
     : undefined;
+
+export const somenteNumeros = (value) =>
+  value && /[^0-9.,]/i.test(value) ? "Somente números decimais" : undefined;
+
+  export const somenteValoresPositivos = (value) =>
+  value && parseFloat(value.replace(",", ".")) <= 0
+    ? "Somente valores positivos e maiores que 0"
+    : undefined;

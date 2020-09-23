@@ -12,7 +12,7 @@ export const PaginaComCabecalhoRodape = ({ children }) => {
 
   useEffect(() => {
     getAPIVersion().then((response) => {
-      setApiVersion(response.data);
+      setApiVersion(response);
     });
   }, []);
 
@@ -27,9 +27,8 @@ export const PaginaComCabecalhoRodape = ({ children }) => {
   return (
     <section
       role="main"
-      className={`${alterarFonte && "fonte-maior"} ${
-        alterarContraste && "alto-contraste"
-      }`}
+      className={`${alterarFonte && "fonte-maior"} ${alterarContraste &&
+        "alto-contraste"}`}
     >
       <MenuAcessibilidade
         handleFonte={handleFonte}

@@ -8,25 +8,40 @@ import { getProponente, atualizaLojas } from "services/cadastro.service";
 import { toastError, toastSuccess } from "components/Toast/dialogs";
 import { LoadingCircle } from "components/LoadingCircle";
 import "./style.scss";
-import { formataEmpresa } from "./helpers";
+import {
+  formataEmpresa,
+  formataPayloadLojasPrecos,
+  validaTabelaPrecos,
+} from "./helpers";
+import { getLimites, getTiposFornecimentos } from "services/uniformes.service";
 
 export const DadosEmpresaLogado = () => {
   const [empresa, setEmpresa] = useState(null);
+  const [tiposDeUniforme, setTiposDeUniforme] = useState(null);
+  const [limites, setLimites] = useState(null);
 
   const onSubmit = (values) => {
-    let continuar = true;
-    if (empresa.status === "CREDENCIADO") {
-      continuar = window.confirm(
-        "Você está com status CREDENCIADO. Ao alterar suas informações, seu status passará para ALTERADO para que suas informações sejam reavalidadas. Deseja prosseguir?"
-      );
-    }
-    if (continuar) {
-      atualizaLojas(localStorage.getItem("uuid"), values).then((response) => {
-        if (response.status === HTTP_STATUS.OK) {
-          toastSuccess("Loja(s) atualizada(s) com sucesso");
-          setEmpresa(formataEmpresa(response.data));
-        }
-      });
+    const erro = validaTabelaPrecos(values, tiposDeUniforme, limites);
+    if (erro) {
+      toastError(erro);
+    } else {
+      let continuar = true;
+      if (empresa.status === "CREDENCIADO") {
+        continuar = window.confirm(
+          "Você está com status CREDENCIADO. Ao alterar suas informações, seu status passará para ALTERADO para que suas informações sejam reavalidadas. Deseja prosseguir?"
+        );
+      }
+      if (continuar) {
+        atualizaLojas(
+          localStorage.getItem("uuid"),
+          formataPayloadLojasPrecos(values, tiposDeUniforme)
+        ).then((response) => {
+          if (response.status === HTTP_STATUS.OK) {
+            toastSuccess("Loja(s) atualizada(s) com sucesso");
+            setEmpresa(formataEmpresa(response.data));
+          }
+        });
+      }
     }
   };
 
@@ -41,6 +56,12 @@ export const DadosEmpresaLogado = () => {
         }
       });
     };
+    getTiposFornecimentos().then((response) => {
+      setTiposDeUniforme(response);
+    });
+    getLimites().then((response) => {
+      setLimites(response);
+    });
     carregaEmpresa();
   }, []);
 
@@ -65,6 +86,8 @@ export const DadosEmpresaLogado = () => {
                   empresa={empresa}
                   form={form}
                   logado={true}
+                  tiposDeUniforme={tiposDeUniforme}
+                  limites={limites}
                 />
               </form>
             )}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import endPont from "../constants/endPonts.constants";
 const authHeader = {
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 };
 
 export const getUniformes = async () => {
@@ -36,60 +36,60 @@ export const getLimites = async () => {
   return response.data;
 };
 
-export const cadastrarEmpresa = async payload => {
+export const cadastrarEmpresa = async (payload) => {
   return axios
     .post(`${endPont.API_URL}/proponentes/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const getEmpresa = async uuid => {
+export const getEmpresa = async (uuid) => {
   return axios
     .get(`${endPont.API_URL}/proponentes/${uuid}/`, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const concluirCadastro = async uuid => {
+export const concluirCadastro = async (uuid) => {
   return axios
     .patch(
       `${endPont.API_URL}/proponentes/${uuid}/concluir-cadastro/`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const setAnexo = payload => {
+export const setAnexo = (payload) => {
   return axios
     .post(`${endPont.API_URL}/anexos/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const deleteAnexo = uuid => {
+export const deleteAnexo = (uuid) => {
   return axios
     .delete(`${endPont.API_URL}/anexos/${uuid}/`, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
@@ -97,15 +97,15 @@ export const deleteAnexo = uuid => {
 export const setFachadaLoja = (payload, uuid) => {
   return axios
     .patch(`${endPont.API_URL}/lojas/${uuid}/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const verificaCnpj = async cnpj => {
+export const verificaCnpj = async (cnpj) => {
   const response = await axios.get(
     `${endPont.API_URL}/proponentes/verifica-cnpj/?cnpj=${cnpj}`,
     authHeader
@@ -132,16 +132,16 @@ export const busca_url_instrucao_normativa = async () => {
   return `${domain}${response.data}`;
 };
 
-export const verificaEmail = async email => {
+export const verificaEmail = async (email) => {
   return axios
     .get(
       `${endPont.API_URL}/proponentes/verifica-email/?email=${email}`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
@@ -151,21 +151,19 @@ export const getAPIVersion = async () => {
     `${endPont.API_URL}/api-version/`,
     authHeader
   );
-  console.log(`API Version: ${response.data["API_Version"]}`);
   return response.data["API_Version"];
 };
 
 export const getLojasCredenciadas = async (latitude, longitude) => {
-  console.log(longitude)
   return axios
     .get(
       `${endPont.API_URL}/lojas-credenciadas/?latitude=${latitude}&longitude=${longitude}`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };

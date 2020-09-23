@@ -16,7 +16,7 @@ export class Sidebar extends Component {
 
   async componentDidMount() {
     const response = await getAPIVersion();
-    this.setState({ API_VERSION: response.data });
+    this.setState({ API_VERSION: response });
   }
 
   render() {

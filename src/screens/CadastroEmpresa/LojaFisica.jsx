@@ -261,7 +261,6 @@ const LojaFisica = (props) => {
         id={`site_${props.chave}`}
         onChange={(e) => {
           const valor = e.target.value;
-          console.log(valor);
           setSite(valor);
           setPayload({ ...payload, site: valor });
           props.onUpdate({ ...payload, site: valor }, props.chave);
