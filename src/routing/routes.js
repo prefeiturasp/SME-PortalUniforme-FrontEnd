@@ -7,6 +7,7 @@ import { ProcurarFornecedores } from "screens/ProcurarFornecedores";
 import PortalFornecedores from "screens/PortalFornecedores";
 import { EsqueciMinhaSenha } from "screens/EsqueciMinhaSenha";
 import { RecuperarSenha } from "screens/RecuperarSenha";
+import { LojasCredenciadas } from "screens/LojasCredenciadas";
 
 export const routes = [
   {
@@ -52,6 +53,11 @@ export const routes = [
   {
     path: "/mapa-de-fornecedores",
     component: MapaDeFornecedores,
+    exact: true,
+  },
+  {
+    path: "/fornecedor/lojas-credenciadas",
+    component: LojasCredenciadas,
     exact: true,
   },
 ];

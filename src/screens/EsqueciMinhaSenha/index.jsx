@@ -85,7 +85,7 @@ export const EsqueciMinhaSenha = () => {
                   texto="voltar para o login"
                   style={BUTTON_STYLE.BLUE}
                   type={BUTTON_TYPE.BUTTON}
-                  onClick={() => history.push("/fornecedor/login")}
+                  onClick={() => history.push("/login")}
                 />
               </div>
             </div>
