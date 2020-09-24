@@ -22,7 +22,7 @@ export const RecuperarSenha = () => {
       if (response.status === HTTP_STATUS.OK) {
         toastSuccess("Senha atualizada com sucesso");
         setTimeout(() => {
-          history.push("/fornecedor/login");
+          history.push("/login");
         }, 1500);
       } else {
         toastError(getError(response.data));
