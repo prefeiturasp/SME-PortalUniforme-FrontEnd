@@ -16,7 +16,7 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
         <h2>Preços máximos por item (fornecimento)</h2>
         <h3 className="mt-2">Tipo de Fornecimento</h3>
         <hr />
-        {tiposDeUniforme && (
+        {tiposDeUniforme && limites && (
           <div className="row">
             {tiposDeUniforme.map((tipoDeUniforme) => {
               return (
