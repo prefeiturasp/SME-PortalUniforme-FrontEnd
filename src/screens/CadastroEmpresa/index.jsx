@@ -63,7 +63,7 @@ export let CadastroEmpresa = (props) => {
   const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
   const [limite, setLimite] = useState(false);
-  const [limites, setLimites] = useState([]);
+  const [limites, setLimites] = useState(null);
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
   const [datasValidades, setDatasValidades] = useState({});
@@ -521,19 +521,21 @@ export let CadastroEmpresa = (props) => {
                             Tipo de Fornecimento
                           </div>
                           <hr className="pb-3" />
-                          {tiposFornecimentos ? (
-                            tiposFornecimentos.map((tipo, key) => {
-                              return (
-                                <TiposFornecimentos
-                                  key={key}
-                                  empresa={empresa}
-                                  tipo={tipo}
-                                  onUpdate={onUpdateUniforme}
-                                  limites={limites}
-                                  maiorQueLimite={maiorQueLimite}
-                                />
-                              );
-                            })
+                          {limites && tiposFornecimentos ? (
+                            tiposFornecimentos
+                              .filter((tipo) => tipo.uniformes.length > 0)
+                              .map((tipo, key) => {
+                                return (
+                                  <TiposFornecimentos
+                                    key={key}
+                                    empresa={empresa}
+                                    tipo={tipo}
+                                    onUpdate={onUpdateUniforme}
+                                    limites={limites}
+                                    maiorQueLimite={maiorQueLimite}
+                                  />
+                                );
+                              })
                           ) : (
                             <div>Erro ao carregar tipos de fornecimentos</div>
                           )}

@@ -21,7 +21,7 @@ export class ProcurarFornecedores extends Component {
       tipoUniformeSelecionados: [],
       latitude: null,
       longitude: null,
-      endereco: null
+      endereco: null,
     };
   }
 
@@ -30,9 +30,9 @@ export class ProcurarFornecedores extends Component {
     this.setState({ uniformes });
   }
 
-  onSelectedChanged = tipoUniformeSelecionados => {
+  onSelectedChanged = (tipoUniformeSelecionados) => {
     this.setState({
-      tipoUniformeSelecionados
+      tipoUniformeSelecionados,
     });
   };
 
@@ -41,7 +41,7 @@ export class ProcurarFornecedores extends Component {
       endereco,
       tipoUniformeSelecionados,
       latitude,
-      longitude
+      longitude,
     } = this.state;
     if (!latitude || !longitude) {
       toastWarn("Selecione um dos resultados de endereço para buscar");
@@ -54,17 +54,17 @@ export class ProcurarFornecedores extends Component {
           latitude: latitude,
           longitude: longitude,
           tipoUniformeSelecionados: tipoUniformeSelecionados,
-          endereco: endereco.split(",")[0]
-        }
+          endereco: endereco.split(",")[0],
+        },
       });
     }
   };
 
-  handleAddressChange = values => {
+  handleAddressChange = (values) => {
     this.setState({
       latitude: values.latitude,
       longitude: values.longitude,
-      endereco: values.endereco
+      endereco: values.endereco,
     });
   };
 
@@ -104,12 +104,12 @@ export class ProcurarFornecedores extends Component {
                   name="tipo_uniforme"
                   selected={tipoUniformeSelecionados}
                   options={formatarParaMultiselect(uniformes)}
-                  onSelectedChanged={values => this.onSelectedChanged(values)}
+                  onSelectedChanged={(values) => this.onSelectedChanged(values)}
                   disableSearch={true}
                   overrideStrings={{
                     selectSomeItems: "Selecione",
                     allItemsAreSelected: "Todos os itens estão selecionados",
-                    selectAll: "Todos"
+                    selectAll: "Todos",
                   }}
                 />
               </div>
@@ -169,7 +169,7 @@ export class ProcurarFornecedores extends Component {
                   uniforme escolar é composto por:
                   <ul className="lista-home pt-2 ml-0 pl-0">
                     {uniformes &&
-                      uniformes.map(uniforme => {
+                      uniformes.map((uniforme) => {
                         return <li key={uniforme.id}>{uniforme.nome}</li>;
                       })}
                   </ul>
@@ -224,6 +224,32 @@ export class ProcurarFornecedores extends Component {
             </div>
           </div>
         </div>
+        <div className="container">
+          <div className="row mt-5">
+            <div className="col-lg-6 mb-lg-0">
+              <div className="embed-responsive embed-responsive-16by9">
+                <iframe
+                  title="Vídeo sobre o Portal do Uniforme"
+                  src="https://www.youtube.com/embed/FjCjEL7HhKA"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <BlocoTexto title="Saiba como escolher a numeração correta do uniforme ">
+                <div className="justify-content-lg-end justify-content-center">
+                  Se você for adquirir o uniforme nas lojas credenciadas e não
+                  estiver com a criança ou jovem ao seu lado, para provar a
+                  peça, é importante saber que numeração ele(a) usa. O vídeo ao
+                  lado ensina como tirar as medidas para comprar o uniforme no
+                  tamanho correto.
+                </div>
+              </BlocoTexto>
+            </div>
+          </div>
+        </div>
         <div className="container mt-3">
           <BlocoTexto title="Problemas na compra do uniforme">
             <div className="justify-content-lg-end justify-content-center">
@@ -270,7 +296,7 @@ export class ProcurarFornecedores extends Component {
 
 ProcurarFornecedores = reduxForm({
   // a unique name for the form
-  form: "ProcurarFornecedoresForm"
+  form: "ProcurarFornecedoresForm",
 })(ProcurarFornecedores);
 
 export default withRouter(ProcurarFornecedores);

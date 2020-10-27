@@ -35,9 +35,11 @@ export const maiorQueLimite = (tipoDeUniforme, values, limites) => {
         uniforme.quantidade;
     }
   });
-  const preco_maximo = limites.find(
+  const limite = limites.find(
     (limite) => limite.categoria_uniforme === tipoDeUniforme.id
-  ).preco_maximo;
+  );
+  if (!limite) return false;
+  const preco_maximo = limite.preco_maximo;
   if (total > parseFloat(preco_maximo)) {
     return preco_maximo.replace(".", ",");
   } else return false;

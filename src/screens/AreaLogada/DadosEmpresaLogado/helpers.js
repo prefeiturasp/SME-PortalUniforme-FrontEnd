@@ -10,14 +10,15 @@ const addCidadeEstadoSP = (empresa) => {
 };
 
 const formataPrecos = (empresa) => {
-  empresa["MALHARIA"] =
-    empresa.ofertas_de_uniformes.find(
-      (oferta) => oferta.uniforme_categoria === "MALHARIA"
-    ) !== undefined;
-  empresa["CALCADO"] =
-    empresa.ofertas_de_uniformes.find(
-      (oferta) => oferta.uniforme_categoria === "CALCADO"
-    ) !== undefined;
+  let categorias = [];
+  empresa.ofertas_de_uniformes.forEach((oferta) => {
+    if (!categorias.includes(oferta.uniforme_categoria)) {
+      categorias.push(oferta.uniforme_categoria);
+    }
+  });
+  categorias.forEach(categoria => {
+    empresa[categoria] = true;
+  })
   empresa.ofertas_de_uniformes.forEach((oferta) => {
     empresa[oferta.nome] = oferta.preco.replace(".", ",");
   });
