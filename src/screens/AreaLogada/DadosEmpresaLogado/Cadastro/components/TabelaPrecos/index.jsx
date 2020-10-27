@@ -56,7 +56,13 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
                                   name={uniforme.nome}
                                   component={InputText}
                                   disabled={!values[tipoDeUniforme.id]}
-                                  required={values[tipoDeUniforme.id] === true}
+                                  required={
+                                    limites.find(
+                                      (value) =>
+                                        value.categoria_uniforme ===
+                                        tipoDeUniforme.id
+                                    ).obrigatorio
+                                  }
                                   validate={composeValidators(
                                     somenteNumeros,
                                     somenteValoresPositivos
