@@ -14,6 +14,13 @@ export const getUniformes = async () => {
   return response.data;
 };
 
+export const getUniformesPorCategoria = async () => {
+  const response = await axios.get(
+    `${endPont.API_URL}/uniformes/lookup-categorias/`,
+    authHeader
+  );
+  return response.data;
+};
 export const getTiposFornecimentos = async () => {
   const response = await axios.get(
     `${endPont.API_URL}/uniformes/categorias/`,

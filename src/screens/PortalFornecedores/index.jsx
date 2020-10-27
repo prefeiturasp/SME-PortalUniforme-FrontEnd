@@ -3,7 +3,7 @@ import BlocoTexto from "components/BlocoTexto";
 import imgFachadaLoja from "img/fachada-loja.png";
 import imgPecasUniforme from "img/pecas-uniforme.png";
 import imgDesenhoFornecedor from "img/desenho-fornecedor.png";
-import { getUniformes } from "services/uniformes.service";
+import { getUniformesPorCategoria } from "services/uniformes.service";
 import {
   busca_url_edital,
   busca_url_instrucao_normativa,
@@ -15,7 +15,7 @@ export default class PortalFornecedores extends Component {
   constructor() {
     super();
     this.state = {
-      uniformes: [],
+      categorias: [],
       edital: {
         url: "",
         label: "",
@@ -43,8 +43,8 @@ export default class PortalFornecedores extends Component {
   }
 
   async componentDidMount() {
-    const uniformes = await getUniformes();
-    this.setState({ uniformes });
+    const categorias = await getUniformesPorCategoria();
+    this.setState({ categorias });
   }
 
   get_edital_link = async () => {
@@ -107,7 +107,7 @@ export default class PortalFornecedores extends Component {
   }
 
   render() {
-    const { uniformes } = this.state;
+    const { categorias } = this.state;
     return (
       <PaginaComCabecalhoRodape>
         <div className="w-100 oferta-imoveis position-relative">
@@ -259,14 +259,27 @@ export default class PortalFornecedores extends Component {
         <div className="w-100 cidade-precisa">
           <div className="container">
             <div className="row mt-5">
-              <div className="col-lg-6 col-sm-12 mb-lg-0">
+              <div className="col-lg-6 col-sm-12">
                 <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
-                  <ul className="lista-home ml-0 pl-0">
-                    {uniformes &&
-                      uniformes.map((uniforme) => {
-                        return <li key={uniforme.id}>{uniforme.nome}</li>;
-                      })}
-                  </ul>
+                  <div className="row">
+                    {categorias &&
+                      categorias
+                        .filter((categoria) => categoria.itens.length > 0)
+                        .map((categoria) => {
+                          return (
+                            <div className="col-6">
+                              <div className="font-weight-bold text-align-center">
+                                {categoria.categoria}:
+                              </div>
+                              <ul className="lista-home">
+                                {categoria.itens.map((item) => {
+                                  return <li key={item.nome}>{item.nome}</li>;
+                                })}
+                              </ul>
+                            </div>
+                          );
+                        })}
+                  </div>
                 </BlocoTexto>
               </div>
               <div className="col-lg-6 col-sm-12 d-flex justify-content-lg-end justify-content-center">
@@ -279,7 +292,32 @@ export default class PortalFornecedores extends Component {
             </div>
           </div>
         </div>
-
+        <div className="container mt-3">
+          O fornecedor deverá fornecer pelo menos o kit verão, sendo facultativa
+          a venda do kit inverno. Cada família poderá compor o seu próprio kit
+          da forma que for mais adequada a cada estudante, podendo adquirir os
+          itens de forma avulsa, ou um dos kits completos, a considerar suas
+          necessidades específicas, de acordo com os padrões das peças aprovadas
+          pela Secretaria Municipal de Educação e o valor limite
+          disponibilizado. Além disso, outra novidade, é que o kit terá uma
+          descaracterização perante a{" "}
+          <a href="http://legislacao.prefeitura.sp.gov.br/leis/lei-17437-de-12-de-agosto-de-2020">
+            Lei nº 17.437/2020
+          </a>{" "}
+          que estabelece ações de retorno às aulas presenciais na Rede Municipal
+          de Ensino, em que possibilita a flexibilização em virtude do período
+          de enfrentamento da pandemia decorrente do novo coronavírus em São
+          Paulo, onde as famílias poderão optar em comprar os itens sem o brasão
+          da Prefeitura do Município de São Paulo, por exemplo, e demais fatores
+          que podem ser impactantes no processo de produção para os lojistas em
+          razão da crise vivenciada em âmbito mundial. Demais detalhes estão
+          presentes na <a href="#">Instrução Normativa nº XXX/SME/2020</a>
+          <strong>*</strong>
+        </div>
+        <div className="container mt-3">
+          <strong>*</strong>A nova instrução normativa está em processo de
+          análise para posterior publicação.
+        </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
             <BlocoTexto title="O que acontece depois de se cadastrar?">
