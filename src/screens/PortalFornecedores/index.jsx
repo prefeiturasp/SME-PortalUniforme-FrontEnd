@@ -3,7 +3,7 @@ import BlocoTexto from "components/BlocoTexto";
 import imgFachadaLoja from "img/fachada-loja.png";
 import imgPecasUniforme from "img/pecas-uniforme.png";
 import imgDesenhoFornecedor from "img/desenho-fornecedor.png";
-import { getUniformes } from "services/uniformes.service";
+import { getUniformesPorCategoria } from "services/uniformes.service";
 import {
   busca_url_edital,
   busca_url_instrucao_normativa,
@@ -15,7 +15,7 @@ export default class PortalFornecedores extends Component {
   constructor() {
     super();
     this.state = {
-      uniformes: [],
+      categorias: [],
       edital: {
         url: "",
         label: "",
@@ -43,8 +43,8 @@ export default class PortalFornecedores extends Component {
   }
 
   async componentDidMount() {
-    const uniformes = await getUniformes();
-    this.setState({ uniformes });
+    const categorias = await getUniformesPorCategoria();
+    this.setState({ categorias });
   }
 
   get_edital_link = async () => {
@@ -107,7 +107,7 @@ export default class PortalFornecedores extends Component {
   }
 
   render() {
-    const { uniformes } = this.state;
+    const { categorias } = this.state;
     return (
       <PaginaComCabecalhoRodape>
         <div className="w-100 oferta-imoveis position-relative">
@@ -259,25 +259,26 @@ export default class PortalFornecedores extends Component {
         <div className="w-100 cidade-precisa">
           <div className="container">
             <div className="row mt-5">
-              <div className="col-lg-6 col-sm-12 mb-lg-0">
+              <div className="col-lg-6 col-sm-12">
                 <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
                   <div className="row">
-                    <div className="col-6">
-                      <ul className="lista-home ml-0 pl-0">
-                        {uniformes &&
-                          uniformes.map((uniforme) => {
-                            return <li key={uniforme.id}>{uniforme.nome}</li>;
-                          })}
-                      </ul>
-                    </div>
-                    <div className="col-6">
-                      <ul className="lista-home ml-0 pl-0">
-                        {uniformes &&
-                          uniformes.map((uniforme) => {
-                            return <li key={uniforme.id}>{uniforme.nome}</li>;
-                          })}
-                      </ul>
-                    </div>
+                    {categorias &&
+                      categorias
+                        .filter((categoria) => categoria.itens.length > 0)
+                        .map((categoria) => {
+                          return (
+                            <div className="col-6">
+                              <div className="font-weight-bold text-align-center">
+                                {categoria.categoria}:
+                              </div>
+                              <ul className="lista-home">
+                                {categoria.itens.map((item) => {
+                                  return <li key={item.nome}>{item.nome}</li>;
+                                })}
+                              </ul>
+                            </div>
+                          );
+                        })}
                   </div>
                 </BlocoTexto>
               </div>
@@ -291,7 +292,7 @@ export default class PortalFornecedores extends Component {
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="container mt-3">
           O fornecedor deverá fornecer pelo menos o kit verão, sendo facultativa
           a venda do kit inverno. Cada família poderá compor o seu próprio kit
           da forma que for mais adequada a cada estudante, podendo adquirir os
