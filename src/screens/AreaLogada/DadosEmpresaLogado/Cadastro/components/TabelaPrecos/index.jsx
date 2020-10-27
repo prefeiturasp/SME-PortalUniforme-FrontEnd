@@ -18,71 +18,81 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
         <hr />
         {tiposDeUniforme && limites && (
           <div className="row">
-            {tiposDeUniforme.map((tipoDeUniforme) => {
-              return (
-                <div className="col-6">
-                  <label className="produto col-sm-6 col-12 my-auto">
-                    <Field
-                      onClick={() => {
-                        values[tipoDeUniforme.id] &&
-                          tipoDeUniforme.uniformes.forEach((uniforme) => {
-                            values[uniforme.nome] = undefined;
-                          });
-                      }}
-                      name={`${tipoDeUniforme.id}`}
-                      checked={values[tipoDeUniforme.id]}
-                      component="input"
-                      type="checkbox"
-                    />{" "}
-                    {tipoDeUniforme.nome}
-                  </label>
-                  {tipoDeUniforme.uniformes.map((uniforme) => {
-                    return (
-                      <div className="row mt-3">
-                        <div className="col-3">{uniforme.nome}</div>
-                        <div className="col-6">
-                          <div className="row">
-                            <div className="col-3 text-right">R$ </div>
-                            <div className="col-6">
-                              <Field
-                                name={uniforme.nome}
-                                component={InputText}
-                                disabled={!values[tipoDeUniforme.id]}
-                                required={values[tipoDeUniforme.id] === true}
-                                validate={composeValidators(
-                                  somenteNumeros,
-                                  somenteValoresPositivos
-                                )}
-                              />
+            {tiposDeUniforme
+              .filter((tipo) => tipo.uniformes.length > 0)
+              .map((tipoDeUniforme) => {
+                return (
+                  <div className="col-6">
+                    <label className="produto col-sm-6 col-12 my-auto">
+                      <Field
+                        onClick={() => {
+                          values[tipoDeUniforme.id] &&
+                            tipoDeUniforme.uniformes.forEach((uniforme) => {
+                              values[uniforme.nome] = undefined;
+                            });
+                        }}
+                        name={`${tipoDeUniforme.id}`}
+                        checked={values[tipoDeUniforme.id]}
+                        required={
+                          limites.find(
+                            (value) =>
+                              value.categoria_uniforme === tipoDeUniforme.id
+                          ).obrigatorio
+                        }
+                        component="input"
+                        type="checkbox"
+                      />{" "}
+                      {tipoDeUniforme.nome}
+                    </label>
+                    {tipoDeUniforme.uniformes.map((uniforme) => {
+                      return (
+                        <div className="row mt-3">
+                          <div className="col-3">{uniforme.nome}</div>
+                          <div className="col-6">
+                            <div className="row">
+                              <div className="col-3 text-right">R$ </div>
+                              <div className="col-6">
+                                <Field
+                                  name={uniforme.nome}
+                                  component={InputText}
+                                  disabled={!values[tipoDeUniforme.id]}
+                                  required={values[tipoDeUniforme.id] === true}
+                                  validate={composeValidators(
+                                    somenteNumeros,
+                                    somenteValoresPositivos
+                                  )}
+                                />
+                              </div>
+                              <div className="col-3">
+                                x {uniforme.quantidade}
+                              </div>
                             </div>
-                            <div className="col-3">x {uniforme.quantidade}</div>
+                          </div>
+                          <div className="col-3">
+                            R$ {getPrecoVezesQuantidade(values, uniforme)}
                           </div>
                         </div>
-                        <div className="col-3">
-                          R$ {getPrecoVezesQuantidade(values, uniforme)}
-                        </div>
+                      );
+                    })}
+                    <div className="row">
+                      <div className="col-9 font-weight-bold text-right">
+                        Total:
                       </div>
-                    );
-                  })}
-                  <div className="row">
-                    <div className="col-9 font-weight-bold text-right">
-                      Total:
+                      <div className="col-3">
+                        R$ {getTotal(tipoDeUniforme, values)}
+                      </div>
                     </div>
-                    <div className="col-3">
-                      R$ {getTotal(tipoDeUniforme, values)}
+                    <div className="text-danger">
+                      {maiorQueLimite(tipoDeUniforme, values, limites) &&
+                        `Valor maior que limite: ${maiorQueLimite(
+                          tipoDeUniforme,
+                          values,
+                          limites
+                        )}`}
                     </div>
                   </div>
-                  <div className="text-danger">
-                    {maiorQueLimite(tipoDeUniforme, values, limites) &&
-                      `Valor maior que limite: ${maiorQueLimite(
-                        tipoDeUniforme,
-                        values,
-                        limites
-                      )}`}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         )}
       </div>

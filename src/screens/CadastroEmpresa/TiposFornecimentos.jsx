@@ -3,14 +3,13 @@ import { Row, Col, Form } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import TipoFornecimento from "./TipoFornecimento";
 
-const TiposFornecimentos = props => {
-  const initialUniformesInfo = props.tipo.uniformes.map(uniforme => ({
+const TiposFornecimentos = (props) => {
+  const initialUniformesInfo = props.tipo.uniformes.map((uniforme) => ({
     id: uniforme.id,
     preco: "",
-    total: 0
+    total: 0,
   }));
   const [uniformesInfo, setUniformesInfo] = useState(initialUniformesInfo);
-  const [requerido, setRequerido] = useState(false);
   const [desabilitado, setDesabilitado] = useState(true);
   const [checado, setChecado] = useState(false);
   const [limite, setLimite] = useState(0);
@@ -19,29 +18,27 @@ const TiposFornecimentos = props => {
     const carregaLimite = async () => {
       const limites = props.limites;
       const limite = limites.filter(
-        value => value.categoria_uniforme === props.tipo.id
+        (value) => value.categoria_uniforme === props.tipo.id
       );
       setLimite(parseFloat(limite[0].preco_maximo));
     };
     carregaLimite();
   });
 
-  const checkProduto = event => {
+  const checkProduto = (event) => {
     if (event) {
       setDesabilitado(false);
-      setRequerido(true);
       setChecado(true);
     } else {
       setChecado(false);
       setDesabilitado(true);
-      setRequerido(false);
       limpaPrecos();
       delUniforme();
     }
   };
 
   const delUniforme = () => {
-    uniformesInfo.forEach(element => {
+    uniformesInfo.forEach((element) => {
       props.onUpdate({}, element.id);
     });
   };
@@ -68,11 +65,11 @@ const TiposFornecimentos = props => {
     return total + num;
   };
 
-  const sum = prices => {
+  const sum = (prices) => {
     return prices.reduce(getSum, 0);
   };
 
-  const maiorQueLimite = soma => {
+  const maiorQueLimite = (soma) => {
     const eMaior = soma > limite;
     props.maiorQueLimite(eMaior);
     return eMaior;
@@ -85,12 +82,17 @@ const TiposFornecimentos = props => {
         label={props.tipo.nome}
         key={props.tipo.id}
         type="checkbox"
+        required={
+          props.limites.find(
+            (value) => value.categoria_uniforme === props.tipo.id
+          ).obrigatorio
+        }
         disabled={props.empresa}
-        onChange={e => checkProduto(e.target.checked)}
+        onChange={(e) => checkProduto(e.target.checked)}
         checked={
           props.empresa &&
           props.empresa.ofertas_de_uniformes.find(
-            oferta => oferta.uniforme_categoria === props.tipo.id
+            (oferta) => oferta.uniforme_categoria === props.tipo.id
           )
             ? true
             : checado
@@ -108,10 +110,10 @@ const TiposFornecimentos = props => {
             valor={
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
-                    oferta => oferta.uniforme === uniforme.id
+                    (oferta) => oferta.uniforme === uniforme.id
                   ) &&
                   props.empresa.ofertas_de_uniformes.find(
-                    oferta => oferta.uniforme === uniforme.id
+                    (oferta) => oferta.uniforme === uniforme.id
                   ).preco
                 : uniformesInfo[key].preco
             }
@@ -119,14 +121,18 @@ const TiposFornecimentos = props => {
             total={
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
-                    oferta => oferta.uniforme === uniforme.id
+                    (oferta) => oferta.uniforme === uniforme.id
                   ) &&
                   props.empresa.ofertas_de_uniformes.find(
-                    oferta => oferta.uniforme === uniforme.id
+                    (oferta) => oferta.uniforme === uniforme.id
                   ).preco * uniforme.quantidade
                 : uniformesInfo[key].total
             }
-            requerido={requerido}
+            requerido={
+              props.limites.find(
+                (value) => value.categoria_uniforme === props.tipo.id
+              ).obrigatorio
+            }
             checkProduto={checkProduto}
             onUpdate={props.onUpdate}
           />
@@ -143,20 +149,20 @@ const TiposFornecimentos = props => {
           {props.empresa
             ? sum(
                 props.empresa.ofertas_de_uniformes
-                  .filter(item => item.uniforme_categoria === props.tipo.id)
+                  .filter((item) => item.uniforme_categoria === props.tipo.id)
                   .map(
-                    item => parseFloat(item.preco) * item.uniforme_quantidade
+                    (item) => parseFloat(item.preco) * item.uniforme_quantidade
                   )
               )
                 .toFixed(2)
                 .toString()
                 .replace(".", ",")
-            : sum(uniformesInfo.map(item => item.total))
+            : sum(uniformesInfo.map((item) => item.total))
                 .toFixed(2)
                 .toString()
                 .replace(".", ",")}
           <Form.Text className="text-danger">
-            {maiorQueLimite(sum(uniformesInfo.map(item => item.total)))
+            {maiorQueLimite(sum(uniformesInfo.map((item) => item.total)))
               ? `Valor maior que limite: ${limite}`
               : ""}
           </Form.Text>
