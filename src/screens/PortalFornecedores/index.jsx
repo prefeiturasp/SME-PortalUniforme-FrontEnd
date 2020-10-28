@@ -313,21 +313,7 @@ export default class PortalFornecedores extends Component {
           Paulo, onde as famílias poderão optar em comprar os itens sem o brasão
           da Prefeitura do Município de São Paulo, por exemplo, e demais fatores
           que podem ser impactantes no processo de produção para os lojistas em
-          razão da crise vivenciada em âmbito mundial. Demais detalhes estão
-          presentes na{" "}
-          <a
-            href={this.state.instrucaoNormativa.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={this.editalClick}
-          >
-            Instrução Normativa nº XXX/SME/2020
-          </a>
-          <strong>*</strong>
-        </div>
-        <div className="container mt-3">
-          <strong>*</strong>A nova instrução normativa está em processo de
-          análise para posterior publicação.
+          razão da crise vivenciada em âmbito mundial.
         </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
