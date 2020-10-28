@@ -11,10 +11,9 @@ import { LoadingCircle } from "components/LoadingCircle";
 import { QUANTIDADE_POR_PAGINA } from "components/Paginacao/constants";
 import { Paginacao } from "components/Paginacao";
 import {
-  lojaForneceMalharia,
-  lojaForneceCalcado,
   sortByParam,
   acrescentaTotalUniformes,
+  getBadges,
 } from "./helper";
 import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
@@ -292,16 +291,13 @@ export class MapaDeFornecedores extends Component {
                                   </div>
                                 </div>
                                 <div className="badges col-sm-5 col-12">
-                                  {lojaForneceMalharia(loja) && (
-                                    <span className="badge-fornecimento">
-                                      Vestuário
-                                    </span>
-                                  )}
-                                  {lojaForneceCalcado(loja) && (
-                                    <span className="badge-fornecimento">
-                                      Calçado
-                                    </span>
-                                  )}
+                                  {getBadges(loja).map((badge) => {
+                                    return (
+                                      <span className="badge-fornecimento">
+                                        {badge}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               </div>
                               {loja.ativo && (

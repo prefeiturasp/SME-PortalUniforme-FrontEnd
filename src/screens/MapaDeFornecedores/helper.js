@@ -1,29 +1,23 @@
-export const lojaForneceMalharia = loja => {
-  return (
-    loja.proponente.ofertas_de_uniformes.find(
-      oferta => oferta.uniforme_categoria === "MALHARIA"
-    ) !== undefined
-  );
-};
-
-export const lojaForneceCalcado = loja => {
-  return (
-    loja.proponente.ofertas_de_uniformes.find(
-      oferta => oferta.uniforme_categoria === "CALCADO"
-    ) !== undefined
-  );
+export const getBadges = (loja) => {
+  let badges = [];
+  loja.proponente.ofertas_de_uniformes.forEach((oferta) => {
+    if (!badges.includes(oferta.uniforme_categoria_display)) {
+      badges.push(oferta.uniforme_categoria_display);
+    }
+  });
+  return badges;
 };
 
 export const acrescentaTotalUniformes = (lojas, uniformesSelecionados) => {
   let total = 0.0;
   let lojas_ = [];
-  lojas.forEach(loja => {
+  lojas.forEach((loja) => {
     total = 0.0;
     loja.proponente.ofertas_de_uniformes
-      .filter(uniforme =>
+      .filter((uniforme) =>
         uniformesSelecionados.includes(uniforme.item.split(" ")[0])
       )
-      .forEach(uniforme => {
+      .forEach((uniforme) => {
         total += parseFloat(uniforme.preco);
       });
     loja.total_uniformes = total
@@ -37,7 +31,7 @@ export const acrescentaTotalUniformes = (lojas, uniformesSelecionados) => {
   return lojas_;
 };
 
-export const sortByDistance = lista => {
+export const sortByDistance = (lista) => {
   return lista.sort((a, b) => {
     if (parseFloat(a["distancia"]) < parseFloat(b["distancia"])) return -1;
     else if (parseFloat(a["distancia"]) > parseFloat(b["distancia"])) return 1;
