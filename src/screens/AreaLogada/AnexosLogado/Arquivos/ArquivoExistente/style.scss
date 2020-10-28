@@ -1,0 +1,24 @@
+@import "styles/variaveis.scss";
+
+div.file-existent {
+  div.label {
+    font-size: 14px;
+    color: $gray;
+  }
+  div.success-message {
+    color: $green;
+    font-weight: bold;
+  }
+  span.delete {
+    margin-left: 2em;
+    font-weight: bold;
+    background-color: $blue;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    &:hover {
+      background-color: $blue;
+    }
+  }
+}

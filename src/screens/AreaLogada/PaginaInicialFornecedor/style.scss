@@ -1,0 +1,31 @@
+div.pagina-inicial {
+  .card {
+    &.avisos {
+      height: 65vh;
+      overflow-y: auto;
+    }
+  }
+}
+
+div.arquivos-irregulares {
+  div.doc-nome {
+    span {
+      font-weight: bold;
+    }
+  }
+  div.doc-status {
+    span {
+      font-weight: bold;
+    }
+  }
+  div.doc-data {
+    span {
+      font-weight: bold;
+    }
+  }
+  div.doc-justificativa {
+    span {
+      font-weight: bold;
+    }
+  }
+}

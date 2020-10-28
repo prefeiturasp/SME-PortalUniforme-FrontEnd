@@ -1,0 +1,17 @@
+@import "styles/variaveis.scss";
+
+.lojas-credenciadas {
+  h1 {
+    color: $blue;
+    font-weight: bold;
+  }
+  .loja-dados {
+    font-size: 14px;
+    .nome-loja {
+      font-size: 16px;
+    }
+    img {
+      height: 100px;
+    }
+  }
+}

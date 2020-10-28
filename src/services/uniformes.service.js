@@ -1,7 +1,9 @@
+import Axios from "axios";
 import axios from "axios";
+import { toastError } from "components/Toast/dialogs";
 import endPont from "../constants/endPonts.constants";
 const authHeader = {
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 };
 
 export const getUniformes = async () => {
@@ -12,6 +14,13 @@ export const getUniformes = async () => {
   return response.data;
 };
 
+export const getUniformesPorCategoria = async () => {
+  const response = await axios.get(
+    `${endPont.API_URL}/uniformes/lookup-categorias/`,
+    authHeader
+  );
+  return response.data;
+};
 export const getTiposFornecimentos = async () => {
   const response = await axios.get(
     `${endPont.API_URL}/uniformes/categorias/`,
@@ -36,60 +45,60 @@ export const getLimites = async () => {
   return response.data;
 };
 
-export const cadastrarEmpresa = async payload => {
+export const cadastrarEmpresa = async (payload) => {
   return axios
     .post(`${endPont.API_URL}/proponentes/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const getEmpresa = async uuid => {
+export const getEmpresa = async (uuid) => {
   return axios
     .get(`${endPont.API_URL}/proponentes/${uuid}/`, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const concluirCadastro = async uuid => {
+export const concluirCadastro = async (uuid) => {
   return axios
     .patch(
       `${endPont.API_URL}/proponentes/${uuid}/concluir-cadastro/`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const setAnexo = payload => {
+export const setAnexo = (payload) => {
   return axios
     .post(`${endPont.API_URL}/anexos/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const deleteAnexo = uuid => {
+export const deleteAnexo = (uuid) => {
   return axios
     .delete(`${endPont.API_URL}/anexos/${uuid}/`, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
@@ -97,15 +106,15 @@ export const deleteAnexo = uuid => {
 export const setFachadaLoja = (payload, uuid) => {
   return axios
     .patch(`${endPont.API_URL}/lojas/${uuid}/`, payload, authHeader)
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
 
-export const verificaCnpj = async cnpj => {
+export const verificaCnpj = async (cnpj) => {
   const response = await axios.get(
     `${endPont.API_URL}/proponentes/verifica-cnpj/?cnpj=${cnpj}`,
     authHeader
@@ -132,16 +141,16 @@ export const busca_url_instrucao_normativa = async () => {
   return `${domain}${response.data}`;
 };
 
-export const verificaEmail = async email => {
+export const verificaEmail = async (email) => {
   return axios
     .get(
       `${endPont.API_URL}/proponentes/verifica-email/?email=${email}`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
     });
 };
@@ -151,21 +160,60 @@ export const getAPIVersion = async () => {
     `${endPont.API_URL}/api-version/`,
     authHeader
   );
-  console.log(`API Version: ${response.data["API_Version"]}`);
   return response.data["API_Version"];
 };
 
 export const getLojasCredenciadas = async (latitude, longitude) => {
-  console.log(longitude)
   return axios
     .get(
       `${endPont.API_URL}/lojas-credenciadas/?latitude=${latitude}&longitude=${longitude}`,
       authHeader
     )
-    .then(response => {
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error.response;
+    });
+};
+
+export const getLojasCredenciadasSemLatLong = () => {
+  const url = `${endPont.API_URL}/lojas-credenciadas/`;
+  let status = 0;
+  return fetch(url, {
+    headers: {
+      "Accept-Language": "pt-br",
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+  })
+    .then((res) => {
+      status = res.status;
+      return res.json();
+    })
+    .then((data) => {
+      return { data: data, status: status };
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
+export const getPDFLojasCredenciadas = () => {
+  Axios({
+    url: `${endPont.API_URL}/lojas-credenciadas/pdf-lojas-credenciadas/`,
+    method: "GET",
+    responseType: "blob",
+  })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "lojas-credenciadas.pdf");
+      document.body.appendChild(link);
+      link.click();
+    })
+    .catch(() => {
+      toastError("Erro ao baixar PDF. Tente novamente mais tarde");
     });
 };

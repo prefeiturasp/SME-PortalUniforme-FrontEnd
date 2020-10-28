@@ -1,0 +1,133 @@
+@import "styles/variaveis.scss";
+
+button.general-button {
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
+  border-radius: 3px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold;
+  height: 38px;
+  padding: 0 12px;
+  text-align: center;
+  i.text-and-icon {
+    padding-right: 8px;
+  }
+  &.blue-button {
+    background-color: $blueButtonFont;
+    border: none;
+    color: $white;
+    i {
+      color: $white;
+    }
+    &:hover {
+      background-color: $blueButtonBackground;
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+    }
+  }
+  &.blue-button-outline {
+    color: $blueButtonFont;
+    border-color: $blueButtonFont;
+    background-color: transparent;
+    i {
+      color: $blueButtonFont;
+    }
+    &:hover:not(:disabled) {
+      color: $white;
+      background-color: $blueButtonBackground;
+      i {
+        color: $white;
+      }
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+      i {
+        color: $grayDisabled;
+      }
+    }
+  }
+  &.green-button {
+    background-color: $green;
+    border: 1.5px solid $green;
+    color: $white;
+    i {
+      color: $white;
+    }
+    &:hover {
+      background-color: $greenButtonHover;
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+    }
+  }
+  &.green-button-outline {
+    color: $green;
+    border: 1px solid $green;
+    background-color: transparent;
+    i {
+      color: $green;
+    }
+    &:hover {
+      color: $white;
+      background-color: $greenButtonHover;
+      i {
+        color: $white;
+      }
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+    }
+  }
+  &.red-button {
+    color: $white;
+    border: 1.5px solid $redToastError;
+    background-color: $redToastError;
+    i {
+      color: $white;
+    }
+    &:hover {
+      color: $redToastError;
+      background-color: $white;
+      i {
+        color: $redToastError;
+      }
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+    }
+  }
+  &.red-button-outline {
+    color: $redToastError;
+    border: 1px solid $redToastError;
+    background-color: transparent;
+    i {
+      color: $redToastError;
+    }
+    &:hover {
+      color: $white;
+      background-color: $redToastError;
+      i {
+        color: $white;
+      }
+    }
+    &:disabled {
+      background-color: transparent;
+      color: $grayDisabled;
+      border: 1px solid $grayDisabled;
+    }
+  }
+}

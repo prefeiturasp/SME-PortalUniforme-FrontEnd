@@ -42,6 +42,14 @@ class MenuPrincipal extends React.Component {
                     Área de fabricantes/fornecedores
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/fornecedor/lojas-credenciadas"
+                  >
+                    Lojas credenciadas
+                  </Link>
+                </li>
               </ul>
             )}
             {["/fornecedor", "/cadastro"].includes(
@@ -62,6 +70,14 @@ class MenuPrincipal extends React.Component {
                     to="/cadastro"
                   >
                     Cadastre sua Loja
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-secondary mb-1 pb-0"
+                    to="/login"
+                  >
+                    Área restrita
                   </Link>
                 </li>
                 <li className="nav-item">
