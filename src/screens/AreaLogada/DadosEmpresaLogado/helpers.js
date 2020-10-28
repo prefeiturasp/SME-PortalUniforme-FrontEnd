@@ -16,9 +16,9 @@ const formataPrecos = (empresa) => {
       categorias.push(oferta.uniforme_categoria);
     }
   });
-  categorias.forEach(categoria => {
+  categorias.forEach((categoria) => {
     empresa[categoria] = true;
-  })
+  });
   empresa.ofertas_de_uniformes.forEach((oferta) => {
     empresa[oferta.nome] = oferta.preco.replace(".", ",");
   });
@@ -56,8 +56,12 @@ export const validaTabelaPrecos = (values, tiposDeUniforme, limites) => {
     erro = "É necessário fornecer ao menos um grupo de uniformes escolares";
     return erro;
   }
-  tiposDeUniforme.forEach((tipoDeUniforme) => {
-    if (maiorQueLimite(tipoDeUniforme, values, limites)) {
+  tiposDeUniforme.filter(tipo => tipo.uniformes.length > 0).forEach((tipoDeUniforme) => {
+    if (
+      limites.find((value) => value.categoria_uniforme === tipoDeUniforme.id)
+        .obrigatorio &&
+      maiorQueLimite(tipoDeUniforme, values, limites)
+    ) {
       erro = `O valor máximo para os itens em ${
         tipoDeUniforme.nome
       } é R$ ${maiorQueLimite(tipoDeUniforme, values, limites)}`;

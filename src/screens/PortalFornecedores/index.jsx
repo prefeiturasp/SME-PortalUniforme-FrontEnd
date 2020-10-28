@@ -299,8 +299,11 @@ export default class PortalFornecedores extends Component {
           itens de forma avulsa, ou um dos kits completos, a considerar suas
           necessidades específicas, de acordo com os padrões das peças aprovadas
           pela Secretaria Municipal de Educação e o valor limite
-          disponibilizado. Além disso, outra novidade, é que o kit terá uma
-          descaracterização perante a{" "}
+          disponibilizado.{" "}
+        </div>
+        <div className="container mt-2">
+          Além disso, outra novidade, é que o kit terá uma descaracterização
+          perante a{" "}
           <a href="http://legislacao.prefeitura.sp.gov.br/leis/lei-17437-de-12-de-agosto-de-2020">
             Lei nº 17.437/2020
           </a>{" "}
@@ -311,7 +314,15 @@ export default class PortalFornecedores extends Component {
           da Prefeitura do Município de São Paulo, por exemplo, e demais fatores
           que podem ser impactantes no processo de produção para os lojistas em
           razão da crise vivenciada em âmbito mundial. Demais detalhes estão
-          presentes na <a href="#">Instrução Normativa nº XXX/SME/2020</a>
+          presentes na{" "}
+          <a
+            href={this.state.instrucaoNormativa.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={this.editalClick}
+          >
+            Instrução Normativa nº XXX/SME/2020
+          </a>
           <strong>*</strong>
         </div>
         <div className="container mt-3">

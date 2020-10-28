@@ -89,7 +89,11 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
                       </div>
                     </div>
                     <div className="text-danger">
-                      {maiorQueLimite(tipoDeUniforme, values, limites) &&
+                      {limites.find(
+                        (value) =>
+                          value.categoria_uniforme === tipoDeUniforme.id
+                      ).obrigatorio &&
+                        maiorQueLimite(tipoDeUniforme, values, limites) &&
                         `Valor maior que limite: ${maiorQueLimite(
                           tipoDeUniforme,
                           values,
