@@ -165,7 +165,6 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             name="telefone"
             required
             type="text"
-            validate={composeValidators(required, validaTelefoneOuCelular)}
             disabled={empresa}
           />
         </div>
