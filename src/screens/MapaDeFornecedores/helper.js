@@ -5,7 +5,7 @@ export const getBadges = (loja) => {
       badges.push(oferta.uniforme_categoria_display);
     }
   });
-  return badges;
+  return badges.sort().reverse();
 };
 
 export const acrescentaTotalUniformes = (lojas, uniformesSelecionados) => {

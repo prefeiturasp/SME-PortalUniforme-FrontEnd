@@ -171,6 +171,14 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
           />
         </div>
       </div>
+      <Field
+        component={InputText}
+        placeholder={"Site"}
+        label="Site"
+        name={`${loja}.site`}
+        maxlength={255}
+        type="text"
+      />
       {(!empresa || logado) && (
         <div className="row mt-2">
           <div className="col-12 text-right">
