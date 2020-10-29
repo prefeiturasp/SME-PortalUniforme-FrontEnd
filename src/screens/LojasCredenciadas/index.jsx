@@ -47,6 +47,13 @@ export const LojasCredenciadas = () => {
               </div>
             )}
           </div>
+          {lojas && lojas.length > 0 && (
+            <h2>
+              Se tem interesse em abastecer às lojas cadastradas, acesse aqui a
+              listagem e entre em contato diretamente com os estabelecimentos
+              credenciados
+            </h2>
+          )}
           {!lojas && !erroAPI && <LoadingCircle />}
           <div className="card mb-5">
             <div className="card-body">
