@@ -105,6 +105,12 @@ export const validaTelefoneOuCelular = (value) =>
     ? "Telefone/celular inválido"
     : undefined;
 
+export const validaTelefoneOuCelularLength = (value) =>
+  // value && /[^0-9 ]/i.test(value) ? "Somente números" : undefined;
+  value && !/^(\([0-9]{2}\))\s([0-9]{1})?([0-9]{4})-([0-9]{4,5})$/g.test(value)
+    ? "Telefone/celular inválido"
+    : undefined;
+
 export const somenteAlfanumericos = (value) =>
   value && /[^a-zA-Z0-9 ]/i.test(value)
     ? "Somente caracteres alfanuméricos"
@@ -123,7 +129,7 @@ export const validaEmail = (value) =>
 export const somenteNumeros = (value) =>
   value && /[^0-9.,]/i.test(value) ? "Somente números decimais" : undefined;
 
-  export const somenteValoresPositivos = (value) =>
+export const somenteValoresPositivos = (value) =>
   value && parseFloat(value.replace(",", ".")) <= 0
     ? "Somente valores positivos e maiores que 0"
     : undefined;
