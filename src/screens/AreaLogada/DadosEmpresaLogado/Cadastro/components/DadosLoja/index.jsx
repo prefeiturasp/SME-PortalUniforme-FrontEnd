@@ -14,6 +14,7 @@ import {
   validaCEP,
   validaRangeCEP,
   validaTelefoneOuCelular,
+  validaTelefoneOuCelularLength
 } from "helpers/fieldValidators";
 import formatStringByPattern from "format-string-by-pattern";
 import { OnChange } from "react-final-form-listeners";
@@ -47,7 +48,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             label="CEP"
             name={`${loja}.cep`}
             required
-            validate={composeValidators(required, validaCEP, validaRangeCEP)}
+            validate={composeValidators(required, validaCEP)}
             placeholder="Digite o CEP"
             disabled={!logado && empresa}
           />
@@ -59,8 +60,6 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
                   if (response.data.resultado === "0") {
                     toastError("CEP não encontrado");
                     fields.value[index].endereco = "";
-                    fields.value[index].cidade = "";
-                    fields.value[index].uf = "";
                     fields.value[index].bairro = "";
                   } else if (
                     response.data.uf !== "SP" ||
@@ -104,7 +103,6 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             name={`${loja}.endereco`}
             required
             validate={required}
-            disabled={!logado || empresa || !apiCEPfora}
           />
         </div>
         <div className="col-sm-2 col-12">
@@ -166,7 +164,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             name={`${loja}.telefone`}
             required
             type="text"
-            validate={composeValidators(required, validaTelefoneOuCelular)}
+            validate={composeValidators(required, validaTelefoneOuCelularLength)}
             disabled={!logado && empresa}
           />
         </div>
