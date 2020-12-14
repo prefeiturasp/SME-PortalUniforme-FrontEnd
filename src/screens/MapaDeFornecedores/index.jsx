@@ -10,11 +10,7 @@ import { ORDENAR_OPCOES } from "./constants";
 import { LoadingCircle } from "components/LoadingCircle";
 import { QUANTIDADE_POR_PAGINA } from "components/Paginacao/constants";
 import { Paginacao } from "components/Paginacao";
-import {
-  sortByParam,
-  acrescentaTotalUniformes,
-  getBadges,
-} from "./helper";
+import { sortByParam, acrescentaTotalUniformes, getBadges } from "./helper";
 import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
 import { formatarParaMultiselect } from "../ProcurarFornecedores/helper";
@@ -284,20 +280,10 @@ export class MapaDeFornecedores extends Component {
                                     <div className="col-10">
                                       {loja.nome_fantasia.toUpperCase()}
                                       <div className="clique-mensagem">
-                                        Clique no + para dados de contato e
-                                        preço
+                                        Clique no + para dados de contato
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="badges col-sm-5 col-12">
-                                  {getBadges(loja).map((badge) => {
-                                    return (
-                                      <span className="badge-fornecimento">
-                                        {badge}
-                                      </span>
-                                    );
-                                  })}
                                 </div>
                               </div>
                               {loja.ativo && (
@@ -329,10 +315,7 @@ export class MapaDeFornecedores extends Component {
                                   <table className="tabela-precos">
                                     <thead>
                                       <tr className="row">
-                                        <th className="col-8">Item</th>
-                                        <th className="col-4">
-                                          Valor unidade (R$)
-                                        </th>
+                                        <th className="col-12">Item</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -345,26 +328,12 @@ export class MapaDeFornecedores extends Component {
                                         .map((uniforme, key) => {
                                           return (
                                             <tr className="row" key={key}>
-                                              <td className="col-8">
+                                              <td className="col-12">
                                                 {uniforme.item}
-                                              </td>
-                                              <td className="col-4">
-                                                {uniforme.preco.replace(
-                                                  ".",
-                                                  ","
-                                                )}
                                               </td>
                                             </tr>
                                           );
                                         })}
-                                      <tr className="row valor-total">
-                                        <td className="col-8">
-                                          Valor Total (R$)
-                                        </td>
-                                        <td className="col-4">
-                                          {loja.total_uniformes}
-                                        </td>
-                                      </tr>
                                     </tbody>
                                   </table>
                                 </Fragment>
