@@ -5,6 +5,7 @@ import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
 import BlocoTexto from "components/BlocoTexto";
 import imgPecasUniforme from "img/pecas-uniforme.png";
+import imgEMEFJogosTabuleiro from "img/emef_jogos_tabuleiro.jpg";
 import { getUniformes } from "services/uniformes.service";
 import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
@@ -136,26 +137,24 @@ export class ProcurarFornecedores extends Component {
                     centralizada pela Prefeitura e distribuído aos estudantes
                     nas escolas. Esse modelo de compra tinha como desvantagens
                     dificuldades em encontrar fornecedores que oferecessem
-                    produtos de qualidade aliados a bom preço, seguindo as
-                    regras do processo de compra pública (chamado de licitação).
-                    Outro fator complicador era de os estudantes não poderem
-                    provar o uniforme antes da compra (causando problemas na
-                    escolha do tamanho adequado para cada peça) e a complexa
-                    logística de distribuição (que aumentava o risco de atraso
-                    na entrega).
+                    produtos de qualidade, seguindo as regras do processo de
+                    compra pública (chamado de licitação). Outro fator
+                    complicador era de os estudantes não poderem provar o
+                    uniforme antes da compra (causando problemas na escolha do
+                    tamanho adequado para cada peça) e a complexa logística de
+                    distribuição (que aumentava o risco de atraso na entrega).
+                    Por isso, as mudanças realizadas, que entregam um melhor
+                    serviço ao cidadão, foram consolidadas no Programa Auxílio
+                    Uniforme Escolar.
                   </div>
                 </BlocoTexto>
               </div>
               <div className="col-lg-6 mb-lg-0">
-                <div className="embed-responsive embed-responsive-16by9">
-                  <iframe
-                    title="Vídeo sobre o Portal do Uniforme"
-                    src="https://www.youtube.com/embed/eggj-Pw2LHI"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+                <img
+                  src={imgEMEFJogosTabuleiro}
+                  width="540"
+                  alt="alunos EMEF jogando"
+                />
               </div>
             </div>
           </div>
@@ -166,7 +165,7 @@ export class ProcurarFornecedores extends Component {
               <div className="col-lg-6 col-sm-12 mb-lg-0">
                 <BlocoTexto title="Quais foram as mudanças?">
                   As famílias terão mais liberdade de escolha! O kit padrão do
-                  uniforme escolar é composto por:
+                  uniforme escolar sugerido é composto por:
                   <ul className="lista-home pt-2 ml-0 pl-0">
                     {uniformes &&
                       uniformes.map((uniforme) => {
@@ -189,13 +188,13 @@ export class ProcurarFornecedores extends Component {
           Agora, cada família poderá compor o kit da forma que for mais adequada
           a cada estudante, consideradas suas necessidades específicas e
           respeitado o padrão das peças aprovado pela Secretaria Municipal de
-          Educação e o valor limite de R$ 215 disponibilizado. <br /> A compra
-          será feita diretamente pelas famílias nas lojas credenciadas, a partir
-          de um sistema de crédito. O(a) responsável legal pelo estudante não
-          receberá diretamente os R$ 215 do kit do uniforme escolar na sua
-          conta, mas sim terá direito a gastar esse valor adquirindo o uniforme
-          escolar nas lojas autorizadas (e são elas que farão a prestação de
-          contas à Prefeitura).
+          Educação e o valor limite de R$ 387,10 disponibilizado. <br /> A
+          compra será feita diretamente pelas famílias nas lojas credenciadas, a
+          partir de um sistema de crédito. O(a) responsável legal pelo estudante
+          não receberá diretamente os R$ 387,10 do kit do uniforme escolar na
+          sua conta, mas sim terá direito a gastar esse valor adquirindo o
+          uniforme escolar nas lojas autorizadas (e são elas que farão a
+          prestação de contas à Prefeitura).
         </div>
         <div className="container">
           <div className="row mt-5">
@@ -257,7 +256,9 @@ export class ProcurarFornecedores extends Component {
               entre em contato com a loja onde produto foi adquirido. Para
               situações sem solução direta com o lojista, informe à Prefeitura
               nos Canais de Atendimento do SP 156 ou recorra a qualquer órgão de
-              defesa do consumidor.
+              defesa do consumidor. <br /> Se tiver dificuldades para baixar ou
+              usar o aplicativo para realizar a compra nas lojas credenciadas,
+              entre em contato com a empresa Mercado Pago.
             </div>
           </BlocoTexto>
           <div className="text-center pt-3 pb-3">
@@ -272,18 +273,18 @@ export class ProcurarFornecedores extends Component {
             </a>
           </div>
         </div>
-        <div className="w-100 sociedade-governo text-center mt-5">
+        <div className="w-100 faq text-center mt-5">
           <div className="container">
             <div className="col-lg-12 mb-4 mb-lg-0">
               <h3 className="text-white mb-4">
-                Não perca tempo, solicite já o uniforme!
+                Ainda com dúvidas? Acesse o nosso FAQ
               </h3>
               <a
-                className="mb-0"
-                href="https://pedido-uniforme.sme.prefeitura.sp.gov.br"
+                className="pb-0"
+                href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-sobre-o-uniforme-escolar/"
               >
                 <button size="lg" className="btn btn-light pl-4 pr-4">
-                  <strong>Solicite o uniforme</strong>
+                  <strong>FAQ</strong>
                 </button>
               </a>
             </div>
