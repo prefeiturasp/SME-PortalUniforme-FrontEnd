@@ -97,15 +97,6 @@ class MenuPrincipal extends React.Component {
                 <li className="nav-item">
                   <a
                     className="nav-link text-secondary mb-1 pb-0"
-                    href="https://pedido-uniforme.sme.prefeitura.sp.gov.br"
-                  >
-                    Solicite o uniforme
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a
-                    className="nav-link text-secondary mb-1 pb-0"
                     href="https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=3616"
                   >
                     Avise sobre Problemas

@@ -56,17 +56,15 @@ export const validaTabelaPrecos = (values, tiposDeUniforme, limites) => {
     erro = "É necessário fornecer ao menos um grupo de uniformes escolares";
     return erro;
   }
-  tiposDeUniforme.filter(tipo => tipo.uniformes.length > 0).forEach((tipoDeUniforme) => {
-    if (
-      limites.find((value) => value.categoria_uniforme === tipoDeUniforme.id)
-        .obrigatorio &&
-      maiorQueLimite(tipoDeUniforme, values, limites)
-    ) {
-      erro = `O valor máximo para os itens em ${
-        tipoDeUniforme.nome
-      } é R$ ${maiorQueLimite(tipoDeUniforme, values, limites)}`;
-      return erro;
-    }
-  });
+  tiposDeUniforme
+    .filter((tipo) => tipo.uniformes.length > 0)
+    .forEach((tipoDeUniforme) => {
+      if (maiorQueLimite(tipoDeUniforme, values, limites)) {
+        erro = `O valor máximo para os itens em ${
+          tipoDeUniforme.nome
+        } é R$ ${maiorQueLimite(tipoDeUniforme, values, limites)}`;
+        return erro;
+      }
+    });
   return erro;
 };

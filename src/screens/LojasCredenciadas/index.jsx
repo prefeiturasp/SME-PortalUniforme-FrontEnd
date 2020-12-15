@@ -80,6 +80,10 @@ export const LojasCredenciadas = () => {
                             {loja.responsavel}
                           </div>
                           <div>
+                            <span className="font-weight-bold">Site: </span>
+                            <a href={loja.site}>{loja.site}</a>
+                          </div>
+                          <div>
                             <span className="font-weight-bold">E-mail: </span>
                             {loja.email}
                           </div>

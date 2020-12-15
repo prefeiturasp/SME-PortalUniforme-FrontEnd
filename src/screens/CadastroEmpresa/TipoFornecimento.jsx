@@ -18,19 +18,6 @@ const TipoFornecimento = props => {
     setPayload({ ...payload, preco: valor.replace(",", ".") });
   };
 
-  const valorDevido = value => {
-    if (
-      value === null ||
-      value === undefined ||
-      value === "" ||
-      (value && parseFloat(value) <= 0)
-    ) {
-      setObrigar(true);
-    } else {
-      setObrigar(false);
-    }
-  };
-
   return (
     <div className="row tipo-fornecimento">
       <div className="col-md-4 col-12">
@@ -47,9 +34,9 @@ const TipoFornecimento = props => {
           onKeyDown={evt => evt.key === "e" && evt.preventDefault()}
           value={props.valor}
           disabled={props.desabilitado}
-          required={props.requerido}
+          required={false}
           onChange={e => addValor(e.target.value, props.uniforme.quantidade)}
-          onBlur={e => valorDevido(e.target.value)}
+          //onBlur={e => valorDevido(e.target.value)}
         />
       </div>
       <div className="col-md-4 col-12 text-right tipo-fornecimento-quantidade">
