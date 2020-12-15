@@ -313,16 +313,12 @@ export let CadastroEmpresa = (props) => {
     if (payload.length > 0) {
       if (validaOfertaUniforme(payload)) {
         window.scrollTo(0, 0);
-        showMessage(
-          "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
-        );
+        showMessage("Por favor, preencha o preço de ao menos um uniforme");
         return false;
       }
     } else {
       window.scrollTo(0, 0);
-      showMessage(
-        "Por favor, selecione um Tipo de Fornecimento com o valor correspondente"
-      );
+      showMessage("Por favor, preencha o preço de ao menos um uniforme");
 
       return false;
     }
@@ -515,10 +511,11 @@ export let CadastroEmpresa = (props) => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">
-                            Preços máximos por item (fornecimento)
+                            Item(ns) para fornecimento
                           </div>
                           <div className="pt-3 undertitle">
-                            Tipo de Fornecimento
+                            Itens que compõem o kit padrão de uniforme escolar
+                            sugerido pela SME (escolher ao menos uma opção)
                           </div>
                           <hr className="pb-3" />
                           {limites && tiposFornecimentos ? (
