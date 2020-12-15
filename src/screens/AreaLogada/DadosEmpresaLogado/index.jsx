@@ -14,6 +14,7 @@ import {
   validaTabelaPrecos,
 } from "./helpers";
 import { getLimites, getTiposFornecimentos } from "services/uniformes.service";
+import { getError } from "helpers/utils";
 
 export const DadosEmpresaLogado = () => {
   const [empresa, setEmpresa] = useState(null);
@@ -35,12 +36,18 @@ export const DadosEmpresaLogado = () => {
         atualizaLojas(
           localStorage.getItem("uuid"),
           formataPayloadLojasPrecos(values, tiposDeUniforme)
-        ).then((response) => {
-          if (response.status === HTTP_STATUS.OK) {
-            toastSuccess("Loja(s) atualizada(s) com sucesso");
-            setEmpresa(formataEmpresa(response.data));
-          }
-        });
+        )
+          .then((response) => {
+            if (response.status === HTTP_STATUS.OK) {
+              toastSuccess("Loja(s) atualizada(s) com sucesso");
+              setEmpresa(formataEmpresa(response.data));
+            } else {
+              toastError(getError(response.data));
+            }
+          })
+          .catch(() => {
+            toastError("Erro ao atualizar dados da loja");
+          });
       }
     }
   };

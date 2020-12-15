@@ -13,8 +13,11 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
   return (
     <div className="card mt-3 tabela-precos">
       <div className="card-body">
-        <h2>Preços máximos por item (fornecimento)</h2>
-        <h3 className="mt-2">Tipo de Fornecimento</h3>
+        <h2>Item(ns) para fornecimento</h2>
+        <h3 className="mt-2">
+          Itens que compõem o kit padrão de uniforme escolar sugerido pela SME
+          (escolher ao menos uma opção)
+        </h3>
         <hr />
         {tiposDeUniforme && limites && (
           <div className="row">
@@ -23,27 +26,6 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
               .map((tipoDeUniforme) => {
                 return (
                   <div className="col-6">
-                    <label className="produto col-sm-6 col-12 my-auto">
-                      <Field
-                        onClick={() => {
-                          values[tipoDeUniforme.id] &&
-                            tipoDeUniforme.uniformes.forEach((uniforme) => {
-                              values[uniforme.nome] = undefined;
-                            });
-                        }}
-                        name={`${tipoDeUniforme.id}`}
-                        checked={values[tipoDeUniforme.id]}
-                        required={
-                          limites.find(
-                            (value) =>
-                              value.categoria_uniforme === tipoDeUniforme.id
-                          ).obrigatorio
-                        }
-                        component="input"
-                        type="checkbox"
-                      />{" "}
-                      {tipoDeUniforme.nome}
-                    </label>
                     {tipoDeUniforme.uniformes.map((uniforme) => {
                       return (
                         <div className="row mt-3">
@@ -89,11 +71,7 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
                       </div>
                     </div>
                     <div className="text-danger">
-                      {limites.find(
-                        (value) =>
-                          value.categoria_uniforme === tipoDeUniforme.id
-                      ).obrigatorio &&
-                        maiorQueLimite(tipoDeUniforme, values, limites) &&
+                      {maiorQueLimite(tipoDeUniforme, values, limites) &&
                         `Valor maior que limite: ${maiorQueLimite(
                           tipoDeUniforme,
                           values,
