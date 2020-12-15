@@ -3,6 +3,8 @@ import BlocoTexto from "components/BlocoTexto";
 import imgFachadaLoja from "img/fachada-loja.png";
 import imgPecasUniforme from "img/pecas-uniforme.png";
 import imgDesenhoFornecedor from "img/desenho-fornecedor.png";
+import imgEMEFViniciusDeMoraes from "img/emef_vinicius_de_moraes.jpg";
+import imgEMEFNeirAugusto from "img/emef_neir_augusto.jpg";
 import { getUniformesPorCategoria } from "services/uniformes.service";
 import {
   busca_url_edital,
@@ -152,15 +154,12 @@ export default class PortalFornecedores extends Component {
                   alt="Fachada de uma lojinha de roupas"
                   className="img-fluid rounded"
                 />
-                <div className="embed-responsive embed-responsive-16by9 container-video-home">
-                  <iframe
-                    title="Vídeo sobre o Portal do Uniforme"
-                    src="https://www.youtube.com/embed/R591jitkIOw"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+                <img
+                  className="pt-3"
+                  src={imgEMEFViniciusDeMoraes}
+                  alt="EMEF Vinicius de Moraes"
+                  width="100%"
+                />
               </div>
               <div className="col-lg-6">
                 <BlocoTexto title="O que é necessário para ser fornecedor?">
@@ -325,15 +324,12 @@ export default class PortalFornecedores extends Component {
                 possibilidade de fornecimento dos uniformes escolares.
               </p>
             </BlocoTexto>
-            <div className="embed-responsive embed-responsive-16by9 container-video-home">
-              <iframe
-                title="Vídeo complementar sobre o Portal do Uniforme"
-                src="https://www.youtube.com/embed/fFUQRPnigfM"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <img
+              className="pt-3"
+              src={imgEMEFNeirAugusto}
+              alt="EMEF Vinicius de Moraes"
+              width="100%"
+            />
           </div>
         </div>
         <div className="w-100 faq text-center mt-5">
