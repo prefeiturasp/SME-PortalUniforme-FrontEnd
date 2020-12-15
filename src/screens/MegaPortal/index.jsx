@@ -22,8 +22,14 @@ export class MegaPortal extends Component {
                   durabilidade e resistência.
                 </h1>
                 <p>
-                  Em 2020, os kits de uniforme continuarão com a mesma
+                  Em 2021, os kits de uniforme continuarão com a mesma
                   composição, mas, com inovações na forma de fornecimento.
+                </p>
+                <p>
+                  Com o Programa Auxílio Uniforme Escolar para estudantes
+                  matriculados na Rede Pública do Município de São Paulo, as
+                  famílias receberão o auxílio financeiro para adquirir os itens
+                  que compõem o kit nos estabelecimentos credenciados.
                 </p>
               </div>
               <img
