@@ -85,7 +85,7 @@ const TiposFornecimentos = (props) => {
             index={uniforme.id}
             chave={key}
             key={key}
-            desabilitado={desabilitado}
+            desabilitado={props.empresa}
             valor={
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
