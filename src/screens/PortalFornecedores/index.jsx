@@ -168,13 +168,6 @@ export default class PortalFornecedores extends Component {
                       Para ser credenciado, o comerciante deve:
                     </p>
                     <ul className="lista-home ml-0 pl-0 mb-2">
-                      <li>
-                        <strong className="fonte-17">
-                          Estar ciente que o prazo para recebimento do pagamento
-                          é de até 10 (dez) dias úteis a partir da validação da
-                          NF.
-                        </strong>
-                      </li>
                       <li>Ser pessoa Jurídica;</li>
                       <li>
                         Possuir toda a documentação válida conforme as condições
@@ -206,7 +199,6 @@ export default class PortalFornecedores extends Component {
                         Possuir stand de vendas ou loja física na cidade de São
                         Paulo;
                       </li>
-                      <li>Fornecer os itens pelo valor máximo determinado;</li>
                       <li>Emitir Nota Fiscal Eletrônica;</li>
                       <li>
                         Comprometer-se em fornecer os itens com a qualidade
@@ -259,17 +251,14 @@ export default class PortalFornecedores extends Component {
           <div className="container">
             <div className="row mt-5">
               <div className="col-lg-6 col-sm-12">
-                <BlocoTexto title="Quais itens compõem o uniforme da rede municipal de ensino?">
+                <BlocoTexto title="Quais itens compõem o kit padrão de uniforme escolar sugerido pela Secretaria Municipal de Educação?">
                   <div className="row">
                     {categorias &&
                       categorias
                         .filter((categoria) => categoria.itens.length > 0)
                         .map((categoria) => {
                           return (
-                            <div className="col-6">
-                              <div className="font-weight-bold text-align-center">
-                                {categoria.categoria}:
-                              </div>
+                            <div className="col-12">
                               <ul className="lista-home">
                                 {categoria.itens.map((item) => {
                                   return <li key={item.nome}>{item.nome}</li>;
@@ -290,6 +279,12 @@ export default class PortalFornecedores extends Component {
               </div>
             </div>
           </div>
+        </div>
+        <div className="container mt-3">
+          Cada família poderá compor o kit da forma que for mais adequada a cada
+          estudante, consideradas suas necessidades específicas e respeitado o
+          padrão das peças aprovado pela Secretaria Municipal de Educação e o
+          valor limite de <strong>R$ 387,10</strong> disponibilizado.
         </div>
         <div className="container mt-3">
           O fornecedor deverá fornecer pelo menos o kit verão, sendo facultativa
@@ -313,6 +308,34 @@ export default class PortalFornecedores extends Component {
           da Prefeitura do Município de São Paulo, por exemplo, e demais fatores
           que podem ser impactantes no processo de produção para os lojistas em
           razão da crise vivenciada em âmbito mundial.
+        </div>
+        <div className="w-100 mb-5 mt-5">
+          <div className="container">
+            <BlocoTexto title="Posso sugerir novos itens para fazer parte da composição atual? ">
+              <p>
+                As confecções que tiverem expertise em um material diverso do
+                padrão fixado poderão apresentar seus modelos à homologação da
+                Secretaria. Para isso, deverão ser enviadas:
+                <ul>
+                  <li>Especificações técnicas dos itens;</li>
+                  <li>
+                    3 (três) amostras de cada item que serão submetidas a
+                    análise e aprovação da SME.
+                  </li>
+                </ul>
+                Se aprovadas, as peças serão incorporadas ao modelo padrão dos
+                uniformes escolares e poderão ser produzidas por qualquer
+                credenciado, sem que seja devida qualquer remuneração ao
+                desenvolvedor/designer da peça. As especificações sugeridas
+                poderão ser encaminhadas para o seguinte e-mail:{" "}
+                <a href="mailto:smecoaduniformematerial@sme.prefeitura.sp.gov.br">
+                  smecoaduniformematerial@sme.prefeitura.sp.gov.br
+                </a>
+                , com isso serão repassadas as devidas informações quanto à
+                entrega das amostras.
+              </p>
+            </BlocoTexto>
+          </div>
         </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
