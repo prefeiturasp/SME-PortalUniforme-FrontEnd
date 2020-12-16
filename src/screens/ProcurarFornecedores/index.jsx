@@ -190,11 +190,11 @@ export class ProcurarFornecedores extends Component {
           respeitado o padrão das peças aprovado pela Secretaria Municipal de
           Educação e o valor limite de R$ 387,10 disponibilizado. <br /> A
           compra será feita diretamente pelas famílias nas lojas credenciadas, a
-          partir de um sistema de crédito. O(a) responsável legal pelo estudante
-          não receberá diretamente os R$ 387,10 do kit do uniforme escolar na
-          sua conta, mas sim terá direito a gastar esse valor adquirindo o
-          uniforme escolar nas lojas autorizadas (e são elas que farão a
-          prestação de contas à Prefeitura).
+          partir de um sistema de concessão de benefício. O(a) responsável legal
+          pelo estudante não receberá diretamente os R$ 387,10 do kit do
+          uniforme escolar na sua conta, mas sim terá direito a gastar esse
+          valor adquirindo o uniforme escolar nas lojas autorizadas (e são elas
+          que farão a prestação de contas à Prefeitura).
         </div>
         <div className="container">
           <div className="row mt-5">
@@ -277,14 +277,14 @@ export class ProcurarFornecedores extends Component {
           <div className="container">
             <div className="col-lg-12 mb-4 mb-lg-0">
               <h3 className="text-white mb-4">
-                Ainda com dúvidas? Acesse o nosso FAQ
+                Ainda com dúvidas? Veja lista com perguntas frequentes
               </h3>
               <a
                 className="pb-0"
                 href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-sobre-o-uniforme-escolar/"
               >
                 <button size="lg" className="btn btn-light pl-4 pr-4">
-                  <strong>FAQ</strong>
+                  <strong>Perguntas frequentes</strong>
                 </button>
               </a>
             </div>
