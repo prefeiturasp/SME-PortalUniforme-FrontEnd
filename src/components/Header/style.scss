@@ -1,0 +1,29 @@
+@import "styles/variaveis.scss";
+
+.navbar {
+  height: 70px;
+  .nav-bar {
+    font-weight: bold;
+    &.toggled {
+      margin-left: -2rem;
+    }
+    img {
+      height: 55px;
+      width: auto;
+    }
+  }
+  .navbar-nav {
+    padding-top: 0.5rem;
+    .nav-item {
+      padding-left: 30px;
+      img {
+        height: 28px;
+      }
+      p {
+        text-align: center;
+        color: $grayHeader;
+        font-size: 10px;
+      }
+    }
+  }
+}

@@ -3,6 +3,9 @@
     height: 359px;
   }
   .area-rodape {
+    background: #5a5a5a;
+    color: #ffffff;
+    font-size: 0.8rem;
     @media only screen and (min-width: 992px) {
       height: 325px;
     }
@@ -44,6 +47,6 @@
     }
   }
   .endereco {
-    font-size: 12px;
+    font-size: 0.8rem;
   }
 }
