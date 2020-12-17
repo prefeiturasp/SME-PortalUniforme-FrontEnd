@@ -286,29 +286,6 @@ export default class PortalFornecedores extends Component {
           padrão das peças aprovado pela Secretaria Municipal de Educação e o
           valor limite de <strong>R$ 387,10</strong> disponibilizado.
         </div>
-        <div className="container mt-3">
-          O fornecedor deverá fornecer pelo menos o kit verão, sendo facultativa
-          a venda do kit inverno. Cada família poderá compor o seu próprio kit
-          da forma que for mais adequada a cada estudante, podendo adquirir os
-          itens de forma avulsa, ou um dos kits completos, a considerar suas
-          necessidades específicas, de acordo com os padrões das peças aprovadas
-          pela Secretaria Municipal de Educação e o valor limite
-          disponibilizado.{" "}
-        </div>
-        <div className="container mt-2">
-          Além disso, outra novidade, é que o kit terá uma descaracterização
-          perante a{" "}
-          <a href="http://legislacao.prefeitura.sp.gov.br/leis/lei-17437-de-12-de-agosto-de-2020">
-            Lei nº 17.437/2020
-          </a>{" "}
-          que estabelece ações de retorno às aulas presenciais na Rede Municipal
-          de Ensino, em que possibilita a flexibilização em virtude do período
-          de enfrentamento da pandemia decorrente do novo coronavírus em São
-          Paulo, onde as famílias poderão optar em comprar os itens sem o brasão
-          da Prefeitura do Município de São Paulo, por exemplo, e demais fatores
-          que podem ser impactantes no processo de produção para os lojistas em
-          razão da crise vivenciada em âmbito mundial.
-        </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
             <BlocoTexto title="Posso sugerir novos itens para fazer parte da composição atual? ">
