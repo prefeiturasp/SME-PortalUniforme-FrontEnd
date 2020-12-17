@@ -49,13 +49,6 @@ export const formataPayloadLojasPrecos = (values, tiposDeUniforme) => {
 
 export const validaTabelaPrecos = (values, tiposDeUniforme, limites) => {
   let erro = false;
-  if (
-    tiposDeUniforme.filter((tipoDeUniforme) => values[tipoDeUniforme.id])
-      .length === 0
-  ) {
-    erro = "É necessário fornecer ao menos um grupo de uniformes escolares";
-    return erro;
-  }
   tiposDeUniforme
     .filter((tipo) => tipo.uniformes.length > 0)
     .forEach((tipoDeUniforme) => {
