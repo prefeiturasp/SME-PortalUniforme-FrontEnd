@@ -247,9 +247,6 @@ export class MapaDeFornecedores extends Component {
                   <div className="tabela-lojas">
                     <div className="tabela-header row">
                       <div className="col-12 col-sm-7">Nome</div>
-                      <div className="d-none d-md-block col-sm-5">
-                        Itens de uniforme disponíveis
-                      </div>
                     </div>
                     {lojas &&
                       lojas
