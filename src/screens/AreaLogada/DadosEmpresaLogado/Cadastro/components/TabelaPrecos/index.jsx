@@ -37,7 +37,6 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
                                 <Field
                                   name={uniforme.nome}
                                   component={InputText}
-                                  disabled={!values[tipoDeUniforme.id]}
                                   required={
                                     limites.find(
                                       (value) =>
