@@ -116,7 +116,7 @@ class MenuPrincipal extends React.Component {
                     className="nav-link text-secondary mb-1 pb-0"
                     href={endPoint.ATUALIZACAO_CADASTRAL_URL}
                   >
-                    Atualização do cadastro de responsável
+                    Atualize seu cadastro
                   </a>
                 </li>
               </ul>
