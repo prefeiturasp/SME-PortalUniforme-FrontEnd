@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logoEducacaoSP from "../../img/educacao_sp.png";
 import "./menu-principal.scss";
+import endPoint from "../../constants/endPonts.constants";
 
 class MenuPrincipal extends React.Component {
   render() {
@@ -108,6 +109,14 @@ class MenuPrincipal extends React.Component {
                     href="https://educacao.sme.prefeitura.sp.gov.br/perguntas-frequentes-sobre-o-uniforme-escolar/"
                   >
                     Dúvidas? Veja a lista com perguntas frequentes
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href={endPoint.ATUALIZACAO_CADASTRAL_URL}
+                  >
+                    Atualize seu cadastro
                   </a>
                 </li>
               </ul>
