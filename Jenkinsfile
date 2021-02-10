@@ -138,7 +138,7 @@ pipeline {
         steps {
           timeout(time: 24, unit: "HOURS") {
           // telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
-            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ebufaino, marcos_nastri, alessandro_fernandes, anderson_morais'
+            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ebufaino, marcos_nastri, alessandro_fernandes, anderson_morais, calvin_rossinhole, ollyver_ottoboni, kelwy_oliveira'
           }
             sh 'echo Build image docker Produção'
           // Start JOB para build das imagens Docker e push SME Registry
