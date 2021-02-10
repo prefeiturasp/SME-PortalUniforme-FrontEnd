@@ -11,7 +11,7 @@ const TiposFornecimentos = (props) => {
   }));
   const [uniformesInfo, setUniformesInfo] = useState(initialUniformesInfo);
   const [desabilitado, setDesabilitado] = useState(true);
-  const [checado, setChecado] = useState(true);
+  const [checado, setChecado] = useState(false);
   const [limite, setLimite] = useState(0);
 
   useEffect(() => {
@@ -77,6 +77,27 @@ const TiposFornecimentos = (props) => {
 
   return (
     <div className="pt-3">
+      <CheckInputLabel
+        id={props.tipo.id}
+        label={props.tipo.nome}
+        key={props.tipo.id}
+        type="checkbox"
+        required={
+          props.limites.find(
+            (value) => value.categoria_uniforme === props.tipo.id
+          ).obrigatorio
+        }
+        disabled={props.empresa}
+        onChange={(e) => checkProduto(e.target.checked)}
+        checked={
+          props.empresa &&
+          props.empresa.ofertas_de_uniformes.find(
+            (oferta) => oferta.uniforme_categoria === props.tipo.id
+          )
+            ? true
+            : checado
+        }
+      />
       {props.tipo.uniformes.map((uniforme, key) => {
         return (
           <TipoFornecimento
@@ -140,13 +161,15 @@ const TiposFornecimentos = (props) => {
                 .toFixed(2)
                 .toString()
                 .replace(".", ",")}
-          {
+          {props.limites.find(
+            (value) => value.categoria_uniforme === props.tipo.id
+          ).obrigatorio && (
             <Form.Text className="text-danger">
               {maiorQueLimite(sum(uniformesInfo.map((item) => item.total)))
                 ? `Valor maior que limite: ${limite}`
                 : ""}
             </Form.Text>
-          }
+          )}
         </Col>
       </Row>
       <br />
