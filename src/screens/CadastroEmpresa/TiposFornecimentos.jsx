@@ -10,6 +10,7 @@ const TiposFornecimentos = (props) => {
     total: 0,
   }));
   const [uniformesInfo, setUniformesInfo] = useState(initialUniformesInfo);
+  const [requerido, setRequerido] = useState(false);
   const [desabilitado, setDesabilitado] = useState(true);
   const [checado, setChecado] = useState(false);
   const [limite, setLimite] = useState(0);
@@ -28,10 +29,12 @@ const TiposFornecimentos = (props) => {
   const checkProduto = (event) => {
     if (event) {
       setDesabilitado(false);
+      setRequerido(true);
       setChecado(true);
     } else {
       setChecado(false);
       setDesabilitado(true);
+      setRequerido(false);
       limpaPrecos();
       delUniforme();
     }
@@ -82,11 +85,6 @@ const TiposFornecimentos = (props) => {
         label={props.tipo.nome}
         key={props.tipo.id}
         type="checkbox"
-        required={
-          props.limites.find(
-            (value) => value.categoria_uniforme === props.tipo.id
-          ).obrigatorio
-        }
         disabled={props.empresa}
         onChange={(e) => checkProduto(e.target.checked)}
         checked={
@@ -106,7 +104,7 @@ const TiposFornecimentos = (props) => {
             index={uniforme.id}
             chave={key}
             key={key}
-            desabilitado={props.empresa}
+            desabilitado={desabilitado}
             valor={
               props.empresa
                 ? props.empresa.ofertas_de_uniformes.find(
@@ -128,11 +126,7 @@ const TiposFornecimentos = (props) => {
                   ).preco * uniforme.quantidade
                 : uniformesInfo[key].total
             }
-            requerido={
-              props.limites.find(
-                (value) => value.categoria_uniforme === props.tipo.id
-              ).obrigatorio
-            }
+            requerido={requerido}
             checkProduto={checkProduto}
             onUpdate={props.onUpdate}
           />
@@ -161,15 +155,11 @@ const TiposFornecimentos = (props) => {
                 .toFixed(2)
                 .toString()
                 .replace(".", ",")}
-          {props.limites.find(
-            (value) => value.categoria_uniforme === props.tipo.id
-          ).obrigatorio && (
-            <Form.Text className="text-danger">
-              {maiorQueLimite(sum(uniformesInfo.map((item) => item.total)))
-                ? `Valor maior que limite: ${limite}`
-                : ""}
-            </Form.Text>
-          )}
+          <Form.Text className="text-danger">
+            {maiorQueLimite(sum(uniformesInfo.map((item) => item.total)))
+              ? `Valor maior que limite: ${limite}`
+              : ""}
+          </Form.Text>
         </Col>
       </Row>
       <br />
