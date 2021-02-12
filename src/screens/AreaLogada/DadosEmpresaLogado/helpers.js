@@ -49,15 +49,25 @@ export const formataPayloadLojasPrecos = (values, tiposDeUniforme) => {
 
 export const validaTabelaPrecos = (values, tiposDeUniforme, limites) => {
   let erro = false;
+  let erros = []
   tiposDeUniforme
     .filter((tipo) => tipo.uniformes.length > 0)
     .forEach((tipoDeUniforme) => {
       if (maiorQueLimite(tipoDeUniforme, values, limites)) {
-        erro = `O valor máximo para os itens em ${
-          tipoDeUniforme.nome
-        } é R$ ${maiorQueLimite(tipoDeUniforme, values, limites)}`;
-        return erro;
+        erros.push(tipoDeUniforme)
       }
     });
+  if (erros.length > 0) {
+    if (erros.length > 1) {
+      erro = 'O valor máximo para as categorias excede o limite.'
+      return erro;
+    } else {
+      erro = `O valor máximo para os itens em ${
+        erros[0].nome
+      } é R$ ${maiorQueLimite(erros[0], values, limites)}`;
+      return erro;
+    }
+  }
+
   return erro;
 };
