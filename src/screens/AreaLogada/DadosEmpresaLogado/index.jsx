@@ -85,7 +85,7 @@ export const DadosEmpresaLogado = () => {
             initialValues={{
               ...empresa,
             }}
-            render={({ handleSubmit, form, submitting, pristine, values }) => (
+            render={({ submitError, handleSubmit, form, submitting, pristine, values }) => (
               <form onSubmit={handleSubmit}>
                 {" "}
                 <Cadastro
