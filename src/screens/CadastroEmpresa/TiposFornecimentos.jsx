@@ -74,7 +74,7 @@ const TiposFornecimentos = (props) => {
 
   const maiorQueLimite = (soma) => {
     const eMaior = soma > limite;
-    props.maiorQueLimite(eMaior);
+    props.maiorQueLimite(eMaior, props.tipo.id);
     return eMaior;
   };
 
