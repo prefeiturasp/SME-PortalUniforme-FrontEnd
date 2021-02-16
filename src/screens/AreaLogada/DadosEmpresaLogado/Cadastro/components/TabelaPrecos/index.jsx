@@ -64,7 +64,7 @@ export const TabelaPrecos = ({ form, values, empresa, tiposDeUniforme, limites }
                                 <Field
                                   name={uniforme.nome}
                                  component={InputText} 
-                                  required={checks[tipoDeUniforme.id]}
+                                  required={checks.hasOwnProperty(tipoDeUniforme.id) ? checks[tipoDeUniforme.id]: selecionado(tipoDeUniforme.id)}
                                   validate={composeValidators(
                                     somenteNumeros,
                                     somenteValoresPositivos
