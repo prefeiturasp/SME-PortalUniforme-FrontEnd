@@ -16,21 +16,22 @@ export class MegaPortal extends Component {
           <div className="container">
             <div className="conteudo">
               <div className="div-banner col-lg-8 col-sm-12 col-xl-6">
-                <h1>
-                  O uniforme escolar mudou para um modelo com padrão de
-                  qualidade superior, respeitando aspectos como conforto,
-                  durabilidade e resistência.
-                </h1>
+                <h3>
+                Agora os responsáveis pelos 
+                estudantes da Rede Municipal de 
+                São Paulo receberão o crédito para 
+                comprar o uniforme escolar
+                diretamente nas lojas credenciadas
+                </h3>
                 <p>
-                  Em 2021, os kits de uniforme continuarão com a mesma
-                  composição, mas, com inovações na forma de fornecimento.
+                Para isso, basta que: <br/>
                 </p>
-                <p>
-                  Com o Programa Auxílio Uniforme Escolar para estudantes
-                  matriculados na Rede Pública do Município de São Paulo, as
-                  famílias receberão o auxílio financeiro para adquirir os itens
-                  que compõem o kit nos estabelecimentos credenciados.
-                </p>
+                <ol>
+                  <li>Os dados do(a) responsável estejam completos no cadastro do(a) estudante. Se não estiverem, é possível fazer a <a href="https://atualizacaocadastral.sme.prefeitura.sp.gov.br" target="blank">atualização cadastral</a> online ou diretamente na secretaria da escola.</li>
+                  <li>Instalar o <a href="https://play.google.com/store/apps/details?id=com.mercadopago.wallet" target="blank">aplicativo da Mercado Pago</a> no celular ou tablet e criar a conta com mesmo CPF e e-mail de responsável que constam no cadastro do(a) estudante (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/01/Guia-para-as-famílias.pdf" target="blank">veja o passo a passo aqui</a>).</li>
+                  <li>Quando o crédito estiver liberado, a pessoa receberá uma notificação pelo próprio aplicativo (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/02/Programa-Auxi%CC%81lio-Uniforme-Escolar_telas-do-aplicativo-da-Mercado-Pago.pdf" target="blank">veja aqui como esse aviso aparece</a>).</li>
+                  <li>Aí o(a) responsável já pode realizar a compra do uniforme escolar nas lojas credenciadas (<a href="https://portaldeuniformes.sme.prefeitura.sp.gov.br/familia" target="blank">consulte aqui as lojas mais próximas do endereço desejado</a>).</li>
+                </ol>
               </div>
               <img
                 src={imgDesenhoCriancas}
