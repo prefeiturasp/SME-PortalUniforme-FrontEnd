@@ -1,22 +1,40 @@
 import { InputText } from "components/Input/InputText";
+import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import {
   somenteNumeros,
   somenteValoresPositivos,
   composeValidators,
 } from "helpers/fieldValidators";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Field } from "react-final-form";
-import { getPrecoVezesQuantidade, getTotal, maiorQueLimite } from "./helpers";
+import { getPrecoVezesQuantidade, getTotal, maiorQueLimite, limparValues } from "./helpers";
 import "./style.scss";
 
-export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
+export const TabelaPrecos = ({ form, values, empresa, tiposDeUniforme, limites }) => {
+  const [checks, setChecks] = useState({});
+
+  const checkProduto = (event, tipoDeUniforme) => {
+    if (event) {
+      setChecks({...checks, [tipoDeUniforme.id]:true})
+    } else {
+      setChecks({...checks, [tipoDeUniforme.id]:false})
+      limparValues(form, tipoDeUniforme, values);
+    }
+  };
+
+  const selecionado = (tipoUniformeId) => {
+    return empresa && empresa.ofertas_de_uniformes.find(
+      (oferta) => oferta.uniforme_categoria === tipoUniformeId) && !checks.hasOwnProperty(tipoUniformeId)
+    ? true
+    : checks[tipoUniformeId]
+  }
+
   return (
     <div className="card mt-3 tabela-precos">
       <div className="card-body">
-        <h2>Item(ns) para fornecimento</h2>
+        <h2>Preços máximos por item (fornecimento)</h2>
         <h3 className="mt-2">
-          Itens que compõem o kit padrão de uniforme escolar sugerido pela SME
-          (escolher ao menos uma opção)
+          Tipo de Fornecimento
         </h3>
         <hr />
         {tiposDeUniforme && limites && (
@@ -26,6 +44,15 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
               .map((tipoDeUniforme) => {
                 return (
                   <div className="col-6">
+                    <CheckInputLabel
+                      id={tipoDeUniforme.id}
+                      label={tipoDeUniforme.nome}
+                      key={tipoDeUniforme.id}
+                      type="checkbox"
+                      onChange={(e) => checkProduto(e.target.checked, tipoDeUniforme)}
+                      checked={
+                        selecionado(tipoDeUniforme.id)}
+                    />
                     {tipoDeUniforme.uniformes.map((uniforme) => {
                       return (
                         <div className="row mt-3">
@@ -36,18 +63,14 @@ export const TabelaPrecos = ({ form, values, tiposDeUniforme, limites }) => {
                               <div className="col-6">
                                 <Field
                                   name={uniforme.nome}
-                                  component={InputText}
-                                  required={
-                                    limites.find(
-                                      (value) =>
-                                        value.categoria_uniforme ===
-                                        tipoDeUniforme.id
-                                    ).obrigatorio
-                                  }
+                                 component={InputText} 
+                                  required={checks.hasOwnProperty(tipoDeUniforme.id) ? checks[tipoDeUniforme.id]: selecionado(tipoDeUniforme.id)}
                                   validate={composeValidators(
                                     somenteNumeros,
                                     somenteValoresPositivos
                                   )}
+                                  disabled={!selecionado(tipoDeUniforme.id)}
+                                  
                                 />
                               </div>
                               <div className="col-3">

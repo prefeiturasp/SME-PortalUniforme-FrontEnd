@@ -62,7 +62,7 @@ export let CadastroEmpresa = (props) => {
   const [arquivosAnexos] = useState([]);
   const [tab, setTab] = useState("cadastro");
   const [mensagem, setMensagem] = useState("");
-  const [limite, setLimite] = useState(false);
+  const [limite, setLimite] = useState([]);
   const [limites, setLimites] = useState(null);
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
@@ -195,8 +195,14 @@ export let CadastroEmpresa = (props) => {
     setLoja([...loja]);
   };
 
-  const maiorQueLimite = (eMaior) => {
-    setLimite(eMaior);
+  const maiorQueLimite = (eMaior, idTipo) => {
+    if (eMaior && !limite.includes(idTipo)){
+      setLimite([...limite, idTipo])
+    }
+    else if(!eMaior && limite.includes(idTipo)){
+      setLimite(limite.filter(limite => limite !== idTipo));
+    }
+    
   };
 
   const onUpdateUniforme = (valor, chave) => {
@@ -249,7 +255,7 @@ export let CadastroEmpresa = (props) => {
       return;
     }
 
-    if (limite) {
+    if (limite.length) {
       window.scrollTo(0, 0);
       showMessage(
         "O seu valor está acima do permitido, por este motivo seu cadastro não será registrado."
@@ -313,12 +319,12 @@ export let CadastroEmpresa = (props) => {
     if (payload.length > 0) {
       if (validaOfertaUniforme(payload)) {
         window.scrollTo(0, 0);
-        showMessage("Por favor, preencha o preço de ao menos um uniforme");
+        showMessage("Por favor, selecione um Tipo de Fornecimento com o valor correspondente");
         return false;
       }
     } else {
       window.scrollTo(0, 0);
-      showMessage("Por favor, preencha o preço de ao menos um uniforme");
+      showMessage("Por favor, selecione um Tipo de Fornecimento com o valor correspondente");
 
       return false;
     }
@@ -511,11 +517,10 @@ export let CadastroEmpresa = (props) => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-title">
-                            Item(ns) para fornecimento
+                            Preços máximos por item (fornecimento)
                           </div>
                           <div className="pt-3 undertitle">
-                            Itens que compõem o kit padrão de uniforme escolar
-                            sugerido pela SME (escolher ao menos uma opção)
+                            Tipo de Fornecimento
                           </div>
                           <hr className="pb-3" />
                           {limites && tiposFornecimentos ? (

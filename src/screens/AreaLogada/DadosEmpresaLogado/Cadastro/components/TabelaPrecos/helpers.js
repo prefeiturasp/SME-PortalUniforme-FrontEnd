@@ -44,3 +44,16 @@ export const maiorQueLimite = (tipoDeUniforme, values, limites) => {
     return preco_maximo.replace(".", ",");
   } else return false;
 };
+
+
+export const limparValues = (form, tipoDeUniforme, values) => {
+  if (tipoDeUniforme) {
+    tipoDeUniforme.uniformes.forEach((uniforme) => {
+      if (values[uniforme.nome]) {
+        delete values[uniforme.nome];
+        form.resetFieldState(uniforme.nome);
+        
+      }
+    });
+  }
+};

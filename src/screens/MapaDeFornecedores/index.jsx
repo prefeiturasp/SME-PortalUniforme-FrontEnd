@@ -247,6 +247,9 @@ export class MapaDeFornecedores extends Component {
                   <div className="tabela-lojas">
                     <div className="tabela-header row">
                       <div className="col-12 col-sm-7">Nome</div>
+                      <div className="d-none d-md-block col-sm-5">
+                        Itens de uniforme disponíveis
+                      </div>
                     </div>
                     {lojas &&
                       lojas
@@ -277,10 +280,20 @@ export class MapaDeFornecedores extends Component {
                                     <div className="col-10">
                                       {loja.nome_fantasia.toUpperCase()}
                                       <div className="clique-mensagem">
-                                        Clique no + para dados de contato
+                                        Clique no + para dados de contato e 
+                                        preço
                                       </div>
                                     </div>
                                   </div>
+                                </div>
+                                <div className="badges col-sm-5 col-12">
+                                  {getBadges(loja).map((badge) => {
+                                    return (
+                                      <span className="badge-fornecimento">
+                                        {badge}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               </div>
                               {loja.ativo && (
@@ -312,7 +325,10 @@ export class MapaDeFornecedores extends Component {
                                   <table className="tabela-precos">
                                     <thead>
                                       <tr className="row">
-                                        <th className="col-12">Item</th>
+                                        <th className="col-8">Item</th>
+                                        <th className="col-4">
+                                          Valor unidade (R$)
+                                        </th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -325,12 +341,26 @@ export class MapaDeFornecedores extends Component {
                                         .map((uniforme, key) => {
                                           return (
                                             <tr className="row" key={key}>
-                                              <td className="col-12">
+                                              <td className="col-8">
                                                 {uniforme.item}
+                                              </td>
+                                              <td className="col-4">
+                                                {uniforme.preco.replace(
+                                                  ".",
+                                                  ","
+                                                )}
                                               </td>
                                             </tr>
                                           );
                                         })}
+                                        <tr className="row valor-total">
+                                        <td className="col-8">
+                                          Valor Total (R$)
+                                        </td>
+                                        <td className="col-4">
+                                          {loja.total_uniformes}
+                                        </td>
+                                      </tr>
                                     </tbody>
                                   </table>
                                 </Fragment>
