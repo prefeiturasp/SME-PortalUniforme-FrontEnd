@@ -119,6 +119,14 @@ class MenuPrincipal extends React.Component {
                     Atualize seu cadastro
                   </a>
                 </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link text-secondary mb-1 pb-0"
+                    href="https://forms.office.com/r/Q1Qawispz4"
+                  >
+                    Avalie sua compra
+                  </a>
+                </li>
               </ul>
             )}
           </div>
