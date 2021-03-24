@@ -15,7 +15,7 @@ export class MegaPortal extends Component {
         <div className="w-100 uniforme-escolar position-relative">
           <div className="container">
             <div className="conteudo">
-              <div className="div-banner col-lg-8 col-sm-12 col-xl-6">
+              <div className="col-lg-8 col-sm-12 col-xl-6">
                 <h3>
                 Agora os responsáveis pelos 
                 estudantes da Rede Municipal de 
@@ -42,7 +42,7 @@ export class MegaPortal extends Component {
             </div>
           </div>
         </div>
-        <div id="conteudo" className="pt-5 w-100 home">
+        <div id="conteudo" className="container-menu pt-5 w-100">
           <div className="container">
             <BlocoTexto title="Para obter mais informações, acesse a seção que atenda seu perfil"></BlocoTexto>
           </div>
