@@ -2,8 +2,13 @@ import Axios from "axios";
 import axios from "axios";
 import { toastError } from "components/Toast/dialogs";
 import endPont from "../constants/endPonts.constants";
+import { getToken } from "./auth.service";
+
 const authHeader = {
-  "Content-Type": "application/json",
+  headers: {
+    "Accept-Language": "pt-br",
+    "Content-Type": "application/json",
+  }
 };
 
 export const getUniformes = async () => {
@@ -82,6 +87,10 @@ export const concluirCadastro = async (uuid) => {
 };
 
 export const setAnexo = (payload) => {
+  const token = getToken();
+  if (token !== undefined) {
+    authHeader.headers["Authorization"] = `JWT ${token}`;
+  }
   return axios
     .post(`${endPont.API_URL}/anexos/`, payload, authHeader)
     .then((response) => {
@@ -93,6 +102,10 @@ export const setAnexo = (payload) => {
 };
 
 export const deleteAnexo = (uuid) => {
+  const token = getToken();
+  if (token !== undefined) {
+    authHeader.headers["Authorization"] = `JWT ${token}`;
+  }
   return axios
     .delete(`${endPont.API_URL}/anexos/${uuid}/`, authHeader)
     .then((response) => {
