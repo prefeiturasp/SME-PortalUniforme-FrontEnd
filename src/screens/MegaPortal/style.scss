@@ -58,6 +58,15 @@
 
 @media screen and (max-width: 991px) {
   .conteudo {
-    top: 66% !important;
+    top: 85% !important;
+  }
+  .container-menu {
+    margin-top: 35% !important;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .container-menu {
+    margin-top: 55% !important;
   }
 }
