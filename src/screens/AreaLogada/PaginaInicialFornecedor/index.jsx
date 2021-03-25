@@ -49,16 +49,16 @@ export const PaginaInicialFornecedor = () => {
                   <div className="card-body">
                     <h2>Irregularidades nos anexos</h2>
                     {empresa.arquivos_anexos.filter((arquivo) =>
-                      ["REPROVADO", "VENCIDO"].includes(arquivo.status)
+                      ["REPROVADO", "VENCIDO"].includes(arquivo.status) && arquivo.tipo_documento.obrigatorio_sme !== true 
                     ).length === 0 && (
                       <div>Não há irregularidades nos documentos anexos.</div>
                     )}
                     {empresa.arquivos_anexos.filter((arquivo) =>
-                      ["REPROVADO", "VENCIDO"].includes(arquivo.status)
+                      ["REPROVADO", "VENCIDO"].includes(arquivo.status) && arquivo.tipo_documento.obrigatorio_sme !== true
                     ).length > 0 &&
                       empresa.arquivos_anexos
                         .filter((arquivo) =>
-                          ["REPROVADO", "VENCIDO"].includes(arquivo.status)
+                          ["REPROVADO", "VENCIDO"].includes(arquivo.status) && arquivo.tipo_documento.obrigatorio_sme !== true
                         )
                         .map((arquivo) => {
                           return (
