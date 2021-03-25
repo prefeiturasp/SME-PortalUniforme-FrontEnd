@@ -74,9 +74,7 @@ export const LojasCredenciadas = () => {
                             {loja.nome_fantasia}
                           </div>
                           <div>
-                            <span className="font-weight-bold">
-                              Nome do responsável:
-                            </span>
+                            <span className="font-weight-bold">Nome do responsável: </span>
                             {loja.responsavel}
                           </div>
                           <div>
