@@ -6,6 +6,7 @@ import imgLoja from "img/landing-loja.png";
 import imgDesenhoCriancas from "img/desenho-alunos-mobile.png";
 import BlocoTexto from "components/BlocoTexto";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import { BannerConsultaCadastro } from "components/BannerConsultaCadastro" 
 import endPoint from "../../constants/endPonts.constants";
 import "./style.scss";
 
@@ -13,6 +14,7 @@ export class MegaPortal extends Component {
   render() {
     return (
       <PaginaComCabecalhoRodape>
+        <BannerConsultaCadastro/>
         <div className="w-100 uniforme-escolar position-relative">
           <div className="container">
             <div className="conteudo">

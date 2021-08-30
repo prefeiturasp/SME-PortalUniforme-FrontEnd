@@ -9,6 +9,7 @@ import imgEMEFJogosTabuleiro from "img/emef_jogos_tabuleiro.jpg";
 import { getUniformes } from "services/uniformes.service";
 import { AutoComplete } from "components/Input/AutoComplete";
 import { required } from "helpers/fieldValidators";
+import { BannerConsultaCadastro } from "components/BannerConsultaCadastro" 
 import { formatarParaMultiselect } from "./helper";
 import "./style.scss";
 import { toastWarn } from "components/Toast/dialogs";
@@ -73,6 +74,7 @@ export class ProcurarFornecedores extends Component {
     const { uniformes, tipoUniformeSelecionados } = this.state;
     return (
       <PaginaComCabecalhoRodape>
+        <BannerConsultaCadastro/> 
         <div className="busca-mapa">
           <div className="title">
             Encontre a loja credenciada mais próxima de você
