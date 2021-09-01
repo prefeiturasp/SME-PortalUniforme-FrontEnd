@@ -6,12 +6,15 @@ import imgLoja from "img/landing-loja.png";
 import imgDesenhoCriancas from "img/desenho-alunos-mobile.png";
 import BlocoTexto from "components/BlocoTexto";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import { BannerConsultaCadastro } from "components/BannerConsultaCadastro" 
+import endPoint from "../../constants/endPonts.constants";
 import "./style.scss";
 
 export class MegaPortal extends Component {
   render() {
     return (
       <PaginaComCabecalhoRodape>
+        <BannerConsultaCadastro/>
         <div className="w-100 uniforme-escolar position-relative">
           <div className="container">
             <div className="conteudo">
@@ -27,7 +30,7 @@ export class MegaPortal extends Component {
                 Para isso, basta que: <br/>
                 </p>
                 <ol>
-                  <li>Os dados do(a) responsável estejam completos no cadastro do(a) estudante. Se não estiverem, é possível fazer a <a href="https://atualizacaocadastral.sme.prefeitura.sp.gov.br" target="blank">atualização cadastral</a> online ou diretamente na secretaria da escola.</li>
+                  <li>Os dados do(a) responsável estejam completos no cadastro do(a) estudante. Para isso, é possível consultar a situação cadastral na página <a href={endPoint.CONSULTA_CADASTRO_URL} target="blank">consulteseucadastro.sme.prefeitura.sp.gov.br</a> e em caso de ajustes, o(a) responsável deverá solicitar a atualização para a DRE ou escola, conforme o caso.</li>
                   <li>Instalar o <a href="https://play.google.com/store/apps/details?id=com.mercadopago.wallet" target="blank">aplicativo da Mercado Pago</a> no celular ou tablet e criar a conta com mesmo CPF e e-mail de responsável que constam no cadastro do(a) estudante (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/01/Guia-para-as-famílias.pdf" target="blank">veja o passo a passo aqui</a>).</li>
                   <li>Quando o crédito estiver liberado, a pessoa receberá uma notificação pelo próprio aplicativo (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/02/Programa-Auxi%CC%81lio-Uniforme-Escolar_telas-do-aplicativo-da-Mercado-Pago.pdf" target="blank">veja aqui como esse aviso aparece</a>).</li>
                   <li>Aí o(a) responsável já pode realizar a compra do uniforme escolar nas lojas credenciadas (<a href="https://portaldeuniformes.sme.prefeitura.sp.gov.br/familia" target="blank">consulte aqui as lojas mais próximas do endereço desejado</a>).</li>
@@ -71,11 +74,19 @@ export class MegaPortal extends Component {
                 <Link to="/familia">
                   <button
                     size="lg"
-                    className="btn btn-primary col-12 pl-4 pr-4"
+                    className="btn btn-primary col-12 pl-4 pr-4 mb-2"
                   >
                     <strong>Estudantes/famílias</strong>
                   </button>
                 </Link>
+                <a href={endPoint.CONSULTA_CADASTRO_URL} target="blank">
+                  <button
+                    size="lg"
+                    className="btn btn-primary col-12 pl-4 pr-4"
+                  >
+                    <strong>Consulta de Cadastro</strong>
+                  </button>
+                </a>
               </div>
             </div>
             <div className="area-fabricantes col-12 offset-sm-2 col-sm-5">
