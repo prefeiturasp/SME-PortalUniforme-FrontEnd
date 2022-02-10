@@ -90,7 +90,7 @@ export const LojasCredenciadas = () => {
                             {loja.telefone}
                           </div>
                           <div>
-                            <span className="font-weight-bold">Endereço: </span>
+                            <span className="font-weight-bold">Endereço completo: </span>
                             {loja.endereco}, {loja.numero} <br />
                             {loja.bairro} - CEP: {loja.cep}
                           </div>
