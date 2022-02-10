@@ -165,9 +165,9 @@ export class ProcurarFornecedores extends Component {
           <div className="container">
             <div className="row mt-5">
               <div className="col-lg-6 col-sm-12 mb-lg-0">
-                <BlocoTexto title="Quais foram as mudanças?">
-                  As famílias terão mais liberdade de escolha! O kit padrão do
-                  uniforme escolar sugerido é composto por:
+                <BlocoTexto title="Como funciona o fornecimento do uniforme escolar?">
+                As famílias possuem mais liberdade de escolha! O kit padrão do 
+                uniforme escolar sugerido é composto por: 
                   <ul className="lista-home pt-2 ml-0 pl-0">
                     {uniformes &&
                       uniformes.map((uniforme) => {
@@ -187,28 +187,27 @@ export class ProcurarFornecedores extends Component {
           </div>
         </div>
         <div className="container agora-cada-bloco">
-          Agora, cada família poderá compor o kit da forma que for mais adequada
-          a cada estudante, consideradas suas necessidades específicas e
-          respeitado o padrão das peças aprovado pela Secretaria Municipal de
-          Educação e o valor limite de R$ 387,10 disponibilizado. <br /> A
-          compra será feita diretamente pelas famílias nas lojas credenciadas, a
-          partir de um sistema de concessão de benefício. O(a) responsável legal
-          pelo estudante não receberá diretamente os R$ 387,10 do kit do
-          uniforme escolar na sua conta, mas sim terá direito a gastar esse
-          valor adquirindo o uniforme escolar nas lojas autorizadas (e são elas
-          que farão a prestação de contas à Prefeitura).
+        Além disso, as confecções podem apresentar sugestões de peças para a Secretaria. Quando aprovadas, as peças 
+        são incorporadas ao modelo padrão dos uniformes escolares. Os modelos já homologados podem ser consultados na 
+        seguinte página: <a href="https://drive.google.com/file/d/1KGc1Mkq7MQpOZ0fIY2l6LDcC9WdfrA83/view" 
+        target="blank">acesse aqui</a><br />
+        Cada família compõe o kit da forma que for mais adequada a cada estudante, consideradas suas necessidades 
+        específicas e respeitado o padrão das peças aprovado pela Secretaria Municipal de Educação e o valor limite 
+        disponibilizado. <br />
+        A compra é feita diretamente pelas famílias nas lojas credenciadas, a partir de um sistema de concessão de 
+        benefício. O(a) responsável legal pelo estudante não recebe diretamente o valor do kit do uniforme escolar na 
+        sua conta, mas sim possui direito a gastar esse valor adquirindo o uniforme escolar nas lojas autorizadas 
+        (e são elas que fazem a prestação de contas à Prefeitura). 
         </div>
         <div className="container">
           <div className="row mt-5">
             <div className="col-lg-6">
               <BlocoTexto title="Ajude a Prefeitura a garantir a qualidade do uniforme">
                 <div className="justify-content-lg-end justify-content-center">
-                  As lojas credenciadas para a venda do uniforme escolar
-                  precisam seguir o padrão estabelecido pela Secretaria
-                  Municipal de Educação, tanto no que diz respeito aos modelos,
-                  cores, quanto à qualidade do material. Para saber como
-                  conferir se os produtos vendidos estão de fato cumprindo com
-                  todas as exigências, veja as dicas neste vídeo:
+                As lojas credenciadas para a venda do uniforme escolar precisam seguir o padrão estabelecido pela 
+                Secretaria Municipal de Educação, tanto no que diz respeito aos modelos, cores, quanto à qualidade do 
+                material. Para saber como conferir se os produtos vendidos do kit padrão sugerido estão de fato 
+                cumprindo com todas as exigências, veja as dicas neste vídeo.
                 </div>
               </BlocoTexto>
             </div>
@@ -254,13 +253,14 @@ export class ProcurarFornecedores extends Component {
         <div className="container mt-3">
           <BlocoTexto title="Problemas na compra do uniforme">
             <div className="justify-content-lg-end justify-content-center">
-              Em caso de problemas como possíveis falhas na confecção das peças,
-              entre em contato com a loja onde produto foi adquirido. Para
-              situações sem solução direta com o lojista, informe à Prefeitura
-              nos Canais de Atendimento do SP 156 ou recorra a qualquer órgão de
-              defesa do consumidor. <br /> Se tiver dificuldades para baixar ou
-              usar o aplicativo para realizar a compra nas lojas credenciadas,
-              entre em contato com a empresa Mercado Pago.
+            Em caso de problemas como possíveis falhas na confecção das peças, entre em contato com a loja onde produto 
+            foi adquirido. Para situações sem solução direta com o lojista, informe à Prefeitura nos Canais de 
+            Atendimento do SP 156 ou recorra a qualquer órgão de defesa do consumidor.<br />
+            Se tiver dificuldades para baixar ou usar o aplicativo para realizar a compra nas lojas credenciadas, entre 
+            em contato com a empresa Personal Net responsável pelo Kit Escolar DUEPAY, aplicativo do meio de pagamento.<br />
+            Central de Atendimento: 0880 003 8400<br />
+            Horário: de segunda à sexta das 7h30 às 19h<br />
+            E-mail: relacionamento@personalcard.com.br <br />
             </div>
           </BlocoTexto>
           <div className="text-center pt-3 pb-3">
