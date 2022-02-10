@@ -7,7 +7,7 @@ export class BannerConsultaCadastro extends Component {
     return (
       <div className="banner-consulta-cadastro">
         <div className="titulo-banner">
-          Verifique se seu cadastro está correto para comprar o uniforme.
+          VERIFIQUE SEU CADASTRO PARA COMPRAR O UNIFORME
         </div>
 
         <div className="botao-container">
