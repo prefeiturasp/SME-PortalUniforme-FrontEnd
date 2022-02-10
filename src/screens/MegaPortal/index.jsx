@@ -20,21 +20,21 @@ export class MegaPortal extends Component {
             <div className="conteudo">
               <div className="col-lg-8 col-sm-12 col-xl-6">
                 <h3>
-                Agora os responsáveis pelos 
-                estudantes da Rede Municipal de 
-                São Paulo receberão o crédito para 
-                comprar o uniforme escolar
-                diretamente nas lojas credenciadas
+                  Agora os responsáveis pelos estudantes
+                  da Rede Municipal de São Paulo recebem
+                  o crédito para comprar o uniforme escolar
+                  diretamente nas lojas credenciadas 
                 </h3>
-                <p>
-                Para isso, basta que: <br/>
+                <p class="titulo-lista">
+                  Para isso, basta que: <br/>
                 </p>
-                <ol>
-                  <li>Os dados do(a) responsável estejam completos no cadastro do(a) estudante. Para isso, é possível consultar a situação cadastral na página <a href={endPoint.CONSULTA_CADASTRO_URL} target="blank">consulteseucadastro.sme.prefeitura.sp.gov.br</a> e em caso de ajustes, o(a) responsável deverá solicitar a atualização para a DRE ou escola, conforme o caso.</li>
-                  <li>Instalar o <a href="https://play.google.com/store/apps/details?id=com.mercadopago.wallet" target="blank">aplicativo da Mercado Pago</a> no celular ou tablet e criar a conta com mesmo CPF e e-mail de responsável que constam no cadastro do(a) estudante (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/01/Guia-para-as-famílias.pdf" target="blank">veja o passo a passo aqui</a>).</li>
-                  <li>Quando o crédito estiver liberado, a pessoa receberá uma notificação pelo próprio aplicativo (<a href="https://educacao.sme.prefeitura.sp.gov.br/wp-content/uploads/2021/02/Programa-Auxi%CC%81lio-Uniforme-Escolar_telas-do-aplicativo-da-Mercado-Pago.pdf" target="blank">veja aqui como esse aviso aparece</a>).</li>
-                  <li>Aí o(a) responsável já pode realizar a compra do uniforme escolar nas lojas credenciadas (<a href="https://portaldeuniformes.sme.prefeitura.sp.gov.br/familia" target="blank">consulte aqui as lojas mais próximas do endereço desejado</a>).</li>
+                <ol class="lista">
+                  <li>O CPF do(a) responsável esteja registrado no cadastro do(a) estudante. É possível consultar a situação cadastral na página <a href={endPoint.CONSULTA_CADASTRO_URL} target="blank">consulteseucadastro.sme.prefeitura.sp.gov.br</a> e em caso de ajustes, o(a) responsável deverá solicitar a atualização para escola, conforme o caso.</li>
+                  <li>Instalar o aplicativo <strong>Kit Escolar DuePay</strong> no celular ou tablet e criar a conta com mesmo CPF de responsável que consta no cadastro do(a) estudante. </li>
                 </ol>
+                <p class="rodape-lista">
+                  Após a liberação do crédito, o(a) responsável já pode realizar a compra do uniforme escolar nas lojas credenciadas (<a href="https://portaldeuniformes.sme.prefeitura.sp.gov.br/familia" target="blank">consulte aqui as lojas mais próximas do endereço desejado</a>).
+                </p>
               </div>
               <img
                 src={imgDesenhoCriancas}
