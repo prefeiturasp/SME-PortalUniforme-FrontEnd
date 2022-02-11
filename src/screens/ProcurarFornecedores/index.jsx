@@ -260,7 +260,7 @@ export class ProcurarFornecedores extends Component {
             em contato com a empresa Personal Net responsável pelo Kit Escolar DUEPAY, aplicativo do meio de pagamento.<br />
             Central de Atendimento: 0880 003 8400<br />
             Horário: de segunda à sexta das 7h30 às 19h<br />
-            E-mail: relacionamento@personalcard.com.br <br />
+            E-mail: <a href="mailto:relacionamento@personalcard.com.br">relacionamento@personalcard.com.br</a>
             </div>
           </BlocoTexto>
           <div className="text-center pt-3 pb-3">
