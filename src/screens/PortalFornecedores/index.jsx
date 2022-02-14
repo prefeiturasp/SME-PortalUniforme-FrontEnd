@@ -117,16 +117,16 @@ export default class PortalFornecedores extends Component {
             <div className="conteudo">
               <div className="col-lg-8 col-sm-12 col-xl-6">
                 <h1>
-                  Contribua com a educação do nosso município e torne-se um
-                  fornecedor de uniformes escolares.
+                Contribua com a educação do nosso município e torne-se um 
+                fornecedor de uniformes escolares.
                 </h1>
                 <p>
-                  Leia o regulamento, veja se sua loja está de acordo com os
-                  critérios necessários para o credenciamento e faça a diferença
-                  na educação de nossos estudantes. <br />
-                  Além disso, você poderá comercializar os uniformes sem pagar
-                  nenhuma taxa para a empresa MercadoPago, que irá gerir todas
-                  as transações financeiras!
+                  Leia o regulamento, veja se sua loja está de acordo com os 
+                  critérios necessários para o credenciamento e faça a 
+                  diferença na educação de nossos estudantes. <br />
+                  Além disso, você poderá comercializar os uniformes sem pagar 
+                  nenhuma taxa para a empresa que gerencia as transações 
+                  financeiras!
                 </p>
                 <img
                   src={imgDesenhoFornecedor}
@@ -168,12 +168,11 @@ export default class PortalFornecedores extends Component {
                       Para ser credenciado, o comerciante deve:
                     </p>
                     <ul className="lista-home ml-0 pl-0 mb-2">
-                      <li>Ser pessoa Jurídica;</li>
+                      <li>Ser pessoa Jurídica com objeto social compatível ao fornecimento; </li>
                       <li>
                         Possuir toda a documentação válida conforme as condições
                         do
                         <a
-                          className="links-intrucoes"
                           href={this.state.edital.url}
                           onClick={this.editalClick}
                         >
@@ -184,7 +183,6 @@ export default class PortalFornecedores extends Component {
                       <li>
                         Conhecer e concordar com as regras previstas no{" "}
                         <a
-                          className="links-intrucoes"
                           href={this.state.edital.url}
                           onClick={this.editalClick}
                         >
@@ -199,7 +197,10 @@ export default class PortalFornecedores extends Component {
                         Possuir stand de vendas ou loja física na cidade de São
                         Paulo;
                       </li>
-                      <li>Emitir Nota Fiscal Eletrônica;</li>
+                      <li>
+                        Emitir Nota Fiscal Eletrônica ou Cupom Fiscal 
+                        Eletrônico no CPF do(a) responsável legal pelo(a) aluno(a); 
+                      </li>
                       <li>
                         Comprometer-se em fornecer os itens com a qualidade
                         exigida nas especificações técnicas;
@@ -212,7 +213,6 @@ export default class PortalFornecedores extends Component {
                     </p>
                     <p>
                       <a
-                        className="links-intrucoes"
                         href={this.state.instrucaoNormativa.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -223,7 +223,6 @@ export default class PortalFornecedores extends Component {
                     </p>
                     <p>
                       <a
-                        className="links-intrucoes"
                         href="http://legislacao.prefeitura.sp.gov.br/leis/decreto-44279-de-24-de-dezembro-de-2003"
                       >
                         <strong>[Link Dec. Municipal 44.279/2003]</strong>
@@ -231,7 +230,6 @@ export default class PortalFornecedores extends Component {
                     </p>
                     <p>
                       <a
-                        className="links-intrucoes"
                         href={this.state.edital.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -281,15 +279,16 @@ export default class PortalFornecedores extends Component {
           </div>
         </div>
         <div className="container mt-3">
-          Cada família poderá compor o kit da forma que for mais adequada a cada
-          estudante, consideradas suas necessidades específicas e respeitado o
-          padrão das peças aprovado pela Secretaria Municipal de Educação e o
-          valor limite de <strong>R$ 387,10</strong> disponibilizado.
+        Cada família poderá compor o kit da forma que for mais adequada a cada estudante, consideradas suas necessidades 
+        específicas e respeitado o padrão das peças aprovadas pela Secretaria Municipal de Educação e o valor limite 
+        disponibilizado por estudante. 
         </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
             <BlocoTexto title="Posso sugerir novos itens para fazer parte da composição atual? ">
               <p>
+                As peças já homologadas podem ser consultadas na seguinte 
+                página: <a href="https://drive.google.com/file/d/1KGc1Mkq7MQpOZ0fIY2l6LDcC9WdfrA83/view" target="blank">acesse aqui</a><br />
                 As confecções que tiverem expertise em um material diverso do
                 padrão fixado poderão apresentar seus modelos à homologação da
                 Secretaria. Para isso, deverão ser enviadas:
@@ -305,8 +304,8 @@ export default class PortalFornecedores extends Component {
                 credenciado, sem que seja devida qualquer remuneração ao
                 desenvolvedor/designer da peça. As especificações sugeridas
                 poderão ser encaminhadas para o seguinte e-mail:{" "}
-                <a href="mailto:smecoaduniformematerial@sme.prefeitura.sp.gov.br">
-                  smecoaduniformematerial@sme.prefeitura.sp.gov.br
+                <a href="mailto:smecoservuniformematerial@sme.prefeitura.sp.gov.br">
+                  smecoservuniformematerial@sme.prefeitura.sp.gov.br
                 </a>
                 , com isso serão repassadas as devidas informações quanto à
                 entrega das amostras.

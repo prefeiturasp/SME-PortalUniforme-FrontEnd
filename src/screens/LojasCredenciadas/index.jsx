@@ -89,6 +89,11 @@ export const LojasCredenciadas = () => {
                             <span className="font-weight-bold">Telefone: </span>
                             {loja.telefone}
                           </div>
+                          <div>
+                            <span className="font-weight-bold">Endereço completo: </span>
+                            {loja.endereco}, {loja.numero} <br />
+                            {loja.bairro} - CEP: {loja.cep}
+                          </div>
                         </div>
                         {loja.foto_fachada && (
                           <div className="col-sm-4 col-12 text-right">
