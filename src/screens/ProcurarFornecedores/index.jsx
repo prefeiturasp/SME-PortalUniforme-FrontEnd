@@ -258,7 +258,7 @@ export class ProcurarFornecedores extends Component {
             Atendimento do SP 156 ou recorra a qualquer órgão de defesa do consumidor.<br />
             Se tiver dificuldades para baixar ou usar o aplicativo para realizar a compra nas lojas credenciadas, entre 
             em contato com a empresa Personal Net responsável pelo Kit Escolar DUEPAY, aplicativo do meio de pagamento.<br />
-            Central de Atendimento: 0880 003 8400<br />
+            Central de Atendimento: 0800 003 8400<br />
             Horário: de segunda à sexta das 7h30 às 19h<br />
             E-mail: <a href="mailto:relacionamento@personalcard.com.br">relacionamento@personalcard.com.br</a>
             </div>
