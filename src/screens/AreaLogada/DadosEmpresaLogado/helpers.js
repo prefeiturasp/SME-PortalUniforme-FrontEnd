@@ -44,6 +44,16 @@ export const formataPayloadLojasPrecos = (values, tiposDeUniforme) => {
     });
   });
   values.ofertas_de_uniformes = ofertas_de_uniformes;
+
+  // Formata comprovante de endereços de cada loja
+  values.lojas.forEach(loja =>{
+
+    if(loja.comprovante_endereco[0])
+      loja.comprovante_endereco = loja.comprovante_endereco[0].arquivo
+    else
+      delete loja.comprovante_endereco
+    
+  })
   return values;
 };
 
