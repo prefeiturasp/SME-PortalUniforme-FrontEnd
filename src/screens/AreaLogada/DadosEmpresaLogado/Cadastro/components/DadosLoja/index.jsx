@@ -16,14 +16,17 @@ import {
   validaTelefoneOuCelular,
   validaTelefoneOuCelularLength
 } from "helpers/fieldValidators";
+import { FileUpload } from "components/Input/FileUpload";
 import formatStringByPattern from "format-string-by-pattern";
 import { OnChange } from "react-final-form-listeners";
 import { toastError } from "components/Toast/dialogs";
 import { getEnderecoPorCEP } from "services/cep.service";
 import formatString from "format-string-by-pattern";
+import "./style.scss"
 
 export const Loja = ({ loja, fields, index, empresa, logado }) => {
   const [apiCEPfora, setApiCEPfora] = useState(false);
+  const [comprovanteUpado, setComprovanteUpado] = useState(false);
 
   return (
     <div key={loja}>
@@ -169,6 +172,30 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
           />
         </div>
       </div>
+
+      <div class="link-comprovante">
+        <label class="form-label">Comprovante de endereço do ponto de venda</label>     
+        <div>
+          <a class="btn btn-comprovante btn-primary" target="blank" href={`${empresa.lojas[index].comprovante_endereco}`}> Visualizar comprovante</a>
+        </div>
+      </div>
+      <Field
+        component={FileUpload}
+        name={`${loja}.comprovante_endereco`}
+        disabled={comprovanteUpado}
+        accept="image/*"
+        acceptCustom="image/png, image/jpg, image/jpeg"
+        className="form-control-file"
+        label={`Substituir o Comprovante de endereço do ponto de venda:`}
+        multiple={true}
+      />
+      <OnChange name={`${loja}.comprovante_endereco`}>
+        {(value) => {
+          if(Array.isArray(value)){
+            setComprovanteUpado(value.length > 0);
+          } 
+        }}
+      </OnChange>
       <Field
         component={InputText}
         placeholder={"Site"}
