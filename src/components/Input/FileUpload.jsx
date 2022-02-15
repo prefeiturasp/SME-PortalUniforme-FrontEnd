@@ -12,6 +12,7 @@ class CustomFileUploadPR extends FileUploadPR {
     const { files } = this.state;
     if (
       this.props.acceptCustom &&
+      files[0] &&
       !this.props.acceptCustom.includes(files[0].type)
     ) {
       toastError("Formato de arquivo inválido");

@@ -1,11 +1,15 @@
 import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
+import { Field } from "redux-form";
+import { requiredImagem } from "helpers/fieldValidators";
+import { FileUpload } from "components/Input/FileUpload";
 import { Row, Col } from "react-bootstrap";
 import {
   InputLabelRequired,
   InputLabel,
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
+
 
 const LojaFisica = (props) => {
   const [endereco, setEndereco] = useState("");
@@ -17,6 +21,8 @@ const LojaFisica = (props) => {
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
   const [site, setSite] = useState("");
+  const [comprovanteEndereco, setComprovanteEndereco] = useState(null);
+  const [comprovanteUpado, setComprovanteUpado] = useState(false);
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
@@ -32,6 +38,7 @@ const LojaFisica = (props) => {
     setComplemento(props.complemento);
     setNomeFantasia(props.nome_fantasia);
     setSite(props.site);
+    setComprovanteEndereco(props.comprovante_endereco)
   }, [props]);
 
   const buscaCep = async (value) => {
@@ -82,6 +89,7 @@ const LojaFisica = (props) => {
       bairro: data.bairro,
       cep: data.cep,
       nome_fantasia: nome_fantasia,
+      comprovante_endereco: data.comprovanteEndereco
     };
   };
 
@@ -254,6 +262,29 @@ const LojaFisica = (props) => {
           />
         </div>
       </div>
+      <Field
+        component={FileUpload}
+        name={`comprovante_endereco_${props.chave}`}
+        disabled={comprovanteUpado}
+        id={`comprovante_endereco_${props.chave}`}
+        key={props.chave}
+        value={comprovanteEndereco}
+        accept="image/*"
+        acceptCustom="image/png, image/jpg, image/jpeg"
+        className="form-control-file"
+        label={`Comprovante de endereço do ponto de venda`}
+        required
+        validate={requiredImagem}
+        multiple={true}
+        onChange={(e) => {
+          const valor = e.length > 0 ? e[0].arquivo : null;
+          setComprovanteEndereco(e);
+          setComprovanteUpado(Array.isArray(e) && e.length > 0);
+          setPayload({ ...payload, comprovante_endereco: valor });
+          props.onUpdate({ ...payload, comprovante_endereco: valor }, props.chave);
+        }}
+      />
+
       <InputLabel
         label="Site"
         value={site}
