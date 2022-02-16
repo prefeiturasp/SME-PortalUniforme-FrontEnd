@@ -30,7 +30,7 @@ export class MegaPortal extends Component {
                 </p>
                 <ol class="lista">
                   <li>O CPF do(a) responsável esteja registrado no cadastro do(a) estudante. É possível consultar a situação cadastral na página <a href={endPoint.CONSULTA_CADASTRO_URL} target="blank">consulteseucadastro.sme.prefeitura.sp.gov.br</a> e em caso de ajustes, o(a) responsável deverá solicitar a atualização para escola, conforme o caso.</li>
-                  <li>Instalar o aplicativo <strong>Kit Escolar DuePay</strong> no celular ou tablet e criar a conta com mesmo CPF de responsável que consta no cadastro do(a) estudante. </li>
+                  <li>Instalar o aplicativo <strong>Kit Escolar DUEPAY</strong> no celular ou tablet e criar a conta com mesmo CPF de responsável que consta no cadastro do(a) estudante. </li>
                 </ol>
                 <p class="rodape-lista">
                   Após a liberação do crédito, o(a) responsável já pode realizar a compra do uniforme escolar nas lojas credenciadas (<a href="https://portaldeuniformes.sme.prefeitura.sp.gov.br/familia" target="blank">consulte aqui as lojas mais próximas do endereço desejado</a>).
