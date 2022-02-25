@@ -170,10 +170,18 @@ export const verificaEmail = async (email) => {
 
 export const getAPIVersion = async () => {
   const response = await axios.get(
-    `${endPont.API_URL}/api-version/`,
+    'https://api.github.com/repos/prefeiturasp/SME-PortalUniforme-BackEnd/releases/latest',
     authHeader
   );
-  return response.data["API_Version"];
+  return response.data["name"];
+};
+
+export const getFrontVersion = async () => {
+  const response = await axios.get(
+    'https://api.github.com/repos/prefeiturasp/SME-PortalUniforme-FrontEnd/releases/latest',
+    authHeader
+  );
+  return response.data["name"];
 };
 
 export const getLojasCredenciadas = async (latitude, longitude) => {
