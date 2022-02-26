@@ -183,8 +183,8 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
         component={FileUpload}
         name={`${loja}.comprovante_endereco`}
         disabled={comprovanteUpado}
-        accept="image/*"
-        acceptCustom="image/png, image/jpg, image/jpeg"
+        accept="image/*, .pdf"
+        acceptCustom="application/pdf, image/png, image/jpg, image/jpeg"
         className="form-control-file"
         label={`Substituir o Comprovante de endereço do ponto de venda:`}
         multiple={true}

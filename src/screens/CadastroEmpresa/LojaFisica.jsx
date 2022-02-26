@@ -269,8 +269,8 @@ const LojaFisica = (props) => {
         id={`comprovante_endereco_${props.chave}`}
         key={props.chave}
         value={comprovanteEndereco}
-        accept="image/*"
-        acceptCustom="image/png, image/jpg, image/jpeg"
+        accept="image/*, .pdf"
+        acceptCustom="application/pdf, image/png, image/jpg, image/jpeg"
         className="form-control-file"
         label={`Comprovante de endereço do ponto de venda`}
         required
