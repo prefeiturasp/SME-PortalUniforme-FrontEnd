@@ -1,26 +1,28 @@
 import React, { Component } from "react";
-import { version } from "../../../package.json";
 import { Link, NavLink } from "react-router-dom";
 import { getRazaoSocial, getCNPJ } from "helpers/helpers";
 import "./style.scss";
 import "./sb-admin-2.css";
-import { getAPIVersion } from "services/uniformes.service";
+import { getAPIVersion, getFrontVersion } from "services/uniformes.service";
 
 export class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       API_VERSION: null,
+      FRONT_VERSION: null,
     };
   }
 
   async componentDidMount() {
     const response = await getAPIVersion();
     this.setState({ API_VERSION: response });
+    const response2 = await getFrontVersion();
+    this.setState({ FRONT_VERSION: response2 });
   }
 
   render() {
-    const { API_VERSION } = this.state;
+    const { API_VERSION, FRONT_VERSION } = this.state;
     const { toggle, toggled } = this.props;
     return (
       <div>
@@ -136,7 +138,7 @@ export class Sidebar extends Component {
               <div className="sidebar-wrapper">
                 <div className="text-center mx-auto justify-content-center p-2">
                   <span className="text-bold text-white small">
-                    {version} (API: {API_VERSION})
+                    {FRONT_VERSION} (API: {API_VERSION})
                   </span>
                 </div>
               </div>
