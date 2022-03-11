@@ -173,12 +173,14 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
         </div>
       </div>
 
-      <div class="link-comprovante">
-        <label class="form-label">Comprovante de endereço do ponto de venda</label>     
-        <div>
-          <a class="btn btn-comprovante btn-primary" target="blank" href={`${empresa.lojas[index].comprovante_endereco}`}> Visualizar comprovante</a>
+      {empresa.lojas[index] &&
+        <div class="link-comprovante">
+          <label class="form-label">Comprovante de endereço do ponto de venda</label>     
+          <div>
+            <a class="btn btn-comprovante btn-primary" target="blank" href={`${empresa.lojas[index].comprovante_endereco}`}> Visualizar comprovante</a>
+          </div>
         </div>
-      </div>
+      }
       <Field
         component={FileUpload}
         name={`${loja}.comprovante_endereco`}
@@ -186,7 +188,8 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
         accept="image/*, .pdf"
         acceptCustom="application/pdf, image/png, image/jpg, image/jpeg"
         className="form-control-file"
-        label={`Substituir o Comprovante de endereço do ponto de venda:`}
+        label={empresa.lojas[index] ? `Substituir o Comprovante de endereço do ponto de venda:` : `Comprovante de endereço do ponto de venda:` }
+        required={!empresa.lojas[index]}
         multiple={true}
       />
       <OnChange name={`${loja}.comprovante_endereco`}>
