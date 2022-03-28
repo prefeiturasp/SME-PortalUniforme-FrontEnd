@@ -8,9 +8,7 @@ import {
   composeValidators,
   required,
   validaCEP,
-  validaTelefoneOuCelular,
   validaEmail,
-  somenteAlfanumericos,
   validaCNPJ,
 } from "helpers/fieldValidators";
 import { toastError } from "components/Toast/dialogs";
