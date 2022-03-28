@@ -8,10 +8,7 @@ import {
   composeValidators,
   required,
   validaCEP,
-  validaTelefoneOuCelular,
   validaEmail,
-  somenteAlfanumericos,
-  somenteCaracteresEEspacos,
   validaCNPJ,
 } from "helpers/fieldValidators";
 import { toastError } from "components/Toast/dialogs";
@@ -146,7 +143,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             type="text"
             placeholder="Nome completo"
             required
-            validate={composeValidators(required, somenteCaracteresEEspacos)}
+            validate={required}
             disabled={empresa}
           />
         </div>
