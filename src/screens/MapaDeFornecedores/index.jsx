@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useState } from "react";
 import StatefulMultiSelect from "@khanacademy/react-multi-select";
 import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
 import Mapa from "components/Mapa";
 import "./style.scss";
-import { getLojasCredenciadas, getUniformes } from "services/uniformes.service";
+import { getLojasCredenciadas, getLojasCredenciadasSemLatLong, getUniformes } from "services/uniformes.service";
 import Select from "components/Select";
 import { ORDENAR_OPCOES } from "./constants";
 import { LoadingCircle } from "components/LoadingCircle";
@@ -29,30 +29,64 @@ export class MapaDeFornecedores extends Component {
       latitude: null,
       longitude: null,
       endereco: null,
+      buscarTodos: null,
     };
   }
 
   async componentDidMount() {
-    const {
-      latitude,
-      longitude,
-      tipoUniformeSelecionados,
-      endereco,
-    } = this.props.location.state;
-    getLojasCredenciadas(latitude, longitude).then((response) => {
-      this.setState({
-        lojas: sortByParam(
-          acrescentaTotalUniformes(response.data, tipoUniformeSelecionados),
-          "distancia"
-        ),
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if(urlParams.has('buscarTodos')){
+      this.setState({buscarTodos: true})
+      let tipoUniformes = [
+        "Bermuda",
+        "Blusão",
+        "Calça",
+        "Camiseta",
+        "Jaqueta",
+        "Meia",
+        "Tênis",
+      ];
+      let latitude = -23.5519563;
+      let longitude = -46.6326451;
+      
+      getLojasCredenciadasSemLatLong().then((response) => {
+        this.setState({
+          lojas: sortByParam(
+            acrescentaTotalUniformes(response.data, tipoUniformes),
+            "distancia",
+            response.data.length
+          ),
+          latitude,
+          longitude,
+          tipoUniformeSelecionadosState: tipoUniformes,
+        });
+      });
+      const uniformes = await getUniformes();
+      this.setState({ uniformes });
+    }
+    else{
+      const {
         latitude,
         longitude,
+        tipoUniformeSelecionados,
         endereco,
-        tipoUniformeSelecionadosState: tipoUniformeSelecionados,
+      } = this.props.location.state;
+      getLojasCredenciadas(latitude, longitude).then((response) => {
+        this.setState({
+          lojas: sortByParam(
+            acrescentaTotalUniformes(response.data, tipoUniformeSelecionados),
+            "distancia"
+          ),
+          latitude,
+          longitude,
+          endereco,
+          tipoUniformeSelecionadosState: tipoUniformeSelecionados,
+        });
       });
-    });
-    const uniformes = await getUniformes();
-    this.setState({ uniformes });
+      const uniformes = await getUniformes();
+      this.setState({ uniformes });
+    }
   }
 
   getLojasNovoEndereco = () => {
@@ -95,7 +129,7 @@ export class MapaDeFornecedores extends Component {
 
   onSelectChanged(value) {
     const { lojas } = this.state;
-    this.setState({ lojas: sortByParam(lojas, value) });
+    this.setState({ lojas: sortByParam(lojas, value, lojas.length) });
   }
 
   collapseLoja(id) {
@@ -120,6 +154,7 @@ export class MapaDeFornecedores extends Component {
       consultarNovamente,
       tipoUniformeSelecionadosState,
       uniformes,
+      buscarTodos
     } = this.state;
     return (
       <PaginaComCabecalhoRodape>
@@ -229,10 +264,12 @@ export class MapaDeFornecedores extends Component {
               )}
               {lojas && lojas.length > 0 && !consultarNovamente && (
                 <div className="text-dark col-lg-6 col-sm-12 lojas">
-                  Essas são as <span>{lojas && lojas.length} lojas </span>
-                  credenciadas que vendem os seguintes itens do uniforme escolar
-                  (Bermuda, blusão de moletom, calça, camiseta, jaqueta, meia e
-                  sapato) mais próximas da {endereco}.
+                  {!buscarTodos && <span> 
+                    Essas são as <span>{lojas && lojas.length} lojas </span>
+                    credenciadas que vendem os seguintes itens do uniforme escolar
+                    (Bermuda, blusão de moletom, calça, camiseta, jaqueta, meia e
+                    sapato) mais próximas da {endereco}.
+                  </span>}
                   <div className="row">
                     <div className="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 pt-3">
                       <Select
@@ -322,7 +359,7 @@ export class MapaDeFornecedores extends Component {
                                       </div>
                                     </div>
                                   </div>
-                                  <table className="tabela-precos">
+                                  {!buscarTodos && <table className="tabela-precos">
                                     <thead>
                                       <tr className="row">
                                         <th className="col-8">Item</th>
@@ -362,7 +399,7 @@ export class MapaDeFornecedores extends Component {
                                         </td>
                                       </tr>
                                     </tbody>
-                                  </table>
+                                  </table>}
                                 </Fragment>
                               )}
                             </div>
@@ -373,10 +410,11 @@ export class MapaDeFornecedores extends Component {
                         <Paginacao
                           onChange={(pagina) => this.setState({ pagina })}
                           total={lojas.length}
+                          showSizeChanger={false}
                         />
                       </div>
                     )}
-                    <div className="pt-3 pb-3 text-center">
+                    {!buscarTodos && <div className="pt-3 pb-3 text-center">
                       <button
                         size="lg"
                         disabled={!lojas}
@@ -387,7 +425,7 @@ export class MapaDeFornecedores extends Component {
                       >
                         <strong>Consultar novamente</strong>
                       </button>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               )}
