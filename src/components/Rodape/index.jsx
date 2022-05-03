@@ -102,5 +102,11 @@ export const Rodape = (props) => {
         	</div>
         </div>
       </div>
+      <script src="//api.handtalk.me/plugin/latest/handtalk.min.js"></script>
+      <script>
+          var ht = new HT({
+              token: "aa1f4871439ba18dabef482aae5fd934"
+           });
+      </script>
     );
 };
