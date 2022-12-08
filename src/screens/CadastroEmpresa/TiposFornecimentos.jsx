@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import TipoFornecimento from "./TipoFornecimento";
+import { arredondaDuasCasas } from "helpers/helpers";
 
 const TiposFornecimentos = (props) => {
   const initialUniformesInfo = props.tipo.uniformes.map((uniforme) => ({
