@@ -72,9 +72,8 @@ const TiposFornecimentos = (props) => {
     return prices.reduce(getSum, 0);
   };
 
-  const maiorQueLimite = soma => {
-    const somaArredondada = arredondaDuasCasas(soma);
-    const eMaior = somaArredondada > limite;
+  const maiorQueLimite = (soma) => {
+    const eMaior = soma > limite;
     props.maiorQueLimite(eMaior, props.tipo.id);
     return eMaior;
   };
