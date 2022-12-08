@@ -35,7 +35,6 @@ export const maiorQueLimite = (tipoDeUniforme, values, limites) => {
         uniforme.quantidade;
     }
   });
-  total = arredondaDuasCasas(total);
   const limite = limites.find(
     (limite) => limite.categoria_uniforme === tipoDeUniforme.id
   );

@@ -48,5 +48,3 @@ export const between = (x, min, max) => {
 export const htmlTextToDiv = (tipo) => {
   return <div dangerouslySetInnerHTML={{ __html: tipo.nome }} />;
 };
-
-export const arredondaDuasCasas = numero => Math.round(numero * 1e2) / 1e2;
