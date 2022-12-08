@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { CheckInputLabel } from "components/Input/CheckInputLabel";
 import TipoFornecimento from "./TipoFornecimento";
+import { arredondaDuasCasas } from "helpers/helpers";
 
 const TiposFornecimentos = (props) => {
   const initialUniformesInfo = props.tipo.uniformes.map((uniforme) => ({
@@ -72,8 +73,9 @@ const TiposFornecimentos = (props) => {
     return prices.reduce(getSum, 0);
   };
 
-  const maiorQueLimite = (soma) => {
-    const eMaior = soma > limite;
+  const maiorQueLimite = soma => {
+    const somaArredondada = arredondaDuasCasas(soma);
+    const eMaior = somaArredondada > limite;
     props.maiorQueLimite(eMaior, props.tipo.id);
     return eMaior;
   };
