@@ -187,8 +187,12 @@ export class ProcurarFornecedores extends Component {
           </div>
         </div>
         <div className="container agora-cada-bloco">
-        Cada família compõe o kit da forma que for mais adequada a cada estudante, considerada suas necessidades
-        específicas e respeitando o padrão das peças aprovadas pela Secretaria Municipal de Educação e o valor limite
+        Além disso, as confecções podem apresentar sugestões de peças para a Secretaria. Quando aprovadas, as peças 
+        são incorporadas ao modelo padrão dos uniformes escolares. Os modelos já homologados podem ser consultados na 
+        seguinte página: <a href="https://drive.google.com/file/d/1KGc1Mkq7MQpOZ0fIY2l6LDcC9WdfrA83/view" 
+        target="blank">acesse aqui</a><br />
+        Cada família compõe o kit da forma que for mais adequada a cada estudante, consideradas suas necessidades 
+        específicas e respeitado o padrão das peças aprovado pela Secretaria Municipal de Educação e o valor limite 
         disponibilizado. <br />
         A compra é feita diretamente pelas famílias nas lojas credenciadas, a partir de um sistema de concessão de 
         benefício. O(a) responsável legal pelo estudante não recebe diretamente o valor do kit do uniforme escolar na 
