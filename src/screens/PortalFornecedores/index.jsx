@@ -285,36 +285,6 @@ export default class PortalFornecedores extends Component {
         </div>
         <div className="w-100 mb-5 mt-5">
           <div className="container">
-            <BlocoTexto title="Posso sugerir novos itens para fazer parte da composição atual? ">
-              <p>
-                As peças já homologadas podem ser consultadas na seguinte 
-                página: <a href="https://drive.google.com/file/d/1KGc1Mkq7MQpOZ0fIY2l6LDcC9WdfrA83/view" target="blank">acesse aqui</a><br />
-                As confecções que tiverem expertise em um material diverso do
-                padrão fixado poderão apresentar seus modelos à homologação da
-                Secretaria. Para isso, deverão ser enviadas:
-                <ul>
-                  <li>Especificações técnicas dos itens;</li>
-                  <li>
-                    3 (três) amostras de cada item que serão submetidas a
-                    análise e aprovação da SME.
-                  </li>
-                </ul>
-                Se aprovadas, as peças serão incorporadas ao modelo padrão dos
-                uniformes escolares e poderão ser produzidas por qualquer
-                credenciado, sem que seja devida qualquer remuneração ao
-                desenvolvedor/designer da peça. As especificações sugeridas
-                poderão ser encaminhadas para o seguinte e-mail:{" "}
-                <a href="mailto:smecoservuniformematerial@sme.prefeitura.sp.gov.br">
-                  smecoservuniformematerial@sme.prefeitura.sp.gov.br
-                </a>
-                , com isso serão repassadas as devidas informações quanto à
-                entrega das amostras.
-              </p>
-            </BlocoTexto>
-          </div>
-        </div>
-        <div className="w-100 mb-5 mt-5">
-          <div className="container">
             <BlocoTexto title="O que acontece depois de se cadastrar?">
               <p>
                 Você receberá um número de protocolo para identificação da
