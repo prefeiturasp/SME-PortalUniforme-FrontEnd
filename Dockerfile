@@ -1,5 +1,6 @@
 # just to create `build` directory
 FROM node:10.15.3-alpine as builder
+USER root
 WORKDIR /app
 COPY . ./
 RUN export NODE_PATH=src/ \
