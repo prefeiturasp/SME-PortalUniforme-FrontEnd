@@ -6,7 +6,7 @@ pipeline {
     }
   
     agent {
-      node { label 'python-36-uniformes' }
+      node { label 'jenkins-slave' }
     }
 
     options {
