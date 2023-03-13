@@ -1,10 +1,9 @@
 # just to create `build` directory
 FROM node:10.15.3-alpine as builder
-USER root
 WORKDIR /app
 COPY . ./
 RUN export NODE_PATH=src/ \
-    && npm install \
+    && npm install --unsafe-perm --no-cache \
     && npm run-script build
 
 # replace strings, this way we can pass parameters to static files.
