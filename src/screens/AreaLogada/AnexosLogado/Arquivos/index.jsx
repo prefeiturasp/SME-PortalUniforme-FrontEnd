@@ -18,6 +18,15 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "./style.scss";
 import { formataEmpresa } from "screens/AreaLogada/DadosEmpresaLogado/helpers";
 import {
+  DOCUMENTO_ACCEPT,
+  DOCUMENTO_ACCEPT_CUSTOM,
+  DOCUMENTO_HELPER_TEXT,
+  FACHADA_ACCEPT,
+  FACHADA_ACCEPT_CUSTOM,
+  FACHADA_HELPER_TEXT,
+  TAMANHO_MAXIMO_UPLOAD,
+} from "helpers/fileUpload";
+import {
   deleteAnexo,
   getTiposDocumentos,
   setAnexo,
@@ -60,36 +69,32 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
   };
 
   const uploadFachadaLoja = async (e, uuidLoja, key) => {
-    if (!e[0].arquivo.includes("image/")) {
-      toastError("Formato de arquivo inválido");
-    } else {
-      const arquivoAnexo = {
-        foto_fachada: e[0].arquivo,
-      };
-      let empresa_ = empresa;
-      empresa_.lojas[key].uploadEmAndamento = true;
-      setEmpresa(empresa_);
-      setAlgumUploadEmAndamento(true);
-      forceUpdate();
-      setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
-        if (response.status === HTTP_STATUS.OK) {
-          toastSuccess("Arquivo salvo com sucesso!");
-          let empresa_ = empresa;
-          empresa_.lojas[key].uploadEmAndamento = false;
-          setEmpresa(empresa_);
-          setAlgumUploadEmAndamento(false);
-          getProponente(empresa.uuid).then((empresa) => {
-            setEmpresaEFaltaArquivos(empresa.data);
-          });
-        } else {
-          toastError("Erro ao dar upload no arquivo");
-          let empresa_ = empresa;
-          empresa_.lojas[key].uploadEmAndamento = false;
-          setEmpresa(formataEmpresa(empresa_));
-          setAlgumUploadEmAndamento(false);
-        }
-      });
-    }
+    const arquivoAnexo = {
+      foto_fachada: e[0].arquivo,
+    };
+    let empresa_ = empresa;
+    empresa_.lojas[key].uploadEmAndamento = true;
+    setEmpresa(empresa_);
+    setAlgumUploadEmAndamento(true);
+    forceUpdate();
+    setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
+      if (response.status === HTTP_STATUS.OK) {
+        toastSuccess("Arquivo salvo com sucesso!");
+        let empresa_ = empresa;
+        empresa_.lojas[key].uploadEmAndamento = false;
+        setEmpresa(empresa_);
+        setAlgumUploadEmAndamento(false);
+        getProponente(empresa.uuid).then((empresa) => {
+          setEmpresaEFaltaArquivos(empresa.data);
+        });
+      } else {
+        toastError("Erro ao dar upload no arquivo");
+        let empresa_ = empresa;
+        empresa_.lojas[key].uploadEmAndamento = false;
+        setEmpresa(formataEmpresa(empresa_));
+        setAlgumUploadEmAndamento(false);
+      }
+    });
   };
 
   const deleteFachadaLoja = async (uuidLoja) => {
@@ -127,7 +132,7 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
 
   const uploadAnexo = async (e, tipo, key, values) => {
     const arquivoAnexo = {
-      ...e[0],
+      arquivo: e[0].arquivo,
       tipo_documento: tipo.id,
       proponente: empresa.uuid,
       data_validade: values[`data_validade_${key}`],
@@ -196,8 +201,8 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     disabled={algumUploadEmAndamento}
                     id={`${key}`}
                     key={key}
-                    accept="image/*"
-                    acceptCustom="image/png, image/jpg, image/jpeg"
+                    accept={FACHADA_ACCEPT}
+                    acceptCustom={FACHADA_ACCEPT_CUSTOM}
                     className="form-control-file"
                     label={`${loja.nome_fantasia} - ${loja.endereco}`}
                     required
@@ -205,9 +210,9 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     multiple={false}
                   />
                   <div className="campos-permitidos">
-                    Formatos permitidos: .png, .jpg, .jpeg
+                    {FACHADA_HELPER_TEXT}
                     <br />
-                    Tamanho máximo: 5 MB
+                    {TAMANHO_MAXIMO_UPLOAD}
                   </div>
                   <OnChange name={`loja_${key}`}>
                     {async (value, previous) => {
@@ -282,8 +287,8 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     name={`arqs_${key}`}
                     id={`${key}`}
                     key={key}
-                    accept=".pdf, .png, .jpg, .jpeg, .zip"
-                    acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                    accept={DOCUMENTO_ACCEPT}
+                    acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                     className="form-control-file"
                     label={htmlTextToDiv(tipo)}
                     resetarFile={tipo.resetarFile}
@@ -312,9 +317,9 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                             </strong>
                           </div>
                         )}
-                        Formatos permitidos: .png, .jpg, .jpeg, .zip, .pdf
+                        {DOCUMENTO_HELPER_TEXT}
                         <br />
-                        Tamanho máximo: 5 MB
+                        {TAMANHO_MAXIMO_UPLOAD}
                       </div>
                       {tipo.tem_data_validade && (
                         <div className="data-validade">
