@@ -1,7 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
 
-import { required } from "helpers/fieldValidators";
 import { FileUpload } from "./FileUpload";
 
 describe("test <FileUpload>", () => {
@@ -29,7 +28,6 @@ describe("test <FileUpload>", () => {
         label="mylabel"
         required
         value=""
-        validate={required}
         {...props}
       />
     );
