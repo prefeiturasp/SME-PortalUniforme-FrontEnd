@@ -33,6 +33,15 @@ import {
 import { FileUpload } from "components/Input/FileUpload";
 import ArquivoExistente from "./ArquivoExistente";
 import { PaginaComCabecalhoRodape } from "components/PaginaComCabecalhoRodape";
+import {
+  DOCUMENTO_ACCEPT,
+  DOCUMENTO_ACCEPT_CUSTOM,
+  DOCUMENTO_HELPER_TEXT,
+  FACHADA_ACCEPT,
+  FACHADA_ACCEPT_CUSTOM,
+  FACHADA_HELPER_TEXT,
+  TAMANHO_MAXIMO_UPLOAD,
+} from "helpers/fileUpload";
 export let CadastroEmpresa = (props) => {
   const initialValue = {
     nome_fantasia: undefined,
@@ -266,7 +275,13 @@ export let CadastroEmpresa = (props) => {
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
     if (validaUniformes(novoFornecimento)) {
-      payload["lojas"] = loja;
+      payload["lojas"] = loja.map((lojaPayload) => {
+        const lojaSemComprovante = { ...lojaPayload };
+
+        delete lojaSemComprovante.comprovante_endereco;
+
+        return lojaSemComprovante;
+      });
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
       payload["arquivos_anexos"] = arquivosAnexos;
@@ -333,7 +348,7 @@ export let CadastroEmpresa = (props) => {
 
   const uploadAnexo = async (e, tipo, key) => {
     const arquivoAnexo = {
-      ...e[0],
+      arquivo: e[0].arquivo,
       tipo_documento: tipo.id,
       proponente: uuid,
       data_validade: datasValidades[key],
@@ -364,36 +379,32 @@ export let CadastroEmpresa = (props) => {
   };
 
   const uploadFachadaLoja = async (e, uuidLoja, key) => {
-    if (!e[0].arquivo.includes("image/")) {
-      toastError("Formato de arquivo inválido");
-    } else {
-      const arquivoAnexo = {
-        foto_fachada: e[0].arquivo,
-      };
-      let empresa_ = empresa;
-      empresa_.lojas[key].uploadEmAndamento = true;
-      setEmpresa(empresa_);
-      setAlgumUploadEmAndamento(true);
-      forceUpdate();
-      setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
-        if (response.status === HTTP_STATUS.OK) {
-          toastSuccess("Arquivo salvo com sucesso!");
-          let empresa_ = empresa;
-          empresa_.lojas[key].uploadEmAndamento = false;
-          setEmpresa(empresa_);
-          setAlgumUploadEmAndamento(false);
-          getEmpresa(uuid).then((empresa) => {
-            setEmpresaEFaltaArquivos(empresa.data);
-          });
-        } else {
-          toastError("Erro ao dar upload no arquivo");
-          let empresa_ = empresa;
-          empresa_.lojas[key].uploadEmAndamento = false;
-          setEmpresa(empresa_);
-          setAlgumUploadEmAndamento(false);
-        }
-      });
-    }
+    const arquivoAnexo = {
+      foto_fachada: e[0].arquivo,
+    };
+    let empresa_ = empresa;
+    empresa_.lojas[key].uploadEmAndamento = true;
+    setEmpresa(empresa_);
+    setAlgumUploadEmAndamento(true);
+    forceUpdate();
+    setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
+      if (response.status === HTTP_STATUS.OK) {
+        toastSuccess("Arquivo salvo com sucesso!");
+        let empresa_ = empresa;
+        empresa_.lojas[key].uploadEmAndamento = false;
+        setEmpresa(empresa_);
+        setAlgumUploadEmAndamento(false);
+        getEmpresa(uuid).then((empresa) => {
+          setEmpresaEFaltaArquivos(empresa.data);
+        });
+      } else {
+        toastError("Erro ao dar upload no arquivo");
+        let empresa_ = empresa;
+        empresa_.lojas[key].uploadEmAndamento = false;
+        setEmpresa(empresa_);
+        setAlgumUploadEmAndamento(false);
+      }
+    });
   };
 
   const deleteFachadaLoja = async (uuidLoja) => {
@@ -677,8 +688,8 @@ export let CadastroEmpresa = (props) => {
                                 disabled={algumUploadEmAndamento}
                                 id={`${key}`}
                                 key={key}
-                                accept="image/*"
-                                acceptCustom="image/png, image/jpg, image/jpeg"
+                                accept={FACHADA_ACCEPT}
+                                acceptCustom={FACHADA_ACCEPT_CUSTOM}
                                 className="form-control-file"
                                 label={`${loja.nome_fantasia} - ${loja.endereco}`}
                                 required
@@ -690,6 +701,11 @@ export let CadastroEmpresa = (props) => {
                                   }
                                 }}
                               />
+                              <div className="campos-permitidos">
+                                {FACHADA_HELPER_TEXT}
+                                <br />
+                                {TAMANHO_MAXIMO_UPLOAD}
+                              </div>
                               {loja.uploadEmAndamento && (
                                 <span className="font-weight-bold">
                                   {`Upload de documento em andamento. `}
@@ -763,8 +779,8 @@ export let CadastroEmpresa = (props) => {
                                 }
                                 id={`${key}`}
                                 key={key}
-                                accept=".pdf, .png, .jpg, .jpeg, .zip"
-                                acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                                accept={DOCUMENTO_ACCEPT}
+                                acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                                 className="form-control-file"
                                 label={labelTemplate(tipo)}
                                 resetarFile={tipo.resetarFile}
@@ -790,10 +806,9 @@ export let CadastroEmpresa = (props) => {
                                         </strong>
                                       </div>
                                     )}
-                                    Formatos permitidos: .png, .jpg, .jpeg,
-                                    .zip, .pdf
+                                    {DOCUMENTO_HELPER_TEXT}
                                     <br />
-                                    Tamanho máximo: 5 MB
+                                    {TAMANHO_MAXIMO_UPLOAD}
                                   </div>
                                   {tipo.tem_data_validade && (
                                     <div className="data-validade">
