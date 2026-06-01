@@ -18,39 +18,46 @@ exports[`test <FileUpload> renders component 1`] = `
   }
   name="myCombo"
   required={true}
-  validate={[Function]}
   value=""
 >
   <div
     className="input"
   >
-    <span
-      className="required-asterisk"
-      key="1"
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
     >
-      *
-    </span>
-    <label
-      className="col-form-label undefined"
-      htmlFor="myCombo"
-      key="2"
-    >
-      mylabel
-    </label>
+      <span
+        className="required-asterisk"
+        key="1"
+      >
+        *
+      </span>
+      <label
+        className="col-form-label undefined"
+        htmlFor="myCombo"
+        key="2"
+      >
+        mylabel
+      </label>
+    </div>
     <CustomFileUploadPR
       accept={null}
       auto={true}
       cancelLabel="Cancelar"
-      chooseLabel="Selecione os arquivos"
+      chooseLabel="Selecione o arquivo"
       className="teste 
              invalid-field"
       disabled={false}
       id={null}
-      invalidFileSizeMessageDetail="maximum upload size is {0}."
-      invalidFileSizeMessageSummary="{0}: Invalid file size, "
-      maxFileSize={2097152}
+      invalidFileSizeMessageDetail="O tamanho máximo de um arquivo é 5MB"
+      invalidFileSizeMessageSummary="Erro ao dar upload:"
+      maxFileSize={5242880}
       mode="advanced"
-      multiple={true}
+      multiple={false}
       name="myCombo"
       onBeforeSend={null}
       onBeforeUpload={null}
@@ -85,7 +92,7 @@ exports[`test <FileUpload> renders component 1`] = `
             <input
               accept={null}
               disabled={false}
-              multiple={true}
+              multiple={false}
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -97,7 +104,7 @@ exports[`test <FileUpload> renders component 1`] = `
             <span
               className="p-button-text p-clickable"
             >
-              Selecione os arquivos
+              Selecione o arquivo
             </span>
           </span>
         </div>
@@ -133,7 +140,7 @@ exports[`test <FileUpload> renders component 1`] = `
     </CustomFileUploadPR>
     <HelpText>
       <div
-        className="help-text"
+        className="help-text undefined"
       />
     </HelpText>
     <InputErroMensagem

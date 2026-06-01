@@ -289,7 +289,13 @@ export let CadastroEmpresa = (props) => {
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
     if (validaUniformes(novoFornecimento)) {
-      payload["lojas"] = loja;
+      payload["lojas"] = loja.map((lojaPayload) => {
+        const lojaSemComprovante = { ...lojaPayload };
+
+        delete lojaSemComprovante.comprovante_endereco;
+
+        return lojaSemComprovante;
+      });
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
       payload["arquivos_anexos"] = arquivosAnexos;
@@ -356,7 +362,7 @@ export let CadastroEmpresa = (props) => {
 
   const uploadAnexo = async (e, tipo, key) => {
     const arquivoAnexo = {
-      ...e[0],
+      arquivo: e[0].arquivo,
       tipo_documento: tipo.id,
       proponente: uuid,
       data_validade: datasValidades[key],
@@ -697,8 +703,8 @@ export let CadastroEmpresa = (props) => {
                                 disabled={algumUploadEmAndamento}
                                 id={`${key}`}
                                 key={key}
-                                accept="image/*"
-                                acceptCustom="image/png, image/jpg, image/jpeg"
+                                accept={FACHADA_ACCEPT}
+                                acceptCustom={FACHADA_ACCEPT_CUSTOM}
                                 className="form-control-file"
                                 label={`${loja.nome_fantasia} - ${loja.endereco}`}
                                 required
@@ -710,6 +716,11 @@ export let CadastroEmpresa = (props) => {
                                   }
                                 }}
                               />
+                              <div className="campos-permitidos">
+                                {FACHADA_HELPER_TEXT}
+                                <br />
+                                {TAMANHO_MAXIMO_UPLOAD}
+                              </div>
                               {loja.uploadEmAndamento && (
                                 <span className="font-weight-bold">
                                   {`Upload de documento em andamento. `}
@@ -783,8 +794,8 @@ export let CadastroEmpresa = (props) => {
                                 }
                                 id={`${key}`}
                                 key={key}
-                                accept=".pdf, .png, .jpg, .jpeg, .zip"
-                                acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                                accept={DOCUMENTO_ACCEPT}
+                                acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                                 className="form-control-file"
                                 label={labelTemplate(tipo)}
                                 resetarFile={tipo.resetarFile}
@@ -810,10 +821,9 @@ export let CadastroEmpresa = (props) => {
                                         </strong>
                                       </div>
                                     )}
-                                    Formatos permitidos: .png, .jpg, .jpeg,
-                                    .zip, .pdf
+                                    {DOCUMENTO_HELPER_TEXT}
                                     <br />
-                                    Tamanho máximo: 5 MB
+                                    {TAMANHO_MAXIMO_UPLOAD}
                                   </div>
                                   {tipo.tem_data_validade && (
                                     <div className="data-validade">

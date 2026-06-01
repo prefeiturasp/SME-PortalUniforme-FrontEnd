@@ -148,7 +148,7 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
 
   const uploadAnexo = async (e, tipo, key, values) => {
     const arquivoAnexo = {
-      ...e[0],
+      arquivo: e[0].arquivo,
       tipo_documento: tipo.id,
       proponente: empresa.uuid,
       data_validade: values[`data_validade_${key}`],
@@ -216,8 +216,8 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     disabled={algumUploadEmAndamento}
                     id={`${key}`}
                     key={key}
-                    accept="image/*"
-                    acceptCustom="image/png, image/jpg, image/jpeg"
+                    accept={FACHADA_ACCEPT}
+                    acceptCustom={FACHADA_ACCEPT_CUSTOM}
                     className="form-control-file"
                     label={`${loja.nome_fantasia} - ${loja.endereco}`}
                     required
@@ -225,9 +225,9 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     multiple={false}
                   />
                   <div className="campos-permitidos">
-                    Formatos permitidos: .png, .jpg, .jpeg
+                    {FACHADA_HELPER_TEXT}
                     <br />
-                    Tamanho máximo: 5 MB
+                    {TAMANHO_MAXIMO_UPLOAD}
                   </div>
                   <OnChange name={`loja_${key}`}>
                     {async (value, previous) => {
@@ -302,8 +302,8 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     name={`arqs_${key}`}
                     id={`${key}`}
                     key={key}
-                    accept=".pdf, .png, .jpg, .jpeg, .zip"
-                    acceptCustom="image/png, image/jpg, image/jpeg, application/zip, application/pdf"
+                    accept={DOCUMENTO_ACCEPT}
+                    acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                     className="form-control-file"
                     label={htmlTextToDiv(tipo)}
                     resetarFile={tipo.resetarFile}
@@ -332,9 +332,9 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                             </strong>
                           </div>
                         )}
-                        Formatos permitidos: .png, .jpg, .jpeg, .zip, .pdf
+                        {DOCUMENTO_HELPER_TEXT}
                         <br />
-                        Tamanho máximo: 5 MB
+                        {TAMANHO_MAXIMO_UPLOAD}
                       </div>
                       {tipo.tem_data_validade && (
                         <div className="data-validade">
