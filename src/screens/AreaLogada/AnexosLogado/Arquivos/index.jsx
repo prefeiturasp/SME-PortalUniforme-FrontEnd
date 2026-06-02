@@ -27,6 +27,12 @@ import {
   TAMANHO_MAXIMO_UPLOAD,
 } from "helpers/fileUpload";
 import {
+  ARQUIVO_SALVO_COM_SUCESSO,
+  BOTAO_ENVIANDO_DOCUMENTOS_PARA_ANALISE,
+  BOTAO_ENVIAR_DOCUMENTOS_PARA_ANALISE,
+  getBloqueioEnvioDocumentosParaAnalise,
+} from "helpers/documentosParaAnalise";
+import {
   deleteAnexo,
   getTiposDocumentos,
   setAnexo,
@@ -37,6 +43,7 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
   const [algumUploadEmAndamento, setAlgumUploadEmAndamento] = useState(false);
   const [tiposDocumentos, setTiposDocumentos] = useState(null);
   const [faltamArquivos, setFaltamArquivos] = useState(true);
+  const [envioEmAndamento, setEnvioEmAndamento] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,6 +75,15 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
     setFaltamArquivos(verificarSeFaltamArquivos(empresa, tiposDocumentos));
   };
 
+  const bloqueioEnvioDocumentosParaAnalise =
+    getBloqueioEnvioDocumentosParaAnalise({
+      faltamArquivos,
+      algumUploadEmAndamento,
+      envioEmAndamento,
+      exigirKit: true,
+      quantidadeKits: empresa && empresa.kits ? empresa.kits.length : 0,
+    });
+
   const uploadFachadaLoja = async (e, uuidLoja, key) => {
     const arquivoAnexo = {
       foto_fachada: e[0].arquivo,
@@ -79,7 +95,7 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
     forceUpdate();
     setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
       if (response.status === HTTP_STATUS.OK) {
-        toastSuccess("Arquivo salvo com sucesso!");
+        toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
         let empresa_ = empresa;
         empresa_.lojas[key].uploadEmAndamento = false;
         setEmpresa(empresa_);
@@ -144,7 +160,7 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
     forceUpdate();
     setAnexo(arquivoAnexo).then((response) => {
       if (response.status === HTTP_STATUS.CREATED) {
-        toastSuccess("Arquivo salvo com sucesso!");
+        toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
         let tiposDocumentos_ = tiposDocumentos;
         tiposDocumentos_[key].uploadEmAndamento = false;
         setTiposDocumentos(tiposDocumentos_);
@@ -162,22 +178,21 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
     });
   };
 
-  const finalizarCadastro = () => {
-    if (faltamArquivos) {
-      toastError(
-        "É preciso anexar todos os arquivos obrigatórios para finalizar seu cadastro"
-      );
-    } else if (empresa.kits.length === 0) {
-      toastError("É preciso fornecer ao menos um kit");
-    } else {
-      concluirCadastro(empresa.uuid).then((response) => {
-        if (response.status === HTTP_STATUS.OK) {
-          window.location.href = "/confirmacao-cadastro";
-        } else {
-          toastError("Erro ao finalizar cadastro");
-        }
-      });
+  const enviarDocumentosParaAnalise = () => {
+    if (bloqueioEnvioDocumentosParaAnalise) {
+      toastError(bloqueioEnvioDocumentosParaAnalise);
+      return;
     }
+
+    setEnvioEmAndamento(true);
+    concluirCadastro(empresa.uuid).then((response) => {
+      if (response.status === HTTP_STATUS.OK) {
+        window.location.href = "/confirmacao-cadastro";
+      } else {
+        setEnvioEmAndamento(false);
+        toastError("Erro ao enviar documentos para análise");
+      }
+    });
   };
 
   return (
@@ -456,12 +471,24 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
       <div className="row">
         <div className="col-12 text-right mt-3 mb-3">
           {empresa && empresa.status === "EM_PROCESSO" && (
-            <Botao
-              type={BUTTON_TYPE.BUTTON}
-              style={BUTTON_STYLE.BLUE}
-              onClick={() => finalizarCadastro()}
-              texto="Finalizar"
-            />
+            <>
+              {bloqueioEnvioDocumentosParaAnalise && (
+                <div className="font-weight-bold mb-2 text-left">
+                  {bloqueioEnvioDocumentosParaAnalise}
+                </div>
+              )}
+              <Botao
+                type={BUTTON_TYPE.BUTTON}
+                style={BUTTON_STYLE.BLUE}
+                onClick={() => enviarDocumentosParaAnalise()}
+                disabled={!!bloqueioEnvioDocumentosParaAnalise}
+                texto={
+                  envioEmAndamento
+                    ? BOTAO_ENVIANDO_DOCUMENTOS_PARA_ANALISE
+                    : BOTAO_ENVIAR_DOCUMENTOS_PARA_ANALISE
+                }
+              />
+            </>
           )}
         </div>
       </div>

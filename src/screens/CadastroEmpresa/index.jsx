@@ -42,6 +42,12 @@ import {
   FACHADA_HELPER_TEXT,
   TAMANHO_MAXIMO_UPLOAD,
 } from "helpers/fileUpload";
+import {
+  ARQUIVO_SALVO_COM_SUCESSO,
+  BOTAO_ENVIANDO_DOCUMENTOS_PARA_ANALISE,
+  BOTAO_ENVIAR_DOCUMENTOS_PARA_ANALISE,
+  getBloqueioEnvioDocumentosParaAnalise,
+} from "helpers/documentosParaAnalise";
 export let CadastroEmpresa = (props) => {
   const initialValue = {
     nome_fantasia: undefined,
@@ -76,6 +82,7 @@ export let CadastroEmpresa = (props) => {
   const [edital, setEdital] = useState({ url: "", label: "edital" });
   const [editalClick, setEditalClick] = useState(null);
   const [datasValidades, setDatasValidades] = useState({});
+  const [envioEmAndamento, setEnvioEmAndamento] = useState(false);
 
   const limparListaLojas = () => {
     setLoja([initialValue]);
@@ -149,6 +156,13 @@ export let CadastroEmpresa = (props) => {
   };
 
   const forceUpdate = useForceUpdate();
+
+  const bloqueioEnvioDocumentosParaAnalise =
+    getBloqueioEnvioDocumentosParaAnalise({
+      faltamArquivos: faltaArquivos,
+      algumUploadEmAndamento,
+      envioEmAndamento,
+    });
 
   const verificarSeFaltamArquivos = (empresa) => {
     let aindaFaltaDocumentoObrigatorio = false;
@@ -360,7 +374,7 @@ export let CadastroEmpresa = (props) => {
     forceUpdate();
     setAnexo(arquivoAnexo).then((response) => {
       if (response.status === HTTP_STATUS.CREATED) {
-        toastSuccess("Arquivo salvo com sucesso!");
+        toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
         let tiposDocumentos_ = tiposDocumentos;
         tiposDocumentos_[key].uploadEmAndamento = false;
         setTiposDocumentos(tiposDocumentos_);
@@ -389,7 +403,7 @@ export let CadastroEmpresa = (props) => {
     forceUpdate();
     setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
       if (response.status === HTTP_STATUS.OK) {
-        toastSuccess("Arquivo salvo com sucesso!");
+        toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
         let empresa_ = empresa;
         empresa_.lojas[key].uploadEmAndamento = false;
         setEmpresa(empresa_);
@@ -440,20 +454,21 @@ export let CadastroEmpresa = (props) => {
     }
   };
 
-  const finalizarCadastro = () => {
-    if (faltaArquivos) {
-      toastError(
-        "É preciso anexar todos os arquivos obrigatórios para finalizar seu cadastro"
-      );
-    } else {
-      concluirCadastro(uuid).then((response) => {
-        if (response.status === HTTP_STATUS.OK) {
-          window.location.href = "/confirmacao-cadastro";
-        } else {
-          toastError("Erro ao finalizar cadastro");
-        }
-      });
+  const enviarDocumentosParaAnalise = () => {
+    if (bloqueioEnvioDocumentosParaAnalise) {
+      toastError(bloqueioEnvioDocumentosParaAnalise);
+      return;
     }
+
+    setEnvioEmAndamento(true);
+    concluirCadastro(uuid).then((response) => {
+      if (response.status === HTTP_STATUS.OK) {
+        window.location.href = "/confirmacao-cadastro";
+      } else {
+        setEnvioEmAndamento(false);
+        toastError("Erro ao enviar documentos para análise");
+      }
+    });
   };
 
   const labelTemplate = (tipo) => {
@@ -993,12 +1008,20 @@ export let CadastroEmpresa = (props) => {
               {tab === "anexos" && empresa && empresa.status === "EM_PROCESSO" && (
                 <div className="row">
                   <div className="col-12 text-right mt-4">
+                    {bloqueioEnvioDocumentosParaAnalise && (
+                      <div className="font-weight-bold mb-2 text-left">
+                        {bloqueioEnvioDocumentosParaAnalise}
+                      </div>
+                    )}
                     <Button
-                      onClick={() => finalizarCadastro()}
-                      type="reset"
+                      onClick={() => enviarDocumentosParaAnalise()}
+                      type="button"
                       variant="primary"
+                      disabled={!!bloqueioEnvioDocumentosParaAnalise}
                     >
-                      Finalizar
+                      {envioEmAndamento
+                        ? BOTAO_ENVIANDO_DOCUMENTOS_PARA_ANALISE
+                        : BOTAO_ENVIAR_DOCUMENTOS_PARA_ANALISE}
                     </Button>
                   </div>
                 </div>
