@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import HTTP_STATUS from "http-status-codes";
 import { InputText } from "components/Input/InputText";
 import { Botao } from "components/Botao";
@@ -19,7 +19,9 @@ import { OnChange } from "react-final-form-listeners";
 import { toastError } from "components/Toast/dialogs";
 import { getEnderecoPorCEP } from "services/cep.service";
 import formatString from "format-string-by-pattern";
+
 export const Loja = ({ loja, fields, index, empresa, logado }) => {
+  const [apiCEPfora, setApiCEPfora] = useState(false);
   const lojaDesabilitada = !logado && !!empresa;
 
   return (
@@ -75,7 +77,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
                     fields.update(index, fields.value[index]);
                   }
                 } else {
-                  return null;
+                  setApiCEPfora(true);
                 }
               }
             }}
