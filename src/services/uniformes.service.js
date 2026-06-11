@@ -116,7 +116,7 @@ export const deleteAnexo = (uuid) => {
     });
 };
 
-export const setFachadaLoja = (payload, uuid) => {
+export const setArquivoLoja = (payload, uuid) => {
   return axios
     .patch(`${endPont.API_URL}/lojas/${uuid}/`, payload, authHeader)
     .then((response) => {
@@ -127,9 +127,15 @@ export const setFachadaLoja = (payload, uuid) => {
     });
 };
 
+export const setFachadaLoja = (payload, uuid) => {
+  return setArquivoLoja(payload, uuid);
+};
+
 export const verificaCnpj = async (cnpj) => {
   const response = await axios.get(
-    `${endPont.API_URL}/proponentes/verifica-cnpj/?cnpj=${cnpj}`,
+    `${endPont.API_URL}/proponentes/verifica-cnpj/?cnpj=${encodeURIComponent(
+      String(cnpj || "").toUpperCase()
+    )}`,
     authHeader
   );
   return response.data;

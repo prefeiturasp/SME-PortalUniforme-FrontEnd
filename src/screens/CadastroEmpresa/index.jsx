@@ -16,6 +16,7 @@ import "./style.scss";
 import LojaFisica from "./LojaFisica";
 import { validaOfertaUniforme, validaFormulario, getError } from "./helper";
 import { toastSuccess, toastError } from "components/Toast/dialogs";
+import { atualizaLojas } from "services/cadastro.service";
 import {
   cadastrarEmpresa,
   getTiposDocumentos,
@@ -25,7 +26,7 @@ import {
   getEmpresa,
   setAnexo,
   deleteAnexo,
-  setFachadaLoja,
+  setArquivoLoja,
   concluirCadastro,
   getLimites,
   verificaEmail,
@@ -48,6 +49,7 @@ import {
   BOTAO_ENVIAR_DOCUMENTOS_PARA_ANALISE,
   getBloqueioEnvioDocumentosParaAnalise,
 } from "helpers/documentosParaAnalise";
+import { montarPayloadAtualizaLojas } from "helpers/lojasPayload";
 export let CadastroEmpresa = (props) => {
   const initialValue = {
     nome_fantasia: undefined,
@@ -289,19 +291,18 @@ export let CadastroEmpresa = (props) => {
     const novoFornecimento = filtrarFornecimento(fornecimento);
 
     if (validaUniformes(novoFornecimento)) {
-      payload["lojas"] = loja.map((lojaPayload) => {
-        const lojaSemComprovante = { ...lojaPayload };
-
-        delete lojaSemComprovante.comprovante_endereco;
-
-        return lojaSemComprovante;
-      });
+      payload["lojas"] = loja;
       payload["meios_de_recebimento"] = bandeiras;
       payload["ofertas_de_uniformes"] = novoFornecimento;
       payload["arquivos_anexos"] = arquivosAnexos;
       payload["telefone"] = payload["telefone"].replace("_", "");
       delete payload["foto_fachada"];
       delete payload["arqs_anexos"];
+      Object.keys(payload).forEach((key) => {
+        if (key.startsWith("fachada_loja_") || key.startsWith("comprovante_loja_")) {
+          delete payload[key];
+        }
+      });
       const erro = validaFormulario(payload);
       if (erro) {
         toastError(erro);
@@ -396,16 +397,28 @@ export let CadastroEmpresa = (props) => {
     const arquivoAnexo = {
       foto_fachada: e[0].arquivo,
     };
-    let empresa_ = empresa;
-    empresa_.lojas[key].uploadEmAndamento = true;
+    let empresa_ = {
+      ...empresa,
+      lojas: empresa.lojas.map((lojaAtual, index) =>
+        index === key
+          ? { ...lojaAtual, uploadEmAndamento: true }
+          : lojaAtual
+      ),
+    };
     setEmpresa(empresa_);
     setAlgumUploadEmAndamento(true);
     forceUpdate();
-    setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
+    setArquivoLoja(arquivoAnexo, uuidLoja).then((response) => {
       if (response.status === HTTP_STATUS.OK) {
         toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
-        let empresa_ = empresa;
-        empresa_.lojas[key].uploadEmAndamento = false;
+        let empresa_ = {
+          ...empresa,
+          lojas: empresa.lojas.map((lojaAtual, index) =>
+            index === key
+              ? { ...lojaAtual, uploadEmAndamento: false }
+              : lojaAtual
+          ),
+        };
         setEmpresa(empresa_);
         setAlgumUploadEmAndamento(false);
         getEmpresa(uuid).then((empresa) => {
@@ -413,8 +426,53 @@ export let CadastroEmpresa = (props) => {
         });
       } else {
         toastError("Erro ao dar upload no arquivo");
-        let empresa_ = empresa;
-        empresa_.lojas[key].uploadEmAndamento = false;
+        let empresa_ = {
+          ...empresa,
+          lojas: empresa.lojas.map((lojaAtual, index) =>
+            index === key
+              ? { ...lojaAtual, uploadEmAndamento: false }
+              : lojaAtual
+          ),
+        };
+        setEmpresa(empresa_);
+        setAlgumUploadEmAndamento(false);
+      }
+    });
+  };
+
+  const uploadComprovanteLoja = async (e, uuidLoja, key) => {
+    const payload = montarPayloadAtualizaLojas(
+      empresa,
+      uuidLoja,
+      "comprovante_endereco",
+      e[0].arquivo
+    );
+    let empresa_ = {
+      ...empresa,
+      lojas: empresa.lojas.map((lojaAtual, index) =>
+        index === key
+          ? { ...lojaAtual, uploadEmAndamento: true }
+          : lojaAtual
+      ),
+    };
+    setEmpresa(empresa_);
+    setAlgumUploadEmAndamento(true);
+    forceUpdate();
+    atualizaLojas(empresa.uuid, payload).then((response) => {
+      if (response.status === HTTP_STATUS.OK) {
+        toastSuccess(ARQUIVO_SALVO_COM_SUCESSO);
+        setEmpresaEFaltaArquivos(response.data);
+        setAlgumUploadEmAndamento(false);
+      } else {
+        toastError("Erro ao dar upload no arquivo");
+        let empresa_ = {
+          ...empresa,
+          lojas: empresa.lojas.map((lojaAtual, index) =>
+            index === key
+              ? { ...lojaAtual, uploadEmAndamento: false }
+              : lojaAtual
+          ),
+        };
         setEmpresa(empresa_);
         setAlgumUploadEmAndamento(false);
       }
@@ -426,12 +484,31 @@ export let CadastroEmpresa = (props) => {
       const arquivoAnexo = {
         foto_fachada: null,
       };
-      setFachadaLoja(arquivoAnexo, uuidLoja).then((response) => {
+      setArquivoLoja(arquivoAnexo, uuidLoja).then((response) => {
         if (response.status === HTTP_STATUS.OK) {
           toastSuccess("Arquivo excluído com sucesso!");
           getEmpresa(uuid).then((empresa) => {
             setEmpresaEFaltaArquivos(empresa.data);
           });
+        } else {
+          toastError("Erro ao dar excluir no arquivo");
+        }
+      });
+    }
+  };
+
+  const deleteComprovanteLoja = async (uuidLoja) => {
+    if (window.confirm("Deseja remover este anexo?")) {
+      const payload = montarPayloadAtualizaLojas(
+        empresa,
+        uuidLoja,
+        "comprovante_endereco",
+        null
+      );
+      atualizaLojas(empresa.uuid, payload).then((response) => {
+        if (response.status === HTTP_STATUS.OK) {
+          toastSuccess("Arquivo excluído com sucesso!");
+          setEmpresaEFaltaArquivos(response.data);
         } else {
           toastError("Erro ao dar excluir no arquivo");
         }
@@ -690,6 +767,7 @@ export let CadastroEmpresa = (props) => {
                         empresa.lojas.map((loja, key) => {
                           return !loja.foto_fachada ? (
                             <div
+                              key={`fachada_${loja.uuid || key}`}
                               className={`${
                                 algumUploadEmAndamento &&
                                 !loja.uploadEmAndamento
@@ -699,7 +777,7 @@ export let CadastroEmpresa = (props) => {
                             >
                               <Field
                                 component={FileUpload}
-                                name={`arqs_${key}`}
+                                name={`fachada_loja_${key}`}
                                 disabled={algumUploadEmAndamento}
                                 id={`${key}`}
                                 key={key}
@@ -730,7 +808,7 @@ export let CadastroEmpresa = (props) => {
                               )}
                             </div>
                           ) : (
-                            <div>
+                            <div key={`fachada_${loja.uuid || key}`}>
                               <ArquivoExistente
                                 label={`${loja.nome_fantasia} - ${loja.endereco}`}
                                 arquivo={loja.foto_fachada}
@@ -745,6 +823,80 @@ export let CadastroEmpresa = (props) => {
                   </div>
                   <div className="card w-100 mt-2">
                     <div className="card-body">
+                      <div className="card-title">
+                        Comprovantes de Endereço dos Pontos de Venda
+                      </div>
+                      {empresa &&
+                        empresa.lojas.map((loja, key) => {
+                          return loja.comprovante_endereco ? (
+                            <div key={`comprovante_${loja.uuid || key}`}>
+                              <ArquivoExistente
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                arquivo={loja.comprovante_endereco}
+                                lojaUuid={loja.uuid}
+                                proponenteStatus={empresa && empresa.status}
+                                removeAnexo={deleteComprovanteLoja}
+                              />
+                            </div>
+                          ) : empresa && empresa.status === "INSCRITO" ? (
+                            <div
+                              key={`comprovante_${loja.uuid || key}`}
+                              className="no-file-end-signup pt-3"
+                            >
+                              <div className="label">
+                                {`${loja.nome_fantasia} - ${loja.endereco}`}
+                              </div>
+                              <div>
+                                Seu cadastro foi finalizado e você não pode mais
+                                enviar este anexo.
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              key={`comprovante_${loja.uuid || key}`}
+                              className={`${
+                                algumUploadEmAndamento &&
+                                !loja.uploadEmAndamento
+                                  ? "set-opacity"
+                                  : undefined
+                              } `}
+                            >
+                              <Field
+                                component={FileUpload}
+                                name={`comprovante_loja_${key}`}
+                                disabled={algumUploadEmAndamento}
+                                id={`comprovante_${key}`}
+                                key={`comprovante_${key}`}
+                                accept={DOCUMENTO_ACCEPT}
+                                acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
+                                className="form-control-file"
+                                label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                multiple={false}
+                                onChange={(e) => {
+                                  if (e.length > 0) {
+                                    uploadComprovanteLoja(e, loja.uuid, key);
+                                  }
+                                }}
+                              />
+                              <div className="campos-permitidos">
+                                {DOCUMENTO_HELPER_TEXT}
+                                <br />
+                                {TAMANHO_MAXIMO_UPLOAD}
+                              </div>
+                              {loja.uploadEmAndamento && (
+                                <span className="font-weight-bold">
+                                  {`Upload de documento em andamento. `}
+                                  <span className="red-word">Aguarde</span>
+                                  <span className="blink">...</span>
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                  <div className="card w-100 mt-2">
+                    <div className="card-body">
                       <div className="card-title">Documentos Anexos</div>
                       {tiposDocumentos ? (
                         tiposDocumentos.map((tipo, key) => {
@@ -752,7 +904,7 @@ export let CadastroEmpresa = (props) => {
                             empresa.arquivos_anexos.find(
                               (arquivo) => arquivo.tipo_documento.id === tipo.id
                             ) ? (
-                            <div>
+                            <div key={`documento_${tipo.id}`}>
                               <ArquivoExistente
                                 label={labelTemplate(tipo)}
                                 arquivo={empresa.arquivos_anexos.find(
@@ -764,7 +916,7 @@ export let CadastroEmpresa = (props) => {
                               />
                             </div>
                           ) : empresa && empresa.status === "INSCRITO" ? (
-                            <div className="no-file-end-signup pt-3">
+                            <div key={`documento_${tipo.id}`} className="no-file-end-signup pt-3">
                               <div className="label">{labelTemplate(tipo)}</div>
                               <div>
                                 Seu cadastro foi finalizado e você não pode mais
@@ -773,6 +925,7 @@ export let CadastroEmpresa = (props) => {
                             </div>
                           ) : (
                             <div
+                              key={`documento_${tipo.id}`}
                               className={`${
                                 algumUploadEmAndamento &&
                                 !tipo.uploadEmAndamento

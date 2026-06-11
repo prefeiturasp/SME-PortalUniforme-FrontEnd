@@ -6,6 +6,12 @@ import {
   InputLabel,
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
+import { FileUpload } from "components/Input/FileUpload";
+import {
+  DOCUMENTO_ACCEPT,
+  DOCUMENTO_ACCEPT_CUSTOM,
+  DOCUMENTO_HELPER_TEXT,
+} from "helpers/fileUpload";
 
 
 const LojaFisica = (props) => {
@@ -21,6 +27,7 @@ const LojaFisica = (props) => {
   const [payload, setPayload] = useState({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
+  const [comprovante_endereco, setComprovanteEndereco] = useState("");
 
   useEffect(() => {
     setTelefone(props.telefone);
@@ -33,6 +40,9 @@ const LojaFisica = (props) => {
     setComplemento(props.complemento);
     setNomeFantasia(props.nome_fantasia);
     setSite(props.site);
+    if (props.comprovante_endereco) {
+      setComprovanteEndereco(props.comprovante_endereco);
+    }
   }, [props]);
 
   const buscaCep = async (value) => {
@@ -267,6 +277,54 @@ const LojaFisica = (props) => {
           props.onUpdate({ ...payload, site: valor }, props.chave);
         }}
       />
+      <Row className="mt-2">
+        <Col>
+          {comprovante_endereco && typeof comprovante_endereco === "string" && (
+            <div className="pb-2">
+              <span className="font-weight-bold">
+                Comprovante de endereço atual: {" "}
+              </span>
+              <a target="blank" href={comprovante_endereco} rel="noopener noreferrer">
+                Visualizar arquivo
+              </a>
+            </div>
+          )}
+          <FileUpload
+            input={{
+              onChange: (data) => {
+                if (data && data.length > 0) {
+                  setComprovanteEndereco(data[0].arquivo);
+                  setPayload({ ...payload, comprovante_endereco: data[0].arquivo });
+                  props.onUpdate(
+                    { ...payload, comprovante_endereco: data[0].arquivo },
+                    props.chave
+                  );
+                } else {
+                  setComprovanteEndereco("");
+                  setPayload({ ...payload, comprovante_endereco: undefined });
+                  props.onUpdate(
+                    { ...payload, comprovante_endereco: undefined },
+                    props.chave
+                  );
+                }
+              },
+              value: [],
+            }}
+            label="Comprovante de endereço do ponto de venda"
+            accept={DOCUMENTO_ACCEPT}
+            acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
+            multiple={false}
+            disabled={props.empresa}
+            meta={{ touched: false, error: null }}
+            esconderAsterisco
+          />
+          <div className="campos-permitidos">
+            {DOCUMENTO_HELPER_TEXT}
+            <br />
+            Tamanho máximo: 5 MB
+          </div>
+        </Col>
+      </Row>
     </Fragment>
   );
 };
