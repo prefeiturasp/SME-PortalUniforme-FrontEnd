@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import HTTP_STATUS from "http-status-codes";
 import { InputText } from "components/Input/InputText";
 import { Botao } from "components/Botao";
@@ -12,8 +12,6 @@ import {
   composeValidators,
   required,
   validaCEP,
-  validaRangeCEP,
-  validaTelefoneOuCelular,
   validaTelefoneOuCelularLength
 } from "helpers/fieldValidators";
 import formatStringByPattern from "format-string-by-pattern";
@@ -21,10 +19,8 @@ import { OnChange } from "react-final-form-listeners";
 import { toastError } from "components/Toast/dialogs";
 import { getEnderecoPorCEP } from "services/cep.service";
 import formatString from "format-string-by-pattern";
-import "./style.scss"
-
 export const Loja = ({ loja, fields, index, empresa, logado }) => {
-  const [apiCEPfora, setApiCEPfora] = useState(false);
+  const lojaDesabilitada = !logado && !!empresa;
 
   return (
     <div key={loja}>
@@ -37,7 +33,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             required
             validate={composeValidators(required)}
             placeholder="Digite o Nome Fantasia da loja"
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
         </div>
       </div>
@@ -51,7 +47,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             required
             validate={composeValidators(required, validaCEP)}
             placeholder="Digite o CEP"
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
           <OnChange name={`${loja}.cep`}>
             {async (value, previous) => {
@@ -79,7 +75,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
                     fields.update(index, fields.value[index]);
                   }
                 } else {
-                  setApiCEPfora(true);
+                  return null;
                 }
               }
             }}
@@ -92,7 +88,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             name={`${loja}.bairro`}
             required
             validate={required}
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
         </div>
       </div>
@@ -114,7 +110,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             name={`${loja}.numero`}
             required
             validate={composeValidators(required)}
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
         </div>
         <div className="col-sm-4 col-12">
@@ -123,7 +119,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             maxlength={20}
             label="Complemento"
             name={`${loja}.complemento`}
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
         </div>
       </div>
@@ -166,7 +162,7 @@ export const Loja = ({ loja, fields, index, empresa, logado }) => {
             required
             type="text"
             validate={composeValidators(required, validaTelefoneOuCelularLength)}
-            disabled={!logado && empresa}
+            disabled={lojaDesabilitada}
           />
         </div>
       </div>
