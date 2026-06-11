@@ -28,6 +28,7 @@ const formataPrecos = (empresa) => {
 export const formataEmpresa = (empresa) => {
   empresa = addCidadeEstadoSP(empresa);
   empresa = formataPrecos(empresa);
+  empresa.kits = empresa.ofertas_de_uniformes || [];
   return empresa;
 };
 

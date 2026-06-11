@@ -1,4 +1,4 @@
-import { formataPayloadLojasPrecos } from "./helpers";
+import { formataPayloadLojasPrecos, formataEmpresa } from "./helpers";
 
 describe("AreaLogada/DadosEmpresaLogado/helpers", () => {
   it("serializa comprovante_endereco novo no payload de atualizacao", () => {
@@ -35,5 +35,29 @@ describe("AreaLogada/DadosEmpresaLogado/helpers", () => {
     const payload = formataPayloadLojasPrecos(values, []);
 
     expect(payload.lojas[0].comprovante_endereco).toBeUndefined();
+  });
+
+  it("formataEmpresa cria kits a partir de ofertas_de_uniformes", () => {
+    const empresa = {
+      ofertas_de_uniformes: [
+        { nome: "Camiseta", preco: "10.00", uniforme_categoria: 1 },
+      ],
+      lojas: [],
+    };
+
+    const result = formataEmpresa(empresa);
+
+    expect(result.kits).toEqual(empresa.ofertas_de_uniformes);
+  });
+
+  it("formataEmpresa cria kits vazio quando ofertas_de_uniformes eh vazio", () => {
+    const empresa = {
+      ofertas_de_uniformes: [],
+      lojas: [],
+    };
+
+    const result = formataEmpresa(empresa);
+
+    expect(result.kits).toEqual([]);
   });
 });
