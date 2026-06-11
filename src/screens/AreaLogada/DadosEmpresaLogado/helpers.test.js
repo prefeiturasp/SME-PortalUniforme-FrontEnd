@@ -37,6 +37,21 @@ describe("AreaLogada/DadosEmpresaLogado/helpers", () => {
     expect(payload.lojas[0].comprovante_endereco).toBeUndefined();
   });
 
+  it("preserva id da loja no payload", () => {
+    const values = {
+      lojas: [
+        {
+          id: 42,
+          nome_fantasia: "Loja C",
+        },
+      ],
+    };
+
+    const payload = formataPayloadLojasPrecos(values, []);
+
+    expect(payload.lojas[0].id).toBe(42);
+  });
+
   it("formataEmpresa cria kits a partir de ofertas_de_uniformes", () => {
     const empresa = {
       ofertas_de_uniformes: [

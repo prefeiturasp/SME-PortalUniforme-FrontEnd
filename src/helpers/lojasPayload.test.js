@@ -22,6 +22,7 @@ describe("helpers/lojasPayload", () => {
         ],
         lojas: [
           {
+            id: 1,
             uuid: "loja-1",
             nome_fantasia: "Loja 1",
             cep: "01000-000",
@@ -33,6 +34,7 @@ describe("helpers/lojasPayload", () => {
             site: "",
           },
           {
+            id: 2,
             uuid: "loja-2",
             nome_fantasia: "Loja 2",
             cep: "02000-000",
@@ -56,10 +58,14 @@ describe("helpers/lojasPayload", () => {
         valor: 1.01,
       },
     ]);
-    expect(payload.lojas[0].comprovante_endereco).toBeNull();
+    expect(payload.lojas[0].id).toBe(1);
+    expect(payload.lojas[0].comprovante_endereco).toBeUndefined();
+    expect(payload.lojas[0].foto_fachada).toBeUndefined();
+    expect(payload.lojas[1].id).toBe(2);
     expect(payload.lojas[1].comprovante_endereco).toBe(
       "data:application/pdf/pdf;base64,ABC"
     );
+    expect(payload.lojas[1].foto_fachada).toBeUndefined();
     expect(payload.lojas[1].cidade).toBe("São Paulo");
     expect(payload.lojas[1].uf).toBe("SP");
   });

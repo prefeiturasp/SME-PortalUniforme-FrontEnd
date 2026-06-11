@@ -23,6 +23,7 @@ export const montarPayloadAtualizaLojas = (
   })),
   lojas: (empresa.lojas || []).map((loja) => {
     const payloadLoja = {
+      id: loja.id,
       uuid: loja.uuid,
       nome_fantasia: loja.nome_fantasia,
       cep: loja.cep,
@@ -34,8 +35,6 @@ export const montarPayloadAtualizaLojas = (
       uf: loja.uf || "SP",
       telefone: loja.telefone,
       site: loja.site || "",
-      foto_fachada: loja.foto_fachada || null,
-      comprovante_endereco: loja.comprovante_endereco || null,
     };
 
     if (loja.uuid === lojaUuid) {
