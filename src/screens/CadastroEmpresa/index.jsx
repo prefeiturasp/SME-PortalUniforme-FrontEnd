@@ -671,7 +671,6 @@ export let CadastroEmpresa = (props) => {
                             endereco={empresa && value.endereco}
                             telefone={empresa && value.telefone}
                             site={empresa && value.site}
-                            comprovante_endereco={empresa && value.comprovante_endereco}
                             onUpdate={onUpdateLoja}
                           />
                           {!empresa && (
