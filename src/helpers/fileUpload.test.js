@@ -28,4 +28,12 @@ describe("helpers/fileUpload", () => {
 
     expect(isAcceptedFile(file, FACHADA_ACCEPT_CUSTOM)).toBe(true);
   });
+
+  it("rejeita pdf para fachada", () => {
+    const file = new File(["dummy content"], "fachada.pdf", {
+      type: "application/pdf",
+    });
+
+    expect(isAcceptedFile(file, FACHADA_ACCEPT_CUSTOM)).toBe(false);
+  });
 });

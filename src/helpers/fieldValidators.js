@@ -1,5 +1,5 @@
-import { validate } from "cnpj";
 import { between } from "./helpers";
+import { validarCNPJ as validarDocumentoCNPJ } from "./utils";
 
 export const required = (value) =>
   value !== undefined ? undefined : "Campo obrigatório";
@@ -75,7 +75,7 @@ export const validaUF = (value) => {
 };
 
 export const validaCNPJ = (value) =>
-  validate(value) ? undefined : "Necessário um CNPJ Valido!";
+  validarDocumentoCNPJ(value) ? undefined : "Necessário um CNPJ Valido!";
 
 export const validaTelefone = (value) => {
   let numero = value

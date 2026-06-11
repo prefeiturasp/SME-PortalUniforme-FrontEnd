@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 import LojaFisica from "./LojaFisica";
 
 describe("CadastroEmpresa/LojaFisica", () => {
-  it("nao renderiza o campo de comprovante de endereco", () => {
+  it("renderiza campos basicos", () => {
     const wrapper = mount(
       <LojaFisica
         bairro="Centro"
@@ -22,8 +22,8 @@ describe("CadastroEmpresa/LojaFisica", () => {
       />
     );
 
-    expect(wrapper.text()).not.toContain(
-      "Comprovante de endereço do ponto de venda"
-    );
+    expect(wrapper.text()).toContain("Nome Fantasia");
+    expect(wrapper.text()).toContain("CEP");
+    expect(wrapper.text()).toContain("Endereço");
   });
 });

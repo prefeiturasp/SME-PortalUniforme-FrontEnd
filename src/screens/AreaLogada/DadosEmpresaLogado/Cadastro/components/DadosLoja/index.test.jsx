@@ -8,8 +8,6 @@ jest.mock("helpers/fieldValidators", () => ({
   composeValidators: jest.fn(() => undefined),
   required: jest.fn(() => undefined),
   validaCEP: jest.fn(() => undefined),
-  validaRangeCEP: jest.fn(() => undefined),
-  validaTelefoneOuCelular: jest.fn(() => undefined),
   validaTelefoneOuCelularLength: jest.fn(() => undefined),
 }));
 

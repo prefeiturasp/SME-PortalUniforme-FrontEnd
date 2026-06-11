@@ -11,6 +11,7 @@ import {
   validaEmail,
   validaCNPJ,
 } from "helpers/fieldValidators";
+import { fieldCNPJ } from "helpers/textMask";
 import { toastError } from "components/Toast/dialogs";
 import { getEnderecoPorCEP } from "services/cep.service";
 import { ESTADOS } from "../../constants";
@@ -21,6 +22,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
     APIForaDoArOuCEPNaoEncontrado,
     setAPIForaDoArOuCEPNaoEncontrado,
   ] = useState(false);
+  const empresaDesabilitada = !!empresa;
 
   return (
     <div>
@@ -29,13 +31,14 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
         <div className="col-sm-6 col-12">
           <Field
             component={InputText}
-            parse={formatString("99.999.999/9999-99")}
+            customChange={fieldCNPJ}
             label="CNPJ"
             name="cnpj"
+            maxLength={18}
             required
             validate={composeValidators(required, validaCNPJ)}
             placeholder="Digite o CNPJ da Empresa"
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
         </div>
         <div className="col-sm-6 col-12">
@@ -47,7 +50,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             required
             validate={composeValidators(required)}
             placeholder="Digite a Razão Social da Empresa"
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
         </div>
       </div>
@@ -61,7 +64,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             required
             validate={composeValidators(required, validaCEP)}
             placeholder="Digite o CEP"
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
           <OnChange name="end_cep">
             {async (value, previous) => {
@@ -104,7 +107,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             maxlength={100}
             required
             validate={required}
-            disabled={empresa || !APIForaDoArOuCEPNaoEncontrado}
+            disabled={empresaDesabilitada || !APIForaDoArOuCEPNaoEncontrado}
           />
         </div>
       </div>
@@ -117,7 +120,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             name="end_cidade"
             required
             validate={required}
-            disabled={empresa || !APIForaDoArOuCEPNaoEncontrado}
+            disabled={empresaDesabilitada || !APIForaDoArOuCEPNaoEncontrado}
           />
         </div>
         <div className="col-sm-2 col-12">
@@ -129,7 +132,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             required
             validate={required}
             naoDesabilitarPrimeiraOpcao
-            disabled={empresa || !APIForaDoArOuCEPNaoEncontrado}
+            disabled={empresaDesabilitada || !APIForaDoArOuCEPNaoEncontrado}
           />
         </div>
       </div>
@@ -144,7 +147,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             placeholder="Nome completo"
             required
             validate={required}
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
         </div>
       </div>
@@ -162,7 +165,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             name="telefone"
             required
             type="text"
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
         </div>
         <div className="col-sm-6 col-12">
@@ -175,7 +178,7 @@ export const DadosEmpresa = ({ empresa, form, values }) => {
             type="text"
             validate={composeValidators(required, validaEmail)}
             required
-            disabled={empresa}
+            disabled={empresaDesabilitada}
           />
         </div>
       </div>
