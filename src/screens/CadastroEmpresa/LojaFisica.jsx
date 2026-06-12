@@ -1,16 +1,11 @@
 import axios from "axios";
-import React, { Fragment, useState, useEffect } from "react";
-import { Field } from "redux-form";
-import { requiredImagem } from "helpers/fieldValidators";
-import { FileUpload } from "components/Input/FileUpload";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Row, Col } from "react-bootstrap";
 import {
   InputLabelRequired,
   InputLabel,
 } from "components/Input/InputLabelRequired";
 import InputLabelRequiredMask from "components/Input/InputLabelRequiredMask";
-
-
 const LojaFisica = (props) => {
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
@@ -21,24 +16,21 @@ const LojaFisica = (props) => {
   const [cidade, setCidade] = useState("");
   const [uf, setUf] = useState("");
   const [site, setSite] = useState("");
-  const [comprovanteEndereco, setComprovanteEndereco] = useState(null);
-  const [comprovanteUpado, setComprovanteUpado] = useState(false);
-  const [payload, setPayload] = useState({});
+  const payloadRef = useRef({});
   const [erro, setErro] = useState(false);
   const [nome_fantasia, setNomeFantasia] = useState("");
 
   useEffect(() => {
-    setTelefone(props.telefone);
-    setEndereco(props.endereco);
-    setCep(props.cep);
-    setBairro(props.bairro);
-    setCidade(props.cidade);
-    setUf(props.uf);
-    setNumero(props.numero);
-    setComplemento(props.complemento);
-    setNomeFantasia(props.nome_fantasia);
-    setSite(props.site);
-    setComprovanteEndereco(props.comprovante_endereco)
+    if (props.telefone != null) setTelefone(props.telefone);
+    if (props.endereco != null) setEndereco(props.endereco);
+    if (props.cep != null) setCep(props.cep);
+    if (props.bairro != null) setBairro(props.bairro);
+    if (props.cidade != null) setCidade(props.cidade);
+    if (props.uf != null) setUf(props.uf);
+    if (props.numero != null) setNumero(props.numero);
+    if (props.complemento != null) setComplemento(props.complemento);
+    if (props.nome_fantasia != null) setNomeFantasia(props.nome_fantasia);
+    if (props.site != null) setSite(props.site);
   }, [props]);
 
   const buscaCep = async (value) => {
@@ -52,9 +44,9 @@ const LojaFisica = (props) => {
           if (data.cidade !== "São Paulo" || data.uf !== "SP") {
             setErro(true);
           } else {
-            const payload = populaPayload(data);
-            setPayload({ ...payload });
-            props.onUpdate(payload, props.chave);
+            const novo = populaPayload(data);
+            payloadRef.current = novo;
+            props.onUpdate(novo, props.chave);
           }
         }
       }
@@ -89,7 +81,10 @@ const LojaFisica = (props) => {
       bairro: data.bairro,
       cep: data.cep,
       nome_fantasia: nome_fantasia,
-      comprovante_endereco: data.comprovanteEndereco
+      numero: numero,
+      complemento: complemento,
+      telefone: telefone,
+      site: site,
     };
   };
 
@@ -108,8 +103,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setNomeFantasia(valor);
-              setPayload({ ...payload, nome_fantasia: valor });
-              props.onUpdate({ ...payload, nome_fantasia: valor }, props.chave);
+              payloadRef.current = { ...payloadRef.current, nome_fantasia: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </Col>
@@ -131,8 +126,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setCep(valor);
-              setPayload({ ...payload, cep: valor });
-              props.onUpdate(payload, props.chave);
+              payloadRef.current = { ...payloadRef.current, cep: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
             erro={erro}
             mensagem="A loja precisa estar em São Paulo-SP"
@@ -150,8 +145,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setBairro(valor);
-              setPayload({ ...payload, bairro: valor });
-              props.onUpdate(payload, props.chave);
+              payloadRef.current = { ...payloadRef.current, bairro: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </Col>
@@ -169,8 +164,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setEndereco(valor);
-              setPayload({ ...payload, endereco: valor });
-              props.onUpdate({ ...payload, endereco: valor }, props.chave);
+              payloadRef.current = { ...payloadRef.current, endereco: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
@@ -184,8 +179,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setNumero(valor);
-              setPayload({ ...payload, numero: valor });
-              props.onUpdate(payload, props.chave);
+              payloadRef.current = { ...payloadRef.current, numero: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
@@ -198,8 +193,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value;
               setComplemento(valor);
-              setPayload({ ...payload, complemento: valor });
-              props.onUpdate(payload, props.chave);
+              payloadRef.current = { ...payloadRef.current, complemento: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
@@ -218,8 +213,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = "São Paulo";
               setCidade(valor);
-              setPayload({ ...payload, cidade: valor });
-              props.onUpdate({ ...payload, cidade: valor }, props.chave);
+              payloadRef.current = { ...payloadRef.current, cidade: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
@@ -236,8 +231,8 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = "SP";
               setUf(valor);
-              setPayload({ ...payload, uf: valor });
-              props.onUpdate({ ...payload, uf: valor }, props.chave);
+              payloadRef.current = { ...payloadRef.current, uf: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
@@ -256,46 +251,23 @@ const LojaFisica = (props) => {
             onChange={(e) => {
               const valor = e.target.value.replace("_", "");
               setTelefone(valor);
-              setPayload({ ...payload, telefone: valor });
-              props.onUpdate({ ...payload, telefone: valor }, props.chave);
+              payloadRef.current = { ...payloadRef.current, telefone: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
             }}
           />
         </div>
       </div>
-      <Field
-        component={FileUpload}
-        name={`comprovante_endereco_${props.chave}`}
-        disabled={comprovanteUpado}
-        id={`comprovante_endereco_${props.chave}`}
-        key={props.chave}
-        value={comprovanteEndereco}
-        accept="image/*, .pdf"
-        acceptCustom="application/pdf, image/png, image/jpg, image/jpeg"
-        className="form-control-file"
-        label={`Comprovante de endereço do ponto de venda`}
-        required
-        validate={requiredImagem}
-        multiple={true}
-        onChange={(e) => {
-          const valor = e.length > 0 ? e[0].arquivo : null;
-          setComprovanteEndereco(e);
-          setComprovanteUpado(Array.isArray(e) && e.length > 0);
-          setPayload({ ...payload, comprovante_endereco: valor });
-          props.onUpdate({ ...payload, comprovante_endereco: valor }, props.chave);
-        }}
-      />
-
       <InputLabel
         label="Site"
         value={site}
         disabled={props.empresa}
         id={`site_${props.chave}`}
-        onChange={(e) => {
-          const valor = e.target.value;
-          setSite(valor);
-          setPayload({ ...payload, site: valor });
-          props.onUpdate({ ...payload, site: valor }, props.chave);
-        }}
+            onChange={(e) => {
+              const valor = e.target.value;
+              setSite(valor);
+              payloadRef.current = { ...payloadRef.current, site: valor };
+              props.onUpdate({ ...payloadRef.current }, props.chave);
+            }}
       />
     </Fragment>
   );

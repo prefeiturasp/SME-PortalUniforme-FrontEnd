@@ -1,21 +1,44 @@
 import { createTextMask, createNumberMask } from "redux-form-input-masks";
+import { compactarCNPJ, formatarCNPJ } from "./utils";
+
+const formatarCPF = value => {
+  const valorNumerico = String(value || "")
+    .replace(/\D/g, "")
+    .slice(0, 11);
+
+  if (valorNumerico.length <= 3) {
+    return valorNumerico;
+  }
+
+  if (valorNumerico.length <= 6) {
+    return `${valorNumerico.slice(0, 3)}.${valorNumerico.slice(3)}`;
+  }
+
+  if (valorNumerico.length <= 9) {
+    return `${valorNumerico.slice(0, 3)}.${valorNumerico.slice(
+      3,
+      6
+    )}.${valorNumerico.slice(6)}`;
+  }
+
+  return `${valorNumerico.slice(0, 3)}.${valorNumerico.slice(
+    3,
+    6
+  )}.${valorNumerico.slice(6, 9)}-${valorNumerico.slice(9)}`;
+};
 
 export const fieldCPF_CNPJ = value => {
-  if (value.length <= 11) {
-    return value
-      .replace(/\D/g, "")
-      .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "$1.$2.$3-$4");
-  } else {
-    return value
-      .replace(/\D/g, "")
-      .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5");
+  const valorCompactado = compactarCNPJ(value);
+
+  if (!/[A-Z]/.test(valorCompactado) && valorCompactado.length <= 11) {
+    return formatarCPF(value);
   }
+
+  return formatarCNPJ(value);
 };
 
 export const fieldCNPJ = value => {
-    return value
-      .replace(/\D/g, "")
-      .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5");
+    return formatarCNPJ(value);
 };
 
 export const fieldMoney = createNumberMask({

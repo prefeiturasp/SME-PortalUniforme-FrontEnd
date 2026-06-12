@@ -28,6 +28,7 @@ const formataPrecos = (empresa) => {
 export const formataEmpresa = (empresa) => {
   empresa = addCidadeEstadoSP(empresa);
   empresa = formataPrecos(empresa);
+  empresa.kits = empresa.ofertas_de_uniformes || [];
   return empresa;
 };
 
@@ -43,18 +44,29 @@ export const formataPayloadLojasPrecos = (values, tiposDeUniforme) => {
       }
     });
   });
-  values.ofertas_de_uniformes = ofertas_de_uniformes;
+  const payload = {
+    ...values,
+    ofertas_de_uniformes,
+    lojas: values.lojas.map((loja) => {
+      const payloadLoja = {
+        ...loja,
+      };
 
-  // Formata comprovante de endereços de cada loja
-  values.lojas.forEach(loja =>{
+      if (
+        Array.isArray(payloadLoja.comprovante_endereco) &&
+        payloadLoja.comprovante_endereco[0]
+      ) {
+        payloadLoja.comprovante_endereco =
+          payloadLoja.comprovante_endereco[0].arquivo;
+      } else {
+        delete payloadLoja.comprovante_endereco;
+      }
 
-    if(loja.comprovante_endereco && loja.comprovante_endereco[0])
-      loja.comprovante_endereco = loja.comprovante_endereco[0].arquivo
-    else
-      delete loja.comprovante_endereco
-    
-  })
-  return values;
+      return payloadLoja;
+    }),
+  };
+
+  return payload;
 };
 
 export const validaTabelaPrecos = (values, tiposDeUniforme, limites) => {

@@ -3,6 +3,7 @@ import { FileUpload as FileUploadPR } from "primereact/fileupload";
 
 import { InputErroMensagem } from "./InputErroMensagem";
 import { HelpText } from "components/HelpText";
+import { isAcceptedFile } from "helpers/fileUpload";
 import { asyncForEach, readerFile } from "helpers/utils";
 import { toastError } from "components/Toast/dialogs";
 
@@ -10,10 +11,13 @@ class CustomFileUploadPR extends FileUploadPR {
   async upload() {
     const { onUploadChange } = this.props;
     const { files } = this.state;
-    if (
+    const hasInvalidFile =
       this.props.acceptCustom &&
-      files[0] &&
-      !this.props.acceptCustom.includes(files[0].type)
+      files.some(file => !isAcceptedFile(file, this.props.acceptCustom));
+
+    if (
+      files.length > 0 &&
+      hasInvalidFile
     ) {
       toastError("Formato de arquivo inválido");
       this.setState({ files: [] });

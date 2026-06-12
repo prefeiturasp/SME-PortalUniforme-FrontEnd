@@ -40,6 +40,46 @@ export const getError = obj => {
   return result;
 };
 
+export const compactarCNPJ = cnpj =>
+  String(cnpj || "")
+    .toUpperCase()
+    .replace(/[^0-9A-Z]/g, "")
+    .slice(0, 14);
+
+export const formatarCNPJ = cnpj => {
+  const valorCompactado = compactarCNPJ(cnpj);
+
+  if (valorCompactado.length <= 2) {
+    return valorCompactado;
+  }
+
+  if (valorCompactado.length <= 5) {
+    return `${valorCompactado.slice(0, 2)}.${valorCompactado.slice(2)}`;
+  }
+
+  if (valorCompactado.length <= 8) {
+    return `${valorCompactado.slice(0, 2)}.${valorCompactado.slice(
+      2,
+      5
+    )}.${valorCompactado.slice(5)}`;
+  }
+
+  if (valorCompactado.length <= 12) {
+    return `${valorCompactado.slice(0, 2)}.${valorCompactado.slice(
+      2,
+      5
+    )}.${valorCompactado.slice(5, 8)}/${valorCompactado.slice(8)}`;
+  }
+
+  return `${valorCompactado.slice(0, 2)}.${valorCompactado.slice(
+    2,
+    5
+  )}.${valorCompactado.slice(5, 8)}/${valorCompactado.slice(
+    8,
+    12
+  )}-${valorCompactado.slice(12)}`;
+};
+
 export const validarCPF = cpf => {
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf === "") return false;
@@ -74,9 +114,7 @@ export const validarCPF = cpf => {
   return true;
 };
 
-export const validarCNPJ = cnpj => {
-  cnpj = cnpj.replace(/[^\d]+/g, "");
-
+const validarSequenciaNumericaRepetida = cnpj => {
   if (cnpj === "") return false;
 
   if (cnpj.length !== 14) return false;
@@ -96,32 +134,45 @@ export const validarCNPJ = cnpj => {
   )
     return false;
 
-  // Valida DVs
-  let i;
-  let tamanho = cnpj.length - 2;
-  let numeros = cnpj.substring(0, tamanho);
-  let digitos = cnpj.substring(tamanho);
-  let soma = 0;
-  let pos = tamanho - 7;
-  for (i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2) pos = 9;
-  }
-  let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  if (resultado !== parseInt(digitos.charAt(0))) return false;
-
-  tamanho = tamanho + 1;
-  numeros = cnpj.substring(0, tamanho);
-  soma = 0;
-  pos = tamanho - 7;
-  for (i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2) pos = 9;
-  }
-  resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  if (resultado !== parseInt(digitos.charAt(1))) return false;
-
   return true;
+};
+
+const valorCaracterCNPJ = caractere => caractere.charCodeAt(0) - 48;
+
+const calcularDigitoCNPJ = (base, pesos) => {
+  const soma = base.split("").reduce((acumulado, caractere, indice) => {
+    return acumulado + valorCaracterCNPJ(caractere) * pesos[indice];
+  }, 0);
+  const modulo = soma % 11;
+
+  return modulo < 2 ? 0 : 11 - modulo;
+};
+
+export const validarCNPJ = cnpj => {
+  const valorCompactado = compactarCNPJ(cnpj);
+
+  if (!/^[A-Z0-9]{12}\d{2}$/.test(valorCompactado)) {
+    return false;
+  }
+
+  if (
+    /^\d{14}$/.test(valorCompactado) &&
+    !validarSequenciaNumericaRepetida(valorCompactado)
+  ) {
+    return false;
+  }
+
+  const base = valorCompactado.slice(0, 12);
+  const digitosVerificadores = valorCompactado.slice(12);
+  const primeiroDigito = calcularDigitoCNPJ(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+
+  if (primeiroDigito !== parseInt(digitosVerificadores.charAt(0), 10)) {
+    return false;
+  }
+
+  const segundoDigito = calcularDigitoCNPJ(`${base}${primeiroDigito}`, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+
+  return segundoDigito === parseInt(digitosVerificadores.charAt(1), 10);
 };
 
 export const hasNumber = myString => {
