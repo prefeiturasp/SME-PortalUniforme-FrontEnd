@@ -9,9 +9,11 @@ export const verificarSeFaltamArquivos = (empresa, tiposDocumentos) => {
     )
       aindaFaltaDocumentoObrigatorio = true;
   });
-  let aindaFaltamArquivos =
-    empresa.lojas.find((loja) => loja.foto_fachada === null) ||
+  return (
+    empresa.lojas.find(
+      (loja) => loja.foto_fachada === null || loja.comprovante_endereco === null
+    ) ||
     empresa.arquivos_anexos.length === 0 ||
-    aindaFaltaDocumentoObrigatorio;
-  return aindaFaltamArquivos;
+    aindaFaltaDocumentoObrigatorio
+  );
 };
