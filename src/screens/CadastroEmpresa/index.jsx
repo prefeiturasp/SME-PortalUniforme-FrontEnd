@@ -178,7 +178,9 @@ export let CadastroEmpresa = (props) => {
         aindaFaltaDocumentoObrigatorio = true;
     });
     let aindaFaltamArquivos =
-      empresa.lojas.find((loja) => loja.foto_fachada === null) ||
+      empresa.lojas.find(
+        (loja) => loja.foto_fachada === null || loja.comprovante_endereco === null
+      ) ||
       empresa.arquivos_anexos.length === 0 ||
       aindaFaltaDocumentoObrigatorio;
     setFaltaArquivos(aindaFaltamArquivos);
@@ -870,6 +872,8 @@ export let CadastroEmpresa = (props) => {
                                 acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                                 className="form-control-file"
                                 label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                                required
+                                validate={valide(true)}
                                 multiple={false}
                                 onChange={(e) => {
                                   if (e.length > 0) {
