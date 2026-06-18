@@ -387,6 +387,8 @@ export const Arquivos = ({ empresa, setEmpresa, values, logado }) => {
                     acceptCustom={DOCUMENTO_ACCEPT_CUSTOM}
                     className="form-control-file"
                     label={`${loja.nome_fantasia} - ${loja.endereco}`}
+                    required
+                    validate={required}
                     multiple={false}
                   />
                   <div className="campos-permitidos">
