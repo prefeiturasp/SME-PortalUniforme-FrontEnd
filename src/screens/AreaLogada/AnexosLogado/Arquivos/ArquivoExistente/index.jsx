@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import moment from "moment";
+import { ARQUIVO_SALVO_COM_SUCESSO } from "helpers/documentosParaAnalise";
 import "./style.scss";
 
 export const ArquivoExistente = (props) => {
@@ -7,7 +8,7 @@ export const ArquivoExistente = (props) => {
   return (
     <div className="file-existent pt-3">
       <div className="label">{props.label}</div>
-      <div className="success-message">Arquivo enviado com sucesso!</div>
+      <div className="success-message">{ARQUIVO_SALVO_COM_SUCESSO}</div>
       <div className="row">
         {props.logado && (
           <div className="col-4">

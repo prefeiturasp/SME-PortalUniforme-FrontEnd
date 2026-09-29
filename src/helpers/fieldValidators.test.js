@@ -4,7 +4,8 @@ import {
   prefeituraEmail,
   numericInteger,
   alphaNumeric,
-  phoneNumber
+  phoneNumber,
+  validaCNPJ,
 } from "helpers/fieldValidators";
 
 describe("test Validators", () => {
@@ -51,6 +52,26 @@ describe("test Validators", () => {
   it("phoneNumber is not valid", () => {
     expect(phoneNumber("12345678")).toBe(
       "Invalid phone number, must be 10 digits"
+    );
+  });
+
+  it("validaCNPJ aceita CNPJ numerico legado valido", () => {
+    expect(validaCNPJ("58.578.683/0001-49")).toBeUndefined();
+  });
+
+  it("validaCNPJ aceita CNPJ alfanumerico valido", () => {
+    expect(validaCNPJ("12.ABC.345/01DE-35")).toBeUndefined();
+  });
+
+  it("validaCNPJ rejeita CNPJ alfanumerico com DV invalido", () => {
+    expect(validaCNPJ("12.ABC.345/01DE-67")).toBe(
+      "Necessário um CNPJ Valido!"
+    );
+  });
+
+  it("validaCNPJ rejeita CNPJ numerico legado invalido", () => {
+    expect(validaCNPJ("58.578.683/0001-40")).toBe(
+      "Necessário um CNPJ Valido!"
     );
   });
 });
